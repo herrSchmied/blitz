@@ -16,9 +16,11 @@ public class Snake implements Cloneable
 	public static final String constructorExcepMsgNullGap = "Constructor argument contains null.";
 	public static final String constructorExcepMsgDistanceGap ="At least two consecutive Points are not near each other.";
 	public static final String constructorExcepMsgDoublePoint = "Argument has at least two identical Points";
-	
+	public static final String constructorExcepMsgSelfCrossing = "In Argument is a self crossing contained.";
+
 	public static final String growExcepMsgNewHeadNotNearBy = "New Head not near by!";
 	public static final String growExcepMsgNewHeadAlreadyContained = "New Head already contained.";
+	public static final String growExcepMsgSelfCrossing = "Selfcrossing not allowed.";
 
 	private final List<Point> consecutiveParts = new ArrayList<>();
 	private final Point startPoint;
@@ -55,8 +57,12 @@ public class Snake implements Cloneable
 		for(int n=0;n<length;n++)
 		{
 			Point p = parts.get(n);
+			
 			if(n>0&&(!isNearBy(parts.get(n-1), p)))throw new SnakeException(constructorExcepMsgDistanceGap);
 			if(n>0&&consecutiveParts.contains(p))throw new SnakeException(constructorExcepMsgDoublePoint);
+			if(n>1&&isSelfCrossing(parts.get(n-1), p))throw new SnakeException(constructorExcepMsgSelfCrossing);
+			
+			
 			consecutiveParts.add(new Point(p.x, p.y));
 		}
 	}
@@ -69,10 +75,34 @@ public class Snake implements Cloneable
 		
 		if(!isNearBy(head, successorPoint))throw new SnakeException(growExcepMsgNewHeadNotNearBy);
 		if(consecutiveParts.contains(successorPoint))throw new SnakeException(growExcepMsgNewHeadAlreadyContained);
+		if(isSelfCrossing(head, successorPoint))throw new SnakeException(growExcepMsgSelfCrossing);
+
 		Snake newSnake = this.clone();
 		newSnake.consecutiveParts.add(new Point(xPos, yPos));
 		
 		return newSnake;
+	}
+	
+	
+	/** Only makes Sense if p and successorPoint are near to
+	 * 	each other.
+	 */
+	public boolean isSelfCrossing(Point p, Point successorPoint)
+	{
+		
+		int xDiff = p.x-successorPoint.x;
+		int yDiff = p.y-successorPoint.y;
+		
+		if(Math.abs(xDiff)>1||xDiff==0)return false;//Diagonal Test
+		if(Math.abs(yDiff)>1||yDiff==0)return false;//Diagonal Test
+
+		boolean xFlanke = 
+				(consecutiveParts.contains(new Point(p.x-xDiff, p.y)));
+		
+		boolean yFlanke =
+				(consecutiveParts.contains(new Point(p.x, p.y-yDiff)));
+		
+		return yFlanke&&xFlanke;
 	}
 	
 	public Snake clone()//Deep copy?!?!
