@@ -18,7 +18,7 @@ class SnakeTests
 	@Test
 	void testSnakeGrowExceptionSelfCrossing()
 	{
-				
+
 		List<Point> points = new ArrayList<>();
 		points.add(new Point(1, 1));
 		points.add(new Point(0, 2));
@@ -30,10 +30,27 @@ class SnakeTests
 			snake = snake.growSnake(1, 2);
 		});
 		
-		 String expectedMessage = Snake.growExcepMsgSelfCrossing;
-		 String actualMessage = exception.getMessage();
+		String expectedMessage = Snake.growExcepMsgSelfCrossing;
+		String actualMessage = exception.getMessage();
 
-		 assert(actualMessage.equals(expectedMessage));
+		assert(actualMessage.equals(expectedMessage));
+
+		List<Point> otherPoints = new ArrayList<>();
+		otherPoints.add(new Point(1, 1));
+		otherPoints.add(new Point(0, 2));
+		otherPoints.add(new Point(1, 2));
+			
+		exception = assertThrows(SnakeException.class, ()->
+		{
+			Snake snake = new Snake(otherPoints);
+			snake = snake.growSnake(0, 1);
+		});
+			
+		expectedMessage = Snake.growExcepMsgSelfCrossing;
+		actualMessage = exception.getMessage();
+
+		assert(actualMessage.equals(expectedMessage));
+
 	}
 
 	@Test

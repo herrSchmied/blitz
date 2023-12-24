@@ -19,11 +19,11 @@ public class BlitzThing extends Application
     public void start(Stage stage) throws LTGCException 
     {
         
-        int tileSize = 50;
+        int tileSize = 15;
         
-        int widthInTiles = 5;
-        int heightInTiles = 5;
-        double strokeWidthLattice = 3.5;
+        int widthInTiles = 20;
+        int heightInTiles = 20;
+        double strokeWidthLattice = 2.5;
         
         LatticeTileGridCanvas canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice);
 
@@ -33,13 +33,18 @@ public class BlitzThing extends Application
         Group root = new Group();
         Scene scene = new Scene(root, absolutWidth, absolutHeight, Color.GRAY);
         
+        boolean latticeBits[] = new boolean[4];
+        latticeBits[LatticeTileGridCanvas.indexLatticeBitLeft] = true;
+        latticeBits[LatticeTileGridCanvas.indexLatticeBitBottom] = false;
+        latticeBits[LatticeTileGridCanvas.indexLatticeBitRight] = true;
+        latticeBits[LatticeTileGridCanvas.indexLatticeBitTop] = false;
         
         canvas.setColorOnTile(Color.GREEN, 0, 0);
         canvas.setColorOnTile(Color.YELLOW, 1, 1);
         canvas.setColorOnTile(Color.BLUE, 2, 2);
-        canvas.setLatticeOnTile(2, 2, 15, Color.BROWN);
-        canvas.setLatticeOnTile(0, 0, 7, Color.RED);
-        canvas.setLatticeOnTile(1, 1, 2, Color.BROWN);
+        canvas.setLatticesOnTile(2, 2, 15, Color.BROWN);
+        canvas.setLatticesOnTile(1, 1, 4, Color.RED);
+        canvas.setLatticesOnTile(0, 0, latticeBits, Color.BROWN);
         
         root.getChildren().add(canvas);
         
