@@ -21,7 +21,7 @@
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>5.9.2</version>
+        <version>5.10.1</version>
         <scope>test</scope>
     </dependency>
 
@@ -39,15 +39,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.1</version>
 			</plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <release>11</release>
-                </configuration>
-            </plugin>
             
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -59,7 +50,7 @@
                         <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>jborg.lightning.App</mainClass>
+                            <mainClass>jborg.lightning.BlitzThing</mainClass>
                         </configuration>
                     </execution>
                 </executions>

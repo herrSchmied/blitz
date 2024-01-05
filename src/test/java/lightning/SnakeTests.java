@@ -12,11 +12,15 @@ import org.junit.jupiter.api.Test;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeException;
 
-class SnakeTests
+
+
+
+
+public class SnakeTests
 {
 
 	@Test
-	void testSnakeGrowExceptionSelfCrossing()
+	public void testSnakeGrowExceptionSelfCrossing()
 	{
 
 		List<Point> points = new ArrayList<>();
@@ -24,7 +28,7 @@ class SnakeTests
 		points.add(new Point(0, 2));
 		points.add(new Point(0, 1));
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 			snake = snake.growSnake(1, 2);
@@ -54,7 +58,7 @@ class SnakeTests
 	}
 
 	@Test
-	void testSnakeGrowExceptionDoublePoint()
+	public void testSnakeGrowExceptionDoublePoint()
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -62,7 +66,7 @@ class SnakeTests
 		points.add(new Point(0, 2));
 		points.add(new Point(0, 3));
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 			snake = snake.growSnake(0, 2);
@@ -75,7 +79,7 @@ class SnakeTests
 	}
 	
 	@Test
-	void testSnakeGrowException()
+	public void testSnakeGrowException()
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -83,7 +87,7 @@ class SnakeTests
 		points.add(new Point(0, 2));
 		points.add(new Point(0, 3));
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 			snake = snake.growSnake(0, 0);
@@ -96,7 +100,7 @@ class SnakeTests
 	}
 
 	@Test
-	void testSnakeConstructorSelfCrossing()
+	public void testSnakeConstructorSelfCrossing()
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -105,7 +109,7 @@ class SnakeTests
 		points.add(new Point(0, 1));
 		points.add(new Point(1, 2));
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 		});
@@ -117,12 +121,12 @@ class SnakeTests
 	}
 	
 	@Test
-	void testSnakeConstructorExceptionNullArgument()
+	public void testSnakeConstructorExceptionNullArgument()
 	{
 				
 		List<Point> points = null;
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 		});
@@ -134,7 +138,7 @@ class SnakeTests
 	}
 
 	@Test
-	void testSnakeConstructorDoublePoint()
+	public void testSnakeConstructorDoublePoint()
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -144,7 +148,7 @@ class SnakeTests
 		points.add(new Point(0, 2));
 
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 		});
@@ -156,12 +160,12 @@ class SnakeTests
 	}
 	
 	@Test
-	void testSnakeConstructorExceptionEmptyArgument()
+	public void testSnakeConstructorExceptionEmptyArgument()
 	{
 				
 		List<Point> points = new ArrayList<>();
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 		});
@@ -173,7 +177,7 @@ class SnakeTests
 	}
 
 	@Test
-	void testSnakeConstructorExceptionNullGap()
+	public void testSnakeConstructorExceptionNullGap()
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -181,7 +185,7 @@ class SnakeTests
 		points.add(null);//Gap
 		points.add(new Point(0, 3));
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 		});
@@ -193,7 +197,7 @@ class SnakeTests
 	}
 
 	@Test
-	void testSnakeConstructorExceptionDistanceGap()
+	public void testSnakeConstructorExceptionDistanceGap()
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -201,7 +205,7 @@ class SnakeTests
 		points.add(new Point(0, 1));//Gap
 		points.add(new Point(0, 3));//Gap
 		
-		Exception exception = assertThrows(SnakeException.class, ()->
+		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
 			Snake snake = new Snake(points);
 		});
@@ -213,7 +217,7 @@ class SnakeTests
 	}
 
 	@Test
-	void testSnakeConstructor() throws SnakeException
+	public void testSnakeConstructor() throws SnakeException
 	{
 		List<Point> points = new ArrayList<>();
 		//Point startPoint = new Point(1, 1);
@@ -226,7 +230,7 @@ class SnakeTests
 	}
 	
 	@Test
-	void testSnakeClone() throws SnakeException
+	public void testSnakeClone() throws SnakeException
 	{
 		Snake snake = new Snake(0, 0);
 		snake = snake.growSnake(1, 1);
@@ -242,7 +246,7 @@ class SnakeTests
 	}
 
 	@Test
-	void testSnakeGrowth() throws SnakeException
+	public void testSnakeGrowth() throws SnakeException
 	{
 		Snake snake = new Snake(0, 0);
 		snake = snake.growSnake(1, 0);
