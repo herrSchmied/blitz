@@ -76,6 +76,19 @@ public class LatticeTileGridCanvas extends Canvas
 
 	}
 	
+	public void setOneLatticeOnTile(int xPos, int yPos, int bitNr, Color latticeColor) throws LTGCException
+	{
+		if(xPos>widthInTiles-1||xPos<0)throw new LTGCException("X-Position out of Bounds.");
+		if(yPos>heightInTiles-1||yPos<0)throw new LTGCException("Y-Position out of Bounds.");
+		if(bitNr<0||bitNr>=nrOfLatticeBits)throw new LTGCException("Lattice bit not valide.");
+		
+		boolean[]latticeBits = translateLatticeCodeToLatticeBits(latticeCodeOfTile[xPos][yPos]);
+		latticeBits[bitNr]= true;
+		
+		setLatticesOnTile(xPos, yPos, latticeBits, latticeColor);
+
+	}
+	
 	public void setLatticesOnTile(int xPosOfTile, int yPosOfTile, int latticeCode, Color latticeColor) throws LTGCException
 	{
 
@@ -88,10 +101,10 @@ public class LatticeTileGridCanvas extends Canvas
 		for(int n=0;n<nrOfLatticeBits;n++)
 			if(latticeBits[n])setBitToLatticeCode(n, xPosOfTile, yPosOfTile);
 
-		boolean thereIsATileOnTheRight = xPosOfTile < heightInTiles - 1;
+		boolean thereIsATileOnTheRight = xPosOfTile < widthInTiles - 1;
 		boolean thereIsATileOnTheLeft = xPosOfTile > 0;
 		boolean thereIsATileOnTheTop = yPosOfTile > 0;
-		boolean thereIsATileOnTheBottom = yPosOfTile < widthInTiles - 1;
+		boolean thereIsATileOnTheBottom = yPosOfTile < heightInTiles - 1;
 
 		if(latticeBits[indexLatticeBitRight]&&thereIsATileOnTheRight)
 		{
@@ -271,5 +284,14 @@ public class LatticeTileGridCanvas extends Canvas
 	public int getTileSize()
 	{
 		return tileSize;
+	}
+	
+	public int getLatticeCode(int x, int y) throws LTGCException
+	{
+		
+		if(x<0||x>=widthInTiles) throw new LTGCException("Can't get Lattice Code. x is out of Bounds.");
+		if(y<0||y>=heightInTiles) throw new LTGCException("Can't get Lattice Code. y is out of Bounds.");
+		
+		return latticeCodeOfTile[x][y];
 	}
 }
