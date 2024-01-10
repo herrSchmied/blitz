@@ -16,7 +16,7 @@ public class LTGCanvasTests
 {
 
 	@Test
-	public void test() throws LTGCException
+	public void testLatticeGrid() throws LTGCException
 	{
 		
 		int widthInTiles = 10;
@@ -39,6 +39,8 @@ public class LTGCanvasTests
 		latticeBits[indexLatticeBitTop] = false;
 		
 		ltgCnvs.setLatticesOnTile(7, 7, latticeBits, Color.RED);
+		
+		ltgCnvs.setOneLatticeOnTile(5, 5, indexLatticeBitLeft, Color.BLACK);
 		
 		int affectedTilesCounter =0;
 		for(int n=0;n<widthInTiles;n++)
@@ -78,7 +80,7 @@ public class LTGCanvasTests
 		}
 		
 		System.out.println("AffectedTiles: " + affectedTilesCounter);
-		assert(affectedTilesCounter==6);
+		assert(affectedTilesCounter==8);
 	}
 
 }
