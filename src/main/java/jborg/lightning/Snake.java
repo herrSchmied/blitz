@@ -6,10 +6,13 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class Snake implements Cloneable
 {
+	public static final String excepMsgUnknownStatus = "Unknown Status!";
+	public static final String excepMsgStatusChangeNotAllowedMoreThanOnce = "Status can only be changed once!";
 	
 	public static final String constructorExcepMsgNullArgument = "Constructor argument is null.";
 	public static final String constructorExcepMsgEmptyArgument = "Constructor argument is empty.";
@@ -25,34 +28,44 @@ public class Snake implements Cloneable
 	private final List<Point> consecutiveParts = new ArrayList<>();
 	private final Point startPoint;
 	
+	public static final String readyStatus = "Ready!";
+	public static final String deadStatus = "Dead!";
+	private static final List<String> statie = new ArrayList<>(Arrays.asList(readyStatus, deadStatus));
+	private String status = "";
+	private boolean statusChanged = false;
 	
-	
-	public Snake(Point startPoint)
+	public Snake(Point startPoint, String status) throws SnakeException
 	{
 		
+		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
 		this.startPoint = startPoint;
+		this.status = status;
 		
 		consecutiveParts.add(startPoint);
 	}
 	
-	public Snake(int xPos, int yPos)
+	public Snake(int xPos, int yPos, String status) throws SnakeException
 	{
 		
+		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
 		Point startPoint = new Point(xPos, yPos);
 		this.startPoint = startPoint;
+		this.status = status;
 		
 		consecutiveParts.add(startPoint);
 	}
 	
-	public Snake(List<Point> parts) throws SnakeException
+	public Snake(List<Point> parts, String status) throws SnakeException
 	{
 		
+		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
 		if(parts==null)throw new SnakeException(constructorExcepMsgNullArgument);
 		if(parts.isEmpty())throw new SnakeException(constructorExcepMsgEmptyArgument);
 		if(parts.contains(null))throw new SnakeException(constructorExcepMsgNullGap);
 
 		int length = parts.size();
 		this.startPoint = parts.get(0);
+		this.status = status;
 		
 		for(int n=0;n<length;n++)
 		{
@@ -67,9 +80,11 @@ public class Snake implements Cloneable
 		}
 	}
 
-	public Snake growSnake(int xPos, int yPos) throws SnakeException
+	public Snake growSnake(int xPos, int yPos, String status) throws SnakeException
 	{
-		
+
+		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
+
 		Point head = getHead();
 		Point successorPoint = new Point(xPos, yPos);
 		
@@ -79,6 +94,7 @@ public class Snake implements Cloneable
 
 		Snake newSnake = this.clone();
 		newSnake.consecutiveParts.add(new Point(xPos, yPos));
+		this.status = status;
 		
 		return newSnake;
 	}
@@ -119,7 +135,7 @@ public class Snake implements Cloneable
 
 		try
 		{
-			return new Snake(newParts);
+			return new Snake(newParts, this.status);
 		}
 		catch(SnakeException snkExce)
 		{
@@ -170,6 +186,18 @@ public class Snake implements Cloneable
 		return true;
 	}
 	
+	public void changeStatus(String newStatus) throws SnakeException
+	{
+		
+		if(!statie.contains(newStatus))throw new SnakeException(excepMsgUnknownStatus);
+		if(statusChanged)throw new SnakeException(excepMsgStatusChangeNotAllowedMoreThanOnce);
+		else
+		{
+			statusChanged = true;
+			this.status = newStatus;
+		}
+	}
+	
 	public <E> List<E> doFuncPartByPart(Function<Point, E> func)
 	{
 		
@@ -180,6 +208,11 @@ public class Snake implements Cloneable
 		
 		return ergebnisse;
 		
+	}
+	
+	public String getStatus()
+	{
+		return new String(status);//Immutable?
 	}
 	
 	public boolean equals(Object obj)

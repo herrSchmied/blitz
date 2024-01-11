@@ -30,8 +30,8 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
-			snake = snake.growSnake(1, 2);
+			Snake snake = new Snake(points, Snake.readyStatus);
+			snake = snake.growSnake(1, 2, Snake.readyStatus);
 		});
 		
 		String expectedMessage = Snake.growExcepMsgSelfCrossing;
@@ -46,8 +46,8 @@ public class SnakeTests
 			
 		exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(otherPoints);
-			snake = snake.growSnake(0, 1);
+			Snake snake = new Snake(otherPoints, Snake.readyStatus);
+			snake = snake.growSnake(0, 1, Snake.readyStatus);
 		});
 			
 		expectedMessage = Snake.growExcepMsgSelfCrossing;
@@ -68,8 +68,8 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
-			snake = snake.growSnake(0, 2);
+			Snake snake = new Snake(points, Snake.readyStatus);
+			snake = snake.growSnake(0, 2, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.growExcepMsgNewHeadAlreadyContained;
@@ -89,8 +89,8 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
-			snake = snake.growSnake(0, 0);
+			Snake snake = new Snake(points, Snake.readyStatus);
+			snake = snake.growSnake(0, 0, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.growExcepMsgNewHeadNotNearBy;
@@ -111,7 +111,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
+			Snake snake = new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgSelfCrossing;
@@ -128,7 +128,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
+			Snake snake = new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgNullArgument;
@@ -150,7 +150,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
+			Snake snake = new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgDoublePoint;
@@ -167,7 +167,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
+			Snake snake = new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgEmptyArgument;
@@ -187,7 +187,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
+			Snake snake = new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgNullGap;
@@ -207,7 +207,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points);
+			Snake snake = new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgDistanceGap;
@@ -225,16 +225,16 @@ public class SnakeTests
 		points.add(new Point(0, 1));
 		points.add(new Point(0, 2));
 		
-		Snake snake = new Snake(points);
+		Snake snake = new Snake(points, Snake.readyStatus);
 		assert(snake.getLength()==3);
 	}
 	
 	@Test
 	public void testSnakeClone() throws SnakeException
 	{
-		Snake snake = new Snake(0, 0);
-		snake = snake.growSnake(1, 1);
-		snake = snake.growSnake(2, 0);
+		Snake snake = new Snake(0, 0, Snake.readyStatus);
+		snake = snake.growSnake(1, 1, Snake.readyStatus);
+		snake = snake.growSnake(2, 0, Snake.readyStatus);
 		
 		Snake snake2 = snake.clone();
 		
@@ -248,12 +248,12 @@ public class SnakeTests
 	@Test
 	public void testSnakeGrowth() throws SnakeException
 	{
-		Snake snake = new Snake(0, 0);
-		snake = snake.growSnake(1, 0);
+		Snake snake = new Snake(0, 0, Snake.readyStatus);
+		snake = snake.growSnake(1, 0, Snake.readyStatus);
 		
 		assert(snake.getLength()==2);
 		
-		snake = snake.growSnake(2, 0);
+		snake = snake.growSnake(2, 0, Snake.readyStatus);
 		
 		assert(snake.getLength()==3);
 	}

@@ -5,6 +5,13 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import static jborg.lightning.LatticeGrid.*;
+
+import java.awt.Point;
+import java.util.function.Consumer;
+
+
+
 public class LatticeTileGridCanvas extends Canvas
 {
 
@@ -18,20 +25,14 @@ public class LatticeTileGridCanvas extends Canvas
 	private final double strokeWidthLattice;
 	
 	private Color[][] colorOfTile;
-	private int[][] latticeCodeOfTile;
-	
-	public static final int nrOfLatticeBits = 4;
-
-	public static final int indexLatticeBitLeft = 0;
-	public static final int indexLatticeBitBottom = 1;
-	public static final int indexLatticeBitRight = 2;
-	public static final int indexLatticeBitTop = 3;
+	private final Color latticeColor;
 
 	private GraphicsContext gc2D;
+	LatticeGrid lg;
 	
 	//TODO: Testing next!!!!!!!!!!!!!!!!!!!!!!
 	
-	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, double strokeWidthLattice)
+	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, double strokeWidthLattice, Color latticeColor) throws LTGCException
 	{
 		super(xTileWidth*tileSize, yTileHeight*tileSize);
 		
@@ -43,12 +44,72 @@ public class LatticeTileGridCanvas extends Canvas
 		
 		this.tileSize = tileSize;
 		
+		this.latticeColor = latticeColor;
+		
 		gc2D = this.getGraphicsContext2D();
 		
 		this.strokeWidthLattice = strokeWidthLattice;
-		
-		colorOfTile = new Color[xTileWidth][yTileHeight];
-		latticeCodeOfTile = new int[xTileWidth][yTileHeight];//Default entry is 0!
+	
+		lg = new LatticeGrid(widthInTiles, heightInTiles);
+		colorOfTile = new Color[widthInTiles][heightInTiles];
+		initGrid();
+		drawWholeCanvas();
+	}
+	
+	public void initGrid()
+	{
+		walkThruTiles((p)->
+		{
+			try
+			{
+				setColorOnTile(Color.GREY, p.x, p.y);
+				lg.setOneLatticeOnTile(p.x, p.y, 0);
+			}
+			catch (LTGCException e)
+			{
+				e.printStackTrace();
+			}
+		});
+	}
+	
+	public void setOneLattice(int x, int y, int bitNr) throws LTGCException
+	{
+		lg.setOneLatticeOnTile(x, y, bitNr);
+	}
+	
+	public void drawWholeCanvas() throws LTGCException
+	{
+		walkThruTiles((p)->
+		{
+			try
+			{
+				Color colorOfTile = getColorOfTile(p.x, p.y);
+				setColorOnTile(colorOfTile, p.x, p.y);
+				boolean[] latticeBits = lg.translateLatticeCodeToLatticeBits(lg.getLatticeCode(p.x, p.y));
+				
+				if(latticeBits[indexLatticeBitLeft])drawLattice(p.x, p.y, indexLatticeBitLeft);
+				if(latticeBits[indexLatticeBitRight])drawLattice(p.x, p.y, indexLatticeBitRight);
+				if(latticeBits[indexLatticeBitTop])drawLattice(p.x, p.y, indexLatticeBitTop);
+				if(latticeBits[indexLatticeBitBottom])drawLattice(p.x, p.y, indexLatticeBitBottom);
+			}
+			catch (LTGCException e)
+			{
+				e.printStackTrace();
+			}
+		});
+	}
+	
+	public void walkThruTiles(Consumer<Point> consumer)
+	{
+	
+		for(int x=0;x<widthInTiles;x++)
+		{
+			for(int y=0;y<heightInTiles;y++)
+			{
+				consumer.accept(new Point(x,y));
+			}
+		}
+
 	}
 	
 	public void setColorOnTile(Color c, int xPos, int yPos) throws LTGCException
@@ -63,83 +124,9 @@ public class LatticeTileGridCanvas extends Canvas
 		colorOfTile[xPos][yPos] = c;
 	}
 	
-	public void setLatticesOnTile(int xPosOfTile, int yPosOfTile, boolean [] latticeBits, Color latticeColor) throws LTGCException
-	{
-
-		if(xPosOfTile>widthInTiles-1||xPosOfTile<0)throw new LTGCException("X-Position out of Bounds.");
-		if(yPosOfTile>heightInTiles-1||yPosOfTile<0)throw new LTGCException("Y-Position out of Bounds.");
-		if(latticeBits.length<nrOfLatticeBits)throw new LTGCException("Not enough Lattice Bits!");
-
-		int latticeCode = translateLatticeBitsToLatticeCode(latticeBits);		
-		
-		setLatticesOnTile(xPosOfTile, yPosOfTile, latticeCode, latticeColor);
-
-	}
 	
-	public void setOneLatticeOnTile(int xPos, int yPos, int bitNr, Color latticeColor) throws LTGCException
-	{
-		if(xPos>widthInTiles-1||xPos<0)throw new LTGCException("X-Position out of Bounds.");
-		if(yPos>heightInTiles-1||yPos<0)throw new LTGCException("Y-Position out of Bounds.");
-		if(bitNr<0||bitNr>=nrOfLatticeBits)throw new LTGCException("Lattice bit not valide.");
-		
-		boolean[]latticeBits = translateLatticeCodeToLatticeBits(latticeCodeOfTile[xPos][yPos]);
-		latticeBits[bitNr]= true;
-		
-		setLatticesOnTile(xPos, yPos, latticeBits, latticeColor);
 
-	}
-	
-	public void setLatticesOnTile(int xPosOfTile, int yPosOfTile, int latticeCode, Color latticeColor) throws LTGCException
-	{
-
-		if(xPosOfTile>widthInTiles-1||xPosOfTile<0)throw new LTGCException("X-Position out of Bounds.");
-		if(yPosOfTile>heightInTiles-1||yPosOfTile<0)throw new LTGCException("Y-Position out of Bounds.");
-		if(latticeCode<0||latticeCode>15)throw new LTGCException("Lattice Code not valide.");
-		
-		boolean[]latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
-		
-		for(int n=0;n<nrOfLatticeBits;n++)
-			if(latticeBits[n])setBitToLatticeCode(n, xPosOfTile, yPosOfTile);
-
-		boolean thereIsATileOnTheRight = xPosOfTile < widthInTiles - 1;
-		boolean thereIsATileOnTheLeft = xPosOfTile > 0;
-		boolean thereIsATileOnTheTop = yPosOfTile > 0;
-		boolean thereIsATileOnTheBottom = yPosOfTile < heightInTiles - 1;
-
-		if(latticeBits[indexLatticeBitRight]&&thereIsATileOnTheRight)
-		{
-			setBitToLatticeCode(indexLatticeBitLeft, xPosOfTile+1, yPosOfTile);
-		}
-
-		if(latticeBits[indexLatticeBitLeft]&&thereIsATileOnTheLeft)
-		{
-			setBitToLatticeCode(indexLatticeBitRight, xPosOfTile-1, yPosOfTile);
-		}
-
-		if(latticeBits[indexLatticeBitTop]&&thereIsATileOnTheTop)
-		{
-			setBitToLatticeCode(indexLatticeBitBottom, xPosOfTile, yPosOfTile-1);
-		}
-
-		if(latticeBits[indexLatticeBitBottom]&&thereIsATileOnTheBottom)
-		{
-			setBitToLatticeCode(indexLatticeBitTop, xPosOfTile, yPosOfTile+1);
-		}
-
-		for(int n=0;n<nrOfLatticeBits;n++)if(latticeBits[n])
-			drawLattice(xPosOfTile, yPosOfTile, n, latticeColor);
-	}
-	
-	private void setBitToLatticeCode(int bitNr, int xPos, int yPos)
-	{
-		int oldLatticeCode = latticeCodeOfTile[xPos][yPos];
-		boolean [] latticeBits = translateLatticeCodeToLatticeBits(oldLatticeCode);
-		latticeBits[bitNr]= true;
-		int newLatticeCode = translateLatticeBitsToLatticeCode(latticeBits);
-		latticeCodeOfTile[xPos][yPos] = newLatticeCode;
-	}
-
-	private void drawLattice(int xPosTile, int yPosTile, int latticeNr, Color latticeColor)
+	private void drawLattice(int xPosTile, int yPosTile, int latticeNr)
 	{
 		
 		Double xStart = 0d;
@@ -184,77 +171,6 @@ public class LatticeTileGridCanvas extends Canvas
 		gc2D.strokeLine(xStart, yStart, xEnd, yEnd);
 	}
 
-	public int translateLatticeBitsToLatticeCode(boolean[] latticeBits)
-	{
-		
-		int latticeCode = 0;
-		
-		for(int n=0;n<nrOfLatticeBits;n++)
-			if(latticeBits[n])latticeCode += Math.pow(2, n);
-
-		return latticeCode;
-	}
-	
-	public boolean[] translateLatticeCodeToLatticeBits(int latticeCode)
-	{
-		
-		boolean[]latticeBits = new boolean[nrOfLatticeBits];
-		
-		int tempLatticeCode = latticeCode;
-
-		if(tempLatticeCode%2==0)latticeBits[0]=false;
-		else latticeBits[0]= true;
-		
-		tempLatticeCode = tempLatticeCode/2;
-		if(tempLatticeCode%2==0)latticeBits[1]=false;
-		else latticeBits[1]= true;
-
-		tempLatticeCode = tempLatticeCode/2;
-		if(tempLatticeCode%2==0)latticeBits[2]=false;
-		else latticeBits[2]= true;
-
-		tempLatticeCode = tempLatticeCode/2;
-		if(tempLatticeCode%2==0)latticeBits[3]=false;
-		else latticeBits[3]= true;
-
-		return latticeBits;
-	}
-	
-	public boolean hasLatticeOnTheRight(int xPos, int yPos)
-	{
-		
-		int latticeCode = latticeCodeOfTile[xPos][yPos];
-		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
-		
-		return latticeBits[indexLatticeBitRight];
-	}
-	
-	public boolean hasLatticeOnTheLeft(int xPos, int yPos)
-	{
-		
-		int latticeCode = latticeCodeOfTile[xPos][yPos];
-		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
-		
-		return latticeBits[indexLatticeBitLeft];
-	}
-	
-	public boolean hasLatticeOnTheBottom(int xPos, int yPos)
-	{
-		
-		int latticeCode = latticeCodeOfTile[xPos][yPos];
-		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
-		
-		return latticeBits[indexLatticeBitBottom];
-	}
-	
-	public boolean hasLatticeOnTheTop(int xPos, int yPos)
-	{
-		
-		int latticeCode = latticeCodeOfTile[xPos][yPos];
-		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
-		
-		return latticeBits[indexLatticeBitTop];
-	}
 	
 	public Color getColorOfTile(int xPos, int yPos)
 	{
@@ -292,6 +208,11 @@ public class LatticeTileGridCanvas extends Canvas
 		if(x<0||x>=widthInTiles) throw new LTGCException("Can't get Lattice Code. x is out of Bounds.");
 		if(y<0||y>=heightInTiles) throw new LTGCException("Can't get Lattice Code. y is out of Bounds.");
 		
-		return latticeCodeOfTile[x][y];
+		return lg.getLatticeCode(x, y);
+	}
+	
+	public LatticeGrid getLatticeGrid()
+	{
+		return lg;
 	}
 }

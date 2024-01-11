@@ -2,11 +2,13 @@ package jborg.lightning;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javafx.application.Application;
-
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -14,7 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import someMath.CollectionManipulation;
 
-import static jborg.lightning.LatticeTileGridCanvas.*;
+import static jborg.lightning.LatticeGrid.*;
 
 
 /**
@@ -32,6 +34,7 @@ public class BlitzThing extends Application
 	double strokeWidthLattice;
 	int nrOfLattices;
 	Point start, end;
+	Set<Snake> snakeSet = new HashSet<>();
 	
 	public BlitzThing()
 	{
@@ -39,7 +42,7 @@ public class BlitzThing extends Application
 	}
 		
     @Override
-    public void start(Stage stage) throws LTGCException
+    public void start(Stage stage) throws LTGCException, SnakeException
     {
         
     	Parameters params = getParameters();
@@ -58,9 +61,8 @@ public class BlitzThing extends Application
         start = new Point(xStart, yStart);
         end = new Point(xEnd, yEnd);
         
-        canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice);
-        setupLTGCanvas(nrOfLattices);
-        
+        canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice, Color.BLUE);
+       
         int absolutWidth = canvas.getAbsolutWidthInPixels();
         int absolutHeight = canvas.getAbsolutHeightInPixels();
         
@@ -72,33 +74,39 @@ public class BlitzThing extends Application
         
         stage.setScene(scene);
         stage.show();
+        
+      	Snake firstSnake = new Snake(start, Snake.readyStatus);
+        snakeSet.add(firstSnake);
+
+        Platform.runLater(()->
+        {
+			try
+			{
+				setupLTGCanvas(nrOfLattices);
+				canvas.drawWholeCanvas();
+			}
+			catch (LTGCException e)
+			{
+				e.printStackTrace();
+			} catch (SnakeException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
     }
 
-    private void setupLTGCanvas(int nrOfLattices) throws LTGCException
+    private void setupLTGCanvas(int nrOfLattices) throws LTGCException, SnakeException
     {
     	markStartAndEnd();
     	chooseWhereToDrawLattice();
-    	enFrameBox();
     }
     
-    private void enFrameBox() throws LTGCException
-    {
-    	for(int x=0; x<widthInTiles; x++)
-    	{
-    		for(int y=0; y<heightInTiles; y++)
-    		{
-    			if(x==0)canvas.setOneLatticeOnTile(x, y, indexLatticeBitLeft, Color.BLACK);
-    			if(x==(widthInTiles-1))canvas.setOneLatticeOnTile(x, y, indexLatticeBitRight, Color.BLACK);
-    			if(y==0)canvas.setOneLatticeOnTile(x, y, indexLatticeBitTop, Color.BLACK);
-    			if(y==(heightInTiles-1))canvas.setOneLatticeOnTile(x, y, indexLatticeBitBottom, Color.BLACK);
-    		}
-    	}
-    }
     
     private void markStartAndEnd() throws LTGCException
     {
-    	canvas.setColorOnTile(Color.WHITE, start.x, start.y);
-    	canvas.setColorOnTile(Color.BLACK, end.x, end.y);
+    	canvas.setColorOnTile(Color.GREEN, start.x, start.y);
+    	canvas.setColorOnTile(Color.RED, end.x, end.y);
     }
     
     private void chooseWhereToDrawLattice() throws LTGCException
@@ -139,7 +147,7 @@ public class BlitzThing extends Application
     		{
     			int l = k % widthInTiles;
     			int h = (k/widthInTiles);
-    			canvas.setOneLatticeOnTile(l, h, indexLatticeBitBottom, Color.RED);
+    			canvas.setOneLattice(l, h, indexLatticeBitBottom);
     			System.out.println("Cnt = " + cnt + "; Bottom(" + l + ", " + h +")");
     		}
     		else
@@ -148,7 +156,7 @@ public class BlitzThing extends Application
     			
     			int l = (m/heightInTiles);
     			int h = m % heightInTiles;
-    			canvas.setOneLatticeOnTile(l, h, indexLatticeBitRight, Color.RED);
+    			canvas.setOneLattice(l, h, indexLatticeBitRight);
     			System.out.println("Cnt = " + cnt + "; Right(" + l + ", " + h +")");
     		}
     		cnt++;
@@ -156,6 +164,7 @@ public class BlitzThing extends Application
     	
     	System.out.println("Cnt: " + cnt);
     }
+    
 
     public static void main(String[] args)
     {

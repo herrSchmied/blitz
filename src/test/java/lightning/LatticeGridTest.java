@@ -1,18 +1,15 @@
 package lightning;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import javafx.scene.paint.Color;
 
 import jborg.lightning.LTGCException;
+import jborg.lightning.LatticeGrid;
+import static jborg.lightning.LatticeGrid.*;
 
-import jborg.lightning.LatticeTileGridCanvas;
-import static jborg.lightning.LatticeTileGridCanvas.*;
 
-
-public class LTGCanvasTests 
+public class LatticeGridTest 
 {
 
 	@Test
@@ -21,8 +18,8 @@ public class LTGCanvasTests
 		
 		int widthInTiles = 10;
 		int heightInTiles = 10;
-		int tileSize = 10;
-		double strokeWidthLattice = 3.5;
+
+		LatticeGrid lg = new LatticeGrid(widthInTiles, heightInTiles);
 		
 		boolean [] latticeBits = new boolean[4];
 		latticeBits[indexLatticeBitBottom] = true;
@@ -30,48 +27,47 @@ public class LTGCanvasTests
 		latticeBits[indexLatticeBitRight] = false;
 		latticeBits[indexLatticeBitTop] = true;
 		
-		LatticeTileGridCanvas ltgCnvs = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice);
-		ltgCnvs.setLatticesOnTile(2, 2, latticeBits, Color.GREEN);
+		lg.setLatticesOnTile(2, 2, latticeBits);
 		
 		latticeBits[indexLatticeBitBottom] = false;
 		latticeBits[indexLatticeBitLeft] = true;
 		latticeBits[indexLatticeBitRight] = true;
 		latticeBits[indexLatticeBitTop] = false;
 		
-		ltgCnvs.setLatticesOnTile(7, 7, latticeBits, Color.RED);
+		lg.setLatticesOnTile(7, 7, latticeBits);
 		
-		ltgCnvs.setOneLatticeOnTile(5, 5, indexLatticeBitLeft, Color.BLACK);
+		lg.setOneLatticeOnTile(5, 5, indexLatticeBitLeft);
 		
 		int affectedTilesCounter =0;
 		for(int n=0;n<widthInTiles;n++)
 		{
 			for(int m=0;m<heightInTiles;m++)
 			{
-				boolean bottom = ltgCnvs.hasLatticeOnTheBottom(n, m);
-				boolean top = ltgCnvs.hasLatticeOnTheTop(n, m);
-				boolean right = ltgCnvs.hasLatticeOnTheRight(n, m);
-				boolean left = ltgCnvs.hasLatticeOnTheLeft(n, m);
+				boolean bottom = lg.hasLatticeOnTheBottom(n, m);
+				boolean top = lg.hasLatticeOnTheTop(n, m);
+				boolean right = lg.hasLatticeOnTheRight(n, m);
+				boolean left = lg.hasLatticeOnTheLeft(n, m);
 				
 				if((left||right||top||bottom))
 				{
 					if(bottom)
 					{
-						System.out.println("LatticeCode: " + ltgCnvs.getLatticeCode(n, m));
+						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
 						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Bottom: " + bottom);
 					}
 					if(top)
 					{
-						System.out.println("LatticeCode: " + ltgCnvs.getLatticeCode(n, m));
+						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
 						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Top: " + top);
 					}
 					if(right)
 					{
-						System.out.println("LatticeCode: " + ltgCnvs.getLatticeCode(n, m));
+						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
 						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Right: " + right);
 					}
 					if(left)
 					{
-						System.out.println("LatticeCode: " + ltgCnvs.getLatticeCode(n, m));
+						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
 						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Left: " + left);
 					}
 					affectedTilesCounter++;
