@@ -24,13 +24,12 @@ public class SnakeInAGridTest
 
 		System.out.println("\nOptions Test.");
 		Snake snake = new Snake(new Point(0,0), Snake.readyStatus);
-		Set<Snake> snakeSet = new HashSet<>();
-		snakeSet.add(snake);
 		Point finalPoint = new Point(1,1);
+		
 		LatticeGrid lg = new LatticeGrid(2, 2);
 		lg.setOneLatticeOnTile(0, 0, indexLatticeBitTop);
 		
-		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snakeSet, lg, finalPoint);
+		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snake, lg, finalPoint);
 		List<Point> options = snlGrid.getOptions(snake);
 		
 		assert(options.contains(new Point(1,1)));
@@ -44,8 +43,6 @@ public class SnakeInAGridTest
 	
 		System.out.println("\nDivergence Test.");
 		Snake snake = new Snake(new Point(0,0), Snake.readyStatus);
-		Set<Snake> snakeSet = new HashSet<>();
-		snakeSet.add(snake);
 		Point finalPoint = new Point(2,2);
 		
 		LatticeGrid lg = new LatticeGrid(3, 3);
@@ -57,7 +54,7 @@ public class SnakeInAGridTest
 		assert(lg.hasLatticeOnTheRight(0, 1));
 		assert(lg.hasLatticeOnTheLeft(1, 1));
 		
-		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snakeSet, lg, finalPoint);
+		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snake, lg, finalPoint);
 		Set<Snake> theNewGrownOnes = snlGrid.theDivergence(snake);
 		System.out.println("The new Snake Set Size: " + theNewGrownOnes.size());
 		assert(theNewGrownOnes.size()==1);
@@ -95,30 +92,20 @@ public class SnakeInAGridTest
 		lg.setOneLatticeOnTile(1, 1, indexLatticeBitLeft);
 		
 		Snake snake = new Snake(0,0, Snake.readyStatus);
-		Set<Snake> snakeSet = new HashSet<>();
-		snakeSet.add(snake);
 
 		Point finalPoint = new Point(2,2);
-		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snakeSet, lg, finalPoint);
-		Set<Snake> finalSnakes = snlGrid.untilTheyAreAllDeadLoop(snakeSet);
+		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snake, lg, finalPoint);
+		snlGrid.setFinalSnakes();;
 		
 		Set<Snake> successes = snlGrid.filterSuccesses();
 		
-		for(Snake s: successes)printSnake(s);
+		for(Snake s: successes)
+		{
+			System.out.println("\nFound a way");
+			System.out.println(s);
+		}
 		
-		System.out.println("Final Snakes: " + finalSnakes.size());
+		System.out.println("Final Snakes: " + snlGrid.getSnakeSet().size());
 	}
 	
-	public void printSnake(Snake s)
-	{
-		
-		List<Point> parts = s.getParts();
-		
-		System.out.println("Found a way: ");
-		for(int n=0;n<parts.size();n++)
-		{
-			Point part = parts.get(n);
-			System.out.println("(" + part.x + ", " + part.y + ")");
-		}
-	}
 }

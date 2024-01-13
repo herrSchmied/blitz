@@ -6,19 +6,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import someMath.CollectionManipulation;
 
 public class SnakeAndLatticeGrid
 {
 	
-	private final Set<Snake> snakeSet;
+	private Set<Snake> snakeSet;
 	private final LatticeGrid lg;
 	private final Point finalPoint;
 	
-	public SnakeAndLatticeGrid(Set<Snake> snakeSet, LatticeGrid lg, Point finalPoint)
+	public SnakeAndLatticeGrid(Snake snake, LatticeGrid lg, Point finalPoint)
     {
 		
-		this.snakeSet = snakeSet;
+		this.snakeSet = new HashSet<>();
+		snakeSet.add(snake);
 		this.lg = lg;
 		this.finalPoint = finalPoint;
     }
@@ -210,6 +210,11 @@ public class SnakeAndLatticeGrid
     	return new Point(p1.x+p2.x, p1.y+p2.y);
     }
     
+    public Set<Snake> getSnakeSet()
+    {
+    	return snakeSet;
+    }
+    
     public Set<Snake> theDivergence(Snake snake) throws LTGCException, SnakeException
     {
     	Set<Snake> snakeSet = new HashSet<>();
@@ -234,6 +239,11 @@ public class SnakeAndLatticeGrid
     	}
     	
     	return snakeSet;
+    }
+    
+    public void setFinalSnakes() throws LTGCException, SnakeException
+    {
+    	this.snakeSet = untilTheyAreAllDeadLoop(this.snakeSet);
     }
     
     public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException

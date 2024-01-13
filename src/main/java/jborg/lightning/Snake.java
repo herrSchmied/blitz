@@ -241,4 +241,19 @@ public class Snake implements Cloneable
 	{
 		return Objects.hash(consecutiveParts);
 	}
+	
+	public String toString()
+	{
+		
+		String z = "";
+		List<Point> parts = this.getParts();
+
+		for(int n=0;n<parts.size();n++)
+		{
+			Point part = parts.get(n);
+			z = z + "(" + part.x + ", " + part.y + ")\n";
+		}
+		
+		return z;
+	}
 }
