@@ -209,6 +209,7 @@ public class SnakeAndLatticeGrid
     	if(options.isEmpty()||head.equals(finalPoint))
     	{
     		snake.changeStatus(Snake.deadStatus);
+    		snakeSet.add(snake);
     		return snakeSet;
     	}
     	
@@ -231,14 +232,21 @@ public class SnakeAndLatticeGrid
     		
     	if(copy.isEmpty()) return copy;
     	
+    	int deadCount = 0;
     	for(Snake s: copy)
     	{
     		
-    		if(s.getStatus().equals(Snake.deadStatus))continue;
+    		if(s.getStatus().equals(Snake.deadStatus))
+    		{
+    			newSnakes.add(s);
+    			deadCount++;
+    			continue;
+    		}
     		Set<Snake> spawns = theDivergence(lg, s, finalPoint);
     		newSnakes.addAll(spawns);
     	}
     	
+    	if(deadCount==copy.size())return copy;
     	return untilTheyAreAllDeadLoop(lg, newSnakes, finalPoint);
     }
 }

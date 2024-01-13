@@ -73,4 +73,44 @@ public class SnakeInAGridTest
 			System.out.println("Even newer Head: " + "P(" + head.x + ", " +head.y + ")");
 		}
 	}
+	
+	@Test
+	public void untilTheyDeadTest() throws SnakeException, LTGCException
+	{
+		
+		System.out.println("\nUntil they Dead Test!");
+		LatticeGrid lg = new LatticeGrid(3, 3);
+		lg.setOneLatticeOnTile(1, 1, indexLatticeBitBottom);
+		lg.setOneLatticeOnTile(1, 1, indexLatticeBitTop);
+		lg.setOneLatticeOnTile(1, 1, indexLatticeBitRight);
+		lg.setOneLatticeOnTile(1, 1, indexLatticeBitLeft);
+		
+		Snake snake = new Snake(0,0, Snake.readyStatus);
+		Set<Snake> snakeSet = new HashSet<>();
+		snakeSet.add(snake);
+
+		Point finalPoint = new Point(2,2);
+		Set<Snake> finalSnakes = SnakeAndLatticeGrid.untilTheyAreAllDeadLoop(lg, snakeSet, finalPoint);
+		
+		for(Snake s: finalSnakes)
+		{
+			Point head = s.getHead();
+			if(head.equals(finalPoint))printSnake(s);
+		}
+		
+		System.out.println("Final Snakes: " + finalSnakes.size());
+	}
+	
+	public void printSnake(Snake s)
+	{
+		
+		List<Point> parts = s.getParts();
+		
+		System.out.println("Found a way: ");
+		for(int n=0;n<parts.size();n++)
+		{
+			Point part = parts.get(n);
+			System.out.println("(" + part.x + ", " + part.y + ")");
+		}
+	}
 }
