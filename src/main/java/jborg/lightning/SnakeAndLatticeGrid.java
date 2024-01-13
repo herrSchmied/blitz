@@ -10,10 +10,22 @@ import someMath.CollectionManipulation;
 
 public class SnakeAndLatticeGrid
 {
-
 	
-    public static List<Point> getOptions(Snake snake, LatticeGrid lg) throws LTGCException, SnakeException
+	private final Set<Snake> snakeSet;
+	private final LatticeGrid lg;
+	private final Point finalPoint;
+	
+	public SnakeAndLatticeGrid(Set<Snake> snakeSet, LatticeGrid lg, Point finalPoint)
     {
+		
+		this.snakeSet = snakeSet;
+		this.lg = lg;
+		this.finalPoint = finalPoint;
+    }
+	
+	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException
+    {
+    
     	
     		Point relativeLeft = new Point(-1, 0);
     		Point relativeRight = new Point(+1, 0);
@@ -184,7 +196,7 @@ public class SnakeAndLatticeGrid
     		return growthOptions;
     }
 
-    public static boolean checkOption(Snake snake, Point newHead)
+    private boolean checkOption(Snake snake, Point newHead)
     {
     	if(snake.isSelfCrossing(snake.getHead(), newHead))return false;
     	if(snake.getParts().contains(newHead))return false;
@@ -198,11 +210,11 @@ public class SnakeAndLatticeGrid
     	return new Point(p1.x+p2.x, p1.y+p2.y);
     }
     
-    public static Set<Snake> theDivergence(LatticeGrid lg, Snake snake, Point finalPoint) throws LTGCException, SnakeException
+    public Set<Snake> theDivergence(Snake snake) throws LTGCException, SnakeException
     {
     	Set<Snake> snakeSet = new HashSet<>();
     	
-    	List<Point> options = getOptions(snake, lg);
+    	List<Point> options = getOptions(snake);
     	
     	Point head = snake.getHead();
     	
@@ -224,7 +236,7 @@ public class SnakeAndLatticeGrid
     	return snakeSet;
     }
     
-    public static Set<Snake> untilTheyAreAllDeadLoop(LatticeGrid lg, Set<Snake> snakeSet, Point finalPoint) throws LTGCException, SnakeException
+    public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException
     {
     	
     	Set<Snake> copy = new HashSet<>(snakeSet);
@@ -242,11 +254,25 @@ public class SnakeAndLatticeGrid
     			deadCount++;
     			continue;
     		}
-    		Set<Snake> spawns = theDivergence(lg, s, finalPoint);
+    		Set<Snake> spawns = theDivergence(s);
     		newSnakes.addAll(spawns);
     	}
     	
     	if(deadCount==copy.size())return copy;
-    	return untilTheyAreAllDeadLoop(lg, newSnakes, finalPoint);
+    	return untilTheyAreAllDeadLoop(newSnakes);
+    }
+    
+    public Set<Snake> filterSuccesses()
+    {
+    
+    	Set<Snake> successes = new HashSet<>();
+    	
+		for(Snake s: snakeSet)
+		{
+			Point head = s.getHead();
+			if(head.equals(finalPoint))successes.add(s);
+		}
+
+    	return successes;
     }
 }

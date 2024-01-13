@@ -24,10 +24,14 @@ public class SnakeInAGridTest
 
 		System.out.println("\nOptions Test.");
 		Snake snake = new Snake(new Point(0,0), Snake.readyStatus);
+		Set<Snake> snakeSet = new HashSet<>();
+		snakeSet.add(snake);
+		Point finalPoint = new Point(1,1);
 		LatticeGrid lg = new LatticeGrid(2, 2);
 		lg.setOneLatticeOnTile(0, 0, indexLatticeBitTop);
 		
-		List<Point> options = SnakeAndLatticeGrid.getOptions(snake, lg);
+		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snakeSet, lg, finalPoint);
+		List<Point> options = snlGrid.getOptions(snake);
 		
 		assert(options.contains(new Point(1,1)));
 		assert(options.contains(new Point(1,0)));
@@ -40,6 +44,10 @@ public class SnakeInAGridTest
 	
 		System.out.println("\nDivergence Test.");
 		Snake snake = new Snake(new Point(0,0), Snake.readyStatus);
+		Set<Snake> snakeSet = new HashSet<>();
+		snakeSet.add(snake);
+		Point finalPoint = new Point(2,2);
+		
 		LatticeGrid lg = new LatticeGrid(3, 3);
 		lg.setOneLatticeOnTile(0, 0, indexLatticeBitRight);
 		lg.setOneLatticeOnTile(0, 1, indexLatticeBitRight);
@@ -49,7 +57,8 @@ public class SnakeInAGridTest
 		assert(lg.hasLatticeOnTheRight(0, 1));
 		assert(lg.hasLatticeOnTheLeft(1, 1));
 		
-		Set<Snake> theNewGrownOnes = SnakeAndLatticeGrid.theDivergence(lg, snake, new Point(2,2));
+		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snakeSet, lg, finalPoint);
+		Set<Snake> theNewGrownOnes = snlGrid.theDivergence(snake);
 		System.out.println("The new Snake Set Size: " + theNewGrownOnes.size());
 		assert(theNewGrownOnes.size()==1);
 		
@@ -62,7 +71,7 @@ public class SnakeInAGridTest
 		Set<Snake> evenNewer = new HashSet<>();
 		for(Snake s: theNewGrownOnes)
 		{
-			evenNewer.addAll(SnakeAndLatticeGrid.theDivergence(lg, s, new Point(2,2)));
+			evenNewer.addAll(snlGrid.theDivergence(s));
 		}
 		
 		assert(evenNewer.size()==2);
@@ -90,13 +99,12 @@ public class SnakeInAGridTest
 		snakeSet.add(snake);
 
 		Point finalPoint = new Point(2,2);
-		Set<Snake> finalSnakes = SnakeAndLatticeGrid.untilTheyAreAllDeadLoop(lg, snakeSet, finalPoint);
+		SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snakeSet, lg, finalPoint);
+		Set<Snake> finalSnakes = snlGrid.untilTheyAreAllDeadLoop(snakeSet);
 		
-		for(Snake s: finalSnakes)
-		{
-			Point head = s.getHead();
-			if(head.equals(finalPoint))printSnake(s);
-		}
+		Set<Snake> successes = snlGrid.filterSuccesses();
+		
+		for(Snake s: successes)printSnake(s);
 		
 		System.out.println("Final Snakes: " + finalSnakes.size());
 	}
