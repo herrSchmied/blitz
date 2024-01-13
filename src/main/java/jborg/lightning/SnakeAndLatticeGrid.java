@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import someMath.CollectionManipulation;
+
 public class SnakeAndLatticeGrid
 {
 
@@ -196,11 +198,19 @@ public class SnakeAndLatticeGrid
     	return new Point(p1.x+p2.x, p1.y+p2.y);
     }
     
-    public static Set<Snake> theDivergence(LatticeGrid lg, Snake snake) throws LTGCException, SnakeException
+    public static Set<Snake> theDivergence(LatticeGrid lg, Snake snake, Point finalPoint) throws LTGCException, SnakeException
     {
     	Set<Snake> snakeSet = new HashSet<>();
     	
     	List<Point> options = getOptions(snake, lg);
+    	
+    	Point head = snake.getHead();
+    	
+    	if(options.isEmpty()||head.equals(finalPoint))
+    	{
+    		snake.changeStatus(Snake.deadStatus);
+    		return snakeSet;
+    	}
     	
     	for(Point p: options)
     	{
@@ -211,5 +221,24 @@ public class SnakeAndLatticeGrid
     	}
     	
     	return snakeSet;
+    }
+    
+    public static Set<Snake> untilTheyAreAllDeadLoop(LatticeGrid lg, Set<Snake> snakeSet, Point finalPoint) throws LTGCException, SnakeException
+    {
+    	
+    	Set<Snake> copy = new HashSet<>(snakeSet);
+    	Set<Snake> newSnakes = new HashSet<>();
+    		
+    	if(copy.isEmpty()) return copy;
+    	
+    	for(Snake s: copy)
+    	{
+    		
+    		if(s.getStatus().equals(Snake.deadStatus))continue;
+    		Set<Snake> spawns = theDivergence(lg, s, finalPoint);
+    		newSnakes.addAll(spawns);
+    	}
+    	
+    	return untilTheyAreAllDeadLoop(lg, newSnakes, finalPoint);
     }
 }

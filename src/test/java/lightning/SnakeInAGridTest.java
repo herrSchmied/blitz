@@ -49,7 +49,7 @@ public class SnakeInAGridTest
 		assert(lg.hasLatticeOnTheRight(0, 1));
 		assert(lg.hasLatticeOnTheLeft(1, 1));
 		
-		Set<Snake> theNewGrownOnes = SnakeAndLatticeGrid.theDivergence(lg, snake);
+		Set<Snake> theNewGrownOnes = SnakeAndLatticeGrid.theDivergence(lg, snake, new Point(2,2));
 		System.out.println("The new Snake Set Size: " + theNewGrownOnes.size());
 		assert(theNewGrownOnes.size()==1);
 		
@@ -62,7 +62,7 @@ public class SnakeInAGridTest
 		Set<Snake> evenNewer = new HashSet<>();
 		for(Snake s: theNewGrownOnes)
 		{
-			evenNewer.addAll(SnakeAndLatticeGrid.theDivergence(lg, s));
+			evenNewer.addAll(SnakeAndLatticeGrid.theDivergence(lg, s, new Point(2,2)));
 		}
 		
 		assert(evenNewer.size()==2);
