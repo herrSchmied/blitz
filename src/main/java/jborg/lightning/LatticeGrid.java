@@ -24,6 +24,11 @@ public class LatticeGrid
 		latticeCodes = new int[width][height];
 	}
 	
+	public void setLatticesOnTile(Point p, boolean [] latticeBits) throws LTGCException
+	{
+		setLatticesOnTile(p.x, p.y, latticeBits);
+	}
+	
 	public void setLatticesOnTile(int x, int y, boolean [] latticeBits) throws LTGCException
 	{
 
@@ -37,6 +42,11 @@ public class LatticeGrid
 
 	}
 	
+	public void setOneLatticeOnTile(Point p, int bitNr) throws LTGCException
+	{
+		setOneLatticeOnTile(p.x, p.y, bitNr);
+	}
+
 	public void setOneLatticeOnTile(int x, int y, int bitNr) throws LTGCException
 	{
 		if(x>width-1||x<0)throw new LTGCException("X-Position out of Bounds.");
@@ -50,6 +60,11 @@ public class LatticeGrid
 
 	}
 	
+	public void setLatticesOnTile(Point p, int latticeCode) throws LTGCException
+	{
+		setLatticesOnTile(p.x, p.y, latticeCode);
+	}
+	
 	public void setLatticesOnTile(int x, int y, int latticeCode) throws LTGCException
 	{
 
@@ -60,31 +75,31 @@ public class LatticeGrid
 		boolean[]latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
 		
 		for(int n=0;n<nrOfLatticeBits;n++)
-			if(latticeBits[n])setBitToLatticeCode(n, x, y);
+			if(latticeBits[n])latticeCodes[x][y]= getLatticeCode(n, x, y);
 
 		boolean thereIsATileOnTheRight = x < width - 1;
 		boolean thereIsATileOnTheLeft = x > 0;
-		boolean thereIsATileOnTheTop = y > 0;
-		boolean thereIsATileOnTheBottom = y < height - 1;
+		boolean thereIsATileOnTheTop = y < height-1;
+		boolean thereIsATileOnTheBottom = y > 0;
 
 		if(latticeBits[indexLatticeBitRight]&&thereIsATileOnTheRight)
 		{
-			setBitToLatticeCode(indexLatticeBitLeft, x+1, y);
+			latticeCodes[x+1][y] = getLatticeCode(indexLatticeBitLeft, x+1, y);
 		}
 
 		if(latticeBits[indexLatticeBitLeft]&&thereIsATileOnTheLeft)
 		{
-			setBitToLatticeCode(indexLatticeBitRight, x-1, y);
+			latticeCodes[x-1][y] = getLatticeCode(indexLatticeBitRight, x-1, y);
 		}
 
 		if(latticeBits[indexLatticeBitTop]&&thereIsATileOnTheTop)
 		{
-			setBitToLatticeCode(indexLatticeBitBottom, x, y-1);
+			latticeCodes[x][y+1] = getLatticeCode(indexLatticeBitBottom, x, y+1);
 		}
 
 		if(latticeBits[indexLatticeBitBottom]&&thereIsATileOnTheBottom)
 		{
-			setBitToLatticeCode(indexLatticeBitTop, x, y+1);
+			latticeCodes[x][y-1] = getLatticeCode(indexLatticeBitTop, x, y-1);
 		}
 	}
 
@@ -180,13 +195,14 @@ public class LatticeGrid
 		return hasLatticeOnTheTop(p.x, p.y);
 	}
 	
-	private void setBitToLatticeCode(int bitNr, int x, int y)
+	private int getLatticeCode(int bitNr, int x, int y)
 	{
 		int oldLatticeCode = latticeCodes[x][y];
 		boolean [] latticeBits = translateLatticeCodeToLatticeBits(oldLatticeCode);
 		latticeBits[bitNr]= true;
 		int newLatticeCode = translateLatticeBitsToLatticeCode(latticeBits);
-		latticeCodes[x][y] = newLatticeCode;
+		
+		return newLatticeCode;
 	}
 
 	public int getLatticeCode(int x, int y)
@@ -194,9 +210,9 @@ public class LatticeGrid
 		return latticeCodes[x][y];
 	}
 	
-	private void setBitToLatticeCode(int bitNr, Point p)
+	private int getLatticeCode(int bitNr, Point p)
 	{
-		setBitToLatticeCode(bitNr, p.x, p.y);
+		return getLatticeCode(bitNr, p.x, p.y);
 	}
 
 	public int getLatticeCode(Point p)

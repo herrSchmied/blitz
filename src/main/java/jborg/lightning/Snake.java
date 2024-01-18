@@ -169,7 +169,7 @@ public class Snake implements Cloneable
 		for(int n=0;n<length;n++)
 		{
 			Point p = consecutiveParts.get(n);
-			newParts.add(new Point(p.x, p.y));
+			newParts.add(p);
 		}
 
 		return newParts;
@@ -210,6 +210,16 @@ public class Snake implements Cloneable
 		
 	}
 	
+	public boolean containsPart(Point p)
+	{
+		
+		for(Point point: consecutiveParts)
+		{
+			if(point.equals(p))return true;
+		}
+		
+		return false;
+	}
 	public String getStatus()
 	{
 		return new String(status);//Immutable?
