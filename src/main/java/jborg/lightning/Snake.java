@@ -121,25 +121,24 @@ public class Snake implements Cloneable
 		return yFlanke&&xFlanke;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Snake clone()//Deep copy?!?!
 	{
 		
-		List<Point> newParts = new ArrayList<>();
-		int length = consecutiveParts.size();
+		ArrayList<Point> newParts = new ArrayList<>();
+		ArrayList<Point> cast = (ArrayList<Point>)consecutiveParts;
+		newParts = (ArrayList<Point>) cast.clone();
 		
-		for(int n=0;n<length;n++)
-		{
-			Point p = consecutiveParts.get(n);
-			newParts.add(new Point(p.x, p.y));
-		}
-
 		try
 		{
 			return new Snake(newParts, this.status);
 		}
-		catch(SnakeException snkExce)
+		catch (SnakeException e)//Shouldn't ever happen!!!
 		{
-			System.out.println("Somehow parts aint valide.");
+
+			e.printStackTrace();
+			System.out.println("Couldn't clone.");
+
 			return null;
 		}
 	}
@@ -160,19 +159,16 @@ public class Snake implements Cloneable
 		return new Point(head.x, head.y);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Point> getParts()//Im not returning the original 
 	{							 //because of immutability.
 		
-		List<Point> newParts = new ArrayList<>();
-		int length = consecutiveParts.size();
+		ArrayList<Point> newParts = new ArrayList<>();
+		ArrayList<Point> cast = (ArrayList<Point>)consecutiveParts;
+		newParts = (ArrayList<Point>) cast.clone();
 		
-		for(int n=0;n<length;n++)
-		{
-			Point p = consecutiveParts.get(n);
-			newParts.add(p);
-		}
-
 		return newParts;
+		
 	}
 	
 	public boolean isNearBy(Point point, Point successorPoint)

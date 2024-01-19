@@ -8,9 +8,13 @@ import java.util.Map;
 import java.util.Set;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Group;
+
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import javafx.stage.Stage;
@@ -45,32 +49,75 @@ public class BlitzThing extends Application
     public void start(Stage stage) throws LTGCException, SnakeException
     {
         
-    	Parameters params = getParameters();
-    	Map<String, String> namedParams = params.getNamed();
-    	
-        tileSize = Integer.parseInt(namedParams.get("tileSize"));      
-        widthInTiles = Integer.parseInt(namedParams.get("width"));
-        heightInTiles = Integer.parseInt(namedParams.get("height"));
-        strokeWidthLattice = Double.parseDouble(namedParams.get("strokeWidth"));
-        nrOfLattices = Integer.parseInt(namedParams.get("nrL"));
-        int xStart = Integer.parseInt(namedParams.get("xStart"));
-        int yStart = Integer.parseInt(namedParams.get("yStart"));
-        int xEnd = Integer.parseInt(namedParams.get("xEnd"));
-        int yEnd = Integer.parseInt(namedParams.get("yEnd"));
-        
-        start = new Point(xStart, yStart);
-        end = new Point(xEnd, yEnd);
-        
+        start = new Point(0, 0);
+        end = new Point(2, 2);
+        strokeWidthLattice = 3.5;
         canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice, Color.BLUE);
        
-        int absolutWidth = canvas.getAbsolutWidthInPixels();
-        int absolutHeight = canvas.getAbsolutHeightInPixels();
+        int absolutWidth = 340;
+        int absolutHeight = 200;
+        	//questionBox = root
+        VBox questionBox = new VBox();
+        Scene scene = new Scene(questionBox, absolutWidth, absolutHeight, Color.GRAY);
         
-        Group root = new Group();
-        Scene scene = new Scene(root, absolutWidth, absolutHeight, Color.GRAY);
+        HBox heightBox = new HBox();
+        heightBox.setMaxWidth(Double.MAX_VALUE);
+        Label heightLbl = new Label("Height");
+        heightLbl.setPrefWidth(300);
+        TextField heightTxtField = new TextField("5");
+        heightTxtField.setPrefWidth(40);
+        heightBox.getChildren().add(heightLbl);
+        heightBox.getChildren().add(heightTxtField);
+
+        HBox widthBox = new HBox();
+        widthBox.setMaxWidth(Double.MAX_VALUE);
+        Label widthLbl = new Label("Width");
+        widthLbl.setPrefWidth(300);
+        TextField widthTxtField = new TextField("5");
+        widthTxtField.setPrefWidth(40);
+        widthBox.getChildren().add(widthLbl);
+        widthBox.getChildren().add(widthTxtField);
+        
+        HBox latticeBox = new HBox();
+        latticeBox.setMaxWidth(Double.MAX_VALUE);
+        Label latticeLbl = new Label("Nr. of Lattices");
+        latticeLbl.setPrefWidth(300);
+        TextField latticeTxtField = new TextField("20");
+        latticeTxtField.setPrefWidth(40);
+        latticeBox.getChildren().add(latticeLbl);
+        latticeBox.getChildren().add(latticeTxtField);
+
+        HBox startPointBox = new HBox();
+        startPointBox.setMaxWidth(Double.MAX_VALUE);
+        Button newStartPointBtn = new Button("Different start Point");
+        newStartPointBtn.setPrefWidth(150);
+        Label startPointDisplay = new Label("Current start Point (" +  start.x + ", " + start.y + ")");
+        startPointDisplay.setPrefWidth(190);
+        startPointBox.getChildren().add(newStartPointBtn);
+        startPointBox.getChildren().add(startPointDisplay);
+        
+        HBox endPointBox = new HBox();
+        endPointBox.setMaxWidth(Double.MAX_VALUE);
+        Button newEndPointBtn = new Button("Different end Point");
+        newEndPointBtn.setPrefWidth(150);
+        Label endPointDisplay = new Label("Current end Point (" +  end.x + ", " + end.y + ")");
+        endPointDisplay.setPrefWidth(190);
+        endPointBox.getChildren().add(newEndPointBtn);
+        endPointBox.getChildren().add(endPointDisplay);
+        
+        HBox startBox = new HBox();
+        startBox.setMaxWidth(Double.MAX_VALUE);
+        Button startBtn = new Button("start");
+        startBtn.setPrefWidth(340);
+        startBox.getChildren().add(startBtn);
         
         
-        root.getChildren().add(canvas);
+        questionBox.getChildren().add(heightBox);
+        questionBox.getChildren().add(widthBox);
+        questionBox.getChildren().add(latticeBox);
+        questionBox.getChildren().add(startPointBox);
+        questionBox.getChildren().add(endPointBox);
+        questionBox.getChildren().add(startBox);
         
         stage.setScene(scene);
         stage.show();
@@ -78,6 +125,7 @@ public class BlitzThing extends Application
       	Snake firstSnake = new Snake(start, Snake.readyStatus);
         snakeSet.add(firstSnake);
 
+        /*
         Platform.runLater(()->
         {
 			try
@@ -94,6 +142,7 @@ public class BlitzThing extends Application
 				e.printStackTrace();
 			}
 		});
+		*/
     }
 
     private void setupLTGCanvas(int nrOfLattices) throws LTGCException, SnakeException

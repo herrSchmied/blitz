@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import javafx.application.Platform;
 import jborg.lightning.LTGCException;
 import jborg.lightning.LatticeGrid;
 import jborg.lightning.Snake;
