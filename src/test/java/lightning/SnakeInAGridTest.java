@@ -138,10 +138,7 @@ public class SnakeInAGridTest
 		LatticeGrid lg = new LatticeGrid(width, height);
 
 		Point isolatedPoint = new Point(1,1);
-		lg.setOneLatticeOnTile(isolatedPoint, indexLatticeBitLeft);
-		lg.setOneLatticeOnTile(isolatedPoint, indexLatticeBitRight);
-		lg.setOneLatticeOnTile(isolatedPoint, indexLatticeBitTop);
-		lg.setOneLatticeOnTile(isolatedPoint, indexLatticeBitBottom);
+		lg.setLatticesOnTile(isolatedPoint, 15);//15 means complete surrounding
 		
 		Snake snake = new Snake(0,0, Snake.readyStatus);
 
