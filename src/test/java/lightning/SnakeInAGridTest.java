@@ -1,6 +1,7 @@
 package lightning;
 
 import java.awt.Point;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -159,5 +160,4 @@ public class SnakeInAGridTest
 		System.out.println("Final Snakes: " + snlGrid.getSnakeSet().size());
 		System.out.println("Successful Snakes: " + successes.size());
 	}
-	
 }
