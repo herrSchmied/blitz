@@ -1,10 +1,7 @@
 package lightning;
 
 
-import static jborg.lightning.LatticeGrid.indexLatticeBitBottom;
-import static jborg.lightning.LatticeGrid.indexLatticeBitLeft;
-import static jborg.lightning.LatticeGrid.indexLatticeBitRight;
-import static jborg.lightning.LatticeGrid.indexLatticeBitTop;
+import static jborg.lightning.LatticeGrid.*;
 
 import org.junit.jupiter.api.Test;
 

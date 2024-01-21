@@ -1,14 +1,16 @@
 package jborg.lightning;
 
 import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import javafx.application.Application;
+import guiTools.Output;
 
+import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import javafx.stage.Stage;
+
 import someMath.CollectionManipulation;
 
 import static jborg.lightning.LatticeGrid.*;
@@ -32,12 +35,15 @@ public class BlitzThing extends Application
 
 	LatticeTileGridCanvas canvas;
 
-	int tileSize;
+	int tileSize = 20;
 	int widthInTiles;
 	int heightInTiles;
-	double strokeWidthLattice;
+	double strokeWidthLattice = 3.5;
 	int nrOfLattices;
-	Point start, end;
+	
+	Point start = new Point(0,0);
+	Point end = new Point(4, 4);
+	
 	Set<Snake> snakeSet = new HashSet<>();
 	
 	public BlitzThing()
@@ -48,12 +54,7 @@ public class BlitzThing extends Application
     @Override
     public void start(Stage stage) throws LTGCException, SnakeException
     {
-        
-        start = new Point(0, 0);
-        end = new Point(2, 2);
-        strokeWidthLattice = 3.5;
-        canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice, Color.BLUE);
-       
+               
         int absolutWidth = 340;
         int absolutHeight = 200;
         	//questionBox = root
@@ -107,7 +108,7 @@ public class BlitzThing extends Application
         
         HBox startBox = new HBox();
         startBox.setMaxWidth(Double.MAX_VALUE);
-        Button startBtn = new Button("start");
+        Button startBtn = new Button("Start");
         startBtn.setPrefWidth(340);
         startBox.getChildren().add(startBtn);
         
@@ -119,13 +120,72 @@ public class BlitzThing extends Application
         questionBox.getChildren().add(endPointBox);
         questionBox.getChildren().add(startBox);
         
+        startBtn.setOnAction((actionEvent)->
+        {
+        	
+        	System.out.println("Hi");
+        	try
+        	{
+        		heightInTiles = Integer.parseInt(heightTxtField.getText());
+        	}
+        	catch(NumberFormatException nfExce)
+        	{
+        		Output.errorAlert("Height invalide");
+        		return;
+        	}
+
+        	try
+        	{
+        		widthInTiles = Integer.parseInt(widthTxtField.getText());
+        	}
+        	catch(NumberFormatException nfExce)
+        	{
+        		Output.errorAlert("Width invalide");
+        		return;
+        	}
+
+        	try
+        	{
+        		nrOfLattices = Integer.parseInt(latticeTxtField.getText());
+        		int maxLattices = 2*widthInTiles*heightInTiles-widthInTiles-heightInTiles;
+        		
+        		if(nrOfLattices>maxLattices)
+        		{
+        			Output.errorAlert("To many Lattices.");
+        			return;
+        		}
+        		
+        		if(nrOfLattices<0)
+        		{
+        			Output.errorAlert("Nr. of Lattices can't be below Zero");
+        			return;
+        		}
+        	}
+        	catch(NumberFormatException nfExce)
+        	{
+        		Output.errorAlert("nr. of Lattices invalide");
+        		return;
+        	}
+        	
+        	try
+        	{
+				showCanvasStage();
+			}
+        	catch (LTGCException e)
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	System.out.println("Bye!");
+        });
+        
         stage.setScene(scene);
         stage.show();
         
+        /*
       	Snake firstSnake = new Snake(start, Snake.readyStatus);
         snakeSet.add(firstSnake);
 
-        /*
         Platform.runLater(()->
         {
 			try
@@ -215,6 +275,21 @@ public class BlitzThing extends Application
     }
     
 
+    public void showCanvasStage() throws LTGCException
+    {
+    	
+    	Group root = new Group();
+        canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice, Color.BLUE);
+        root.getChildren().add(canvas);
+        
+        Stage stage = new Stage();
+        Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
+        stage.setScene(scene);
+        
+        stage.showAndWait();
+    
+    }
+    
     public static void main(String[] args)
     {
         Application.launch(args);
