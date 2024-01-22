@@ -63,7 +63,7 @@ public class LatticeTileGridCanvas extends Canvas
 			try
 			{
 				setColorOnTile(Color.GREY, p.x, p.y);
-				lg.setOneLatticeOnTile(p.x, p.y, 0);
+				lg.setLatticesOnTile(p, 0);
 			}
 			catch (LTGCException e)
 			{
@@ -85,7 +85,7 @@ public class LatticeTileGridCanvas extends Canvas
 			{
 				Color colorOfTile = getColorOfTile(p.x, p.y);
 				setColorOnTile(colorOfTile, p.x, p.y);
-				boolean[] latticeBits = lg.translateLatticeCodeToLatticeBits(lg.getLatticeCode(p.x, p.y));
+				boolean[] latticeBits = translateLatticeCodeToLatticeBits(lg.getLatticeCode(p.x, p.y));
 				
 				if(latticeBits[indexLatticeBitLeft])drawLattice(p.x, p.y, indexLatticeBitLeft);
 				if(latticeBits[indexLatticeBitRight])drawLattice(p.x, p.y, indexLatticeBitRight);

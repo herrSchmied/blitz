@@ -281,7 +281,9 @@ public class BlitzThing extends Application
     	Group root = new Group();
         canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice, Color.BLUE);
         root.getChildren().add(canvas);
-        
+
+        chooseWhereToDrawLattice();
+
         Stage stage = new Stage();
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
         stage.setScene(scene);
