@@ -204,14 +204,7 @@ public class BlitzThing extends Application
 			}
 		});
 		*/
-    }
-
-    private void setupLTGCanvas(int nrOfLattices) throws LTGCException, SnakeException
-    {
-    	markStartAndEnd();
-    	chooseWhereToDrawLattice();
-    }
-    
+    }    
     
     private void markStartAndEnd() throws LTGCException
     {
@@ -222,7 +215,6 @@ public class BlitzThing extends Application
     private void chooseWhereToDrawLattice() throws LTGCException
     {
 
-    	markStartAndEnd();
     	int nrOfInternPossibleLattices = 2*widthInTiles*heightInTiles-widthInTiles-heightInTiles;
     	System.out.println("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices);
     	System.out.println("Nr. of Factual Intern Lattices: " + nrOfLattices);
@@ -232,7 +224,7 @@ public class BlitzThing extends Application
     	for(int n=0;n<nrOfInternPossibleLattices;n++)possibleLatticeNrs.add(n);
 
     	List<Integer> actualLatticeNrs = new ArrayList<>();
-    	for(int n=0;n<nrOfLattices;n++)
+    	for(int n=0;n<nrOfLattices-1;n++)
     	{
     		int k = CollectionManipulation.catchRandomElementOfList(possibleLatticeNrs);
     		int i = possibleLatticeNrs.indexOf(k);
@@ -252,20 +244,19 @@ public class BlitzThing extends Application
     	for(int n: actualLatticeNrs)
     	{
     		
-    		int k = actualLatticeNrs.get(n);
     		
-    		if(k<nrOfBottomLattices)
+    		if(n<nrOfBottomLattices)
     		{
-    			int l = k % widthInTiles;
-    			int h = (k/widthInTiles);
+    			int l = n % widthInTiles;
+    			int h = (n/widthInTiles);
     			
 				canvas.setOneLattice(l, h, indexLatticeBitBottom);
-		    	System.out.println("Bottom(" + l + ", " + h +")");
+	    		System.out.println("Bottom(" + l + ", " + h +")");
 
     		}
     		else
     		{
-    			int m = k-nrOfBottomLattices;
+    			int m = n-nrOfBottomLattices;
     			
     			int l = (m/heightInTiles);
     			int h = m % heightInTiles;
@@ -277,7 +268,28 @@ public class BlitzThing extends Application
     	}
     	
     	System.out.println("Cnt: " + cnt);
-    	canvas.drawWholeCanvas();
+    	
+    	Thread dhCanvasThrd = new Thread(()->
+    	{
+				
+			for(int n=0;n<7;n++)
+			{
+				Platform.runLater(()->
+				{
+					try
+					{
+						canvas.drawWholeCanvas();
+						Thread.sleep(350);
+					}
+					catch(LTGCException | InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+				});
+			}
+		});
+    	
+    	dhCanvasThrd.start();
     }
     
 
@@ -287,6 +299,7 @@ public class BlitzThing extends Application
     	Group root = new Group();
         canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice, Color.BLUE);
         root.getChildren().add(canvas);
+        markStartAndEnd();
 
         chooseWhereToDrawLattice();
 
