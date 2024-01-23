@@ -72,6 +72,11 @@ public class LatticeTileGridCanvas extends Canvas
 		});
 	}
 	
+	public void setOneLattice(Point p, int bitNr) throws LTGCException
+	{
+		setOneLattice(p.x, p.y, bitNr);
+	}
+	
 	public void setOneLattice(int x, int y, int bitNr) throws LTGCException
 	{
 		lg.setOneLatticeOnTile(x, y, bitNr);
@@ -84,7 +89,7 @@ public class LatticeTileGridCanvas extends Canvas
 			try
 			{
 				Color colorOfTile = getColorOfTile(p.x, p.y);
-				setColorOnTile(colorOfTile, p.x, p.y);
+				setColorOnTile(colorOfTile, p);
 				boolean[] latticeBits = translateLatticeCodeToLatticeBits(lg.getLatticeCode(p.x, p.y));
 				
 				if(latticeBits[indexLatticeBitLeft])drawLattice(p.x, p.y, indexLatticeBitLeft);
@@ -112,6 +117,11 @@ public class LatticeTileGridCanvas extends Canvas
 
 	}
 	
+	public void setColorOnTile(Color c, Point p) throws LTGCException
+	{
+		setColorOnTile(c, p.x, p.y);
+	}
+
 	public void setColorOnTile(Color c, int xPos, int yPos) throws LTGCException
 	{
 		
@@ -124,7 +134,10 @@ public class LatticeTileGridCanvas extends Canvas
 		colorOfTile[xPos][yPos] = c;
 	}
 	
-	
+	private void drawLattice(Point p, int latticeNr)
+	{
+		drawLattice(p.x, p.y, latticeNr);
+	}
 
 	private void drawLattice(int xPosTile, int yPosTile, int latticeNr)
 	{
@@ -171,7 +184,11 @@ public class LatticeTileGridCanvas extends Canvas
 		gc2D.strokeLine(xStart, yStart, xEnd, yEnd);
 	}
 
-	
+	public Color getColorOfTile(Point p)
+	{
+		return getColorOfTile(p.x, p.y);
+	}
+
 	public Color getColorOfTile(int xPos, int yPos)
 	{
 		return colorOfTile[xPos][yPos];
@@ -200,6 +217,11 @@ public class LatticeTileGridCanvas extends Canvas
 	public int getTileSize()
 	{
 		return tileSize;
+	}
+	
+	public int getLatticeCode(Point p) throws LTGCException
+	{
+		return getLatticeCode(p.x, p.y);
 	}
 	
 	public int getLatticeCode(int x, int y) throws LTGCException

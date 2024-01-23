@@ -215,8 +215,8 @@ public class BlitzThing extends Application
     
     private void markStartAndEnd() throws LTGCException
     {
-    	canvas.setColorOnTile(Color.GREEN, start.x, start.y);
-    	canvas.setColorOnTile(Color.RED, end.x, end.y);
+    	canvas.setColorOnTile(Color.GREEN, start);
+    	canvas.setColorOnTile(Color.RED, end);
     }
 
     private void chooseWhereToDrawLattice() throws LTGCException
