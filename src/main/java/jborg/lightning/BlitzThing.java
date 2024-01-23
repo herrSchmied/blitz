@@ -10,6 +10,7 @@ import java.util.Set;
 import guiTools.Output;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -42,7 +43,7 @@ public class BlitzThing extends Application
 	int nrOfLattices;
 	
 	Point start = new Point(0,0);
-	Point end = new Point(4, 4);
+	Point end = new Point(4, 3);
 	
 	Set<Snake> snakeSet = new HashSet<>();
 	
@@ -65,7 +66,7 @@ public class BlitzThing extends Application
         heightBox.setMaxWidth(Double.MAX_VALUE);
         Label heightLbl = new Label("Height");
         heightLbl.setPrefWidth(300);
-        TextField heightTxtField = new TextField("5");
+        TextField heightTxtField = new TextField("4");
         heightTxtField.setPrefWidth(40);
         heightBox.getChildren().add(heightLbl);
         heightBox.getChildren().add(heightTxtField);
@@ -83,7 +84,7 @@ public class BlitzThing extends Application
         latticeBox.setMaxWidth(Double.MAX_VALUE);
         Label latticeLbl = new Label("Nr. of Lattices");
         latticeLbl.setPrefWidth(300);
-        TextField latticeTxtField = new TextField("20");
+        TextField latticeTxtField = new TextField("15");
         latticeTxtField.setPrefWidth(40);
         latticeBox.getChildren().add(latticeLbl);
         latticeBox.getChildren().add(latticeTxtField);
@@ -217,10 +218,11 @@ public class BlitzThing extends Application
     	canvas.setColorOnTile(Color.GREEN, start.x, start.y);
     	canvas.setColorOnTile(Color.RED, end.x, end.y);
     }
-    
+
     private void chooseWhereToDrawLattice() throws LTGCException
     {
 
+    	markStartAndEnd();
     	int nrOfInternPossibleLattices = 2*widthInTiles*heightInTiles-widthInTiles-heightInTiles;
     	System.out.println("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices);
     	System.out.println("Nr. of Factual Intern Lattices: " + nrOfLattices);
@@ -247,7 +249,7 @@ public class BlitzThing extends Application
     	System.out.println("Nr. of Rights: " + nrOfRightLattices);
     	
     	int cnt = 0;
-    	for(int n=0;n<actualLatticeNrs.size();n++)
+    	for(int n: actualLatticeNrs)
     	{
     		
     		int k = actualLatticeNrs.get(n);
@@ -256,8 +258,10 @@ public class BlitzThing extends Application
     		{
     			int l = k % widthInTiles;
     			int h = (k/widthInTiles);
-    			canvas.setOneLattice(l, h, indexLatticeBitBottom);
-    			System.out.println("Cnt = " + cnt + "; Bottom(" + l + ", " + h +")");
+    			
+				canvas.setOneLattice(l, h, indexLatticeBitBottom);
+		    	System.out.println("Bottom(" + l + ", " + h +")");
+
     		}
     		else
     		{
@@ -265,13 +269,15 @@ public class BlitzThing extends Application
     			
     			int l = (m/heightInTiles);
     			int h = m % heightInTiles;
+    			
     			canvas.setOneLattice(l, h, indexLatticeBitRight);
-    			System.out.println("Cnt = " + cnt + "; Right(" + l + ", " + h +")");
+    			System.out.println("Right(" + l + ", " + h +")");
     		}
     		cnt++;
     	}
     	
     	System.out.println("Cnt: " + cnt);
+    	canvas.drawWholeCanvas();
     }
     
 
