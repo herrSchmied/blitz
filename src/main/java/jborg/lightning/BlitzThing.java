@@ -224,7 +224,7 @@ public class BlitzThing extends Application
     	for(int n=0;n<nrOfInternPossibleLattices;n++)possibleLatticeNrs.add(n);
 
     	List<Integer> actualLatticeNrs = new ArrayList<>();
-    	for(int n=0;n<nrOfLattices-1;n++)
+    	for(int n=0;n<nrOfLattices;n++)
     	{
     		int k = CollectionManipulation.catchRandomElementOfList(possibleLatticeNrs);
     		int i = possibleLatticeNrs.indexOf(k);
