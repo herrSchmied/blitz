@@ -30,9 +30,11 @@ public class LatticeTileGridCanvas extends Canvas
 	private GraphicsContext gc2D;
 	LatticeGrid lg;
 	
+	SnakeAndLatticeGrid snlGrid;
+	
 	//TODO: Testing next!!!!!!!!!!!!!!!!!!!!!!
 	
-	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, double strokeWidthLattice, Color latticeColor) throws LTGCException
+	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, double strokeWidthLattice) throws LTGCException
 	{
 		super(xTileWidth*tileSize, yTileHeight*tileSize);
 		
@@ -44,7 +46,7 @@ public class LatticeTileGridCanvas extends Canvas
 		
 		this.tileSize = tileSize;
 		
-		this.latticeColor = latticeColor;
+		this.latticeColor = Color.BLACK;
 		
 		gc2D = this.getGraphicsContext2D();
 		
@@ -53,7 +55,6 @@ public class LatticeTileGridCanvas extends Canvas
 		lg = new LatticeGrid(widthInTiles, heightInTiles);
 		colorOfTile = new Color[widthInTiles][heightInTiles];
 		initGrid();
-		drawWholeCanvas();
 	}
 	
 	public void initGrid()

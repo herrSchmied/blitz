@@ -2,9 +2,14 @@ package jborg.lightning;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class SnakeAndLatticeGrid
@@ -73,8 +78,8 @@ public class SnakeAndLatticeGrid
     			boolean lLineIsolationOnTheOtherSide = destinationRight
     													&&destinationBottom;
     	
-    			leftTop = !verticalLineIsolation&&!horizontalLineIsolation
-    				&&!lLineIsolationNearBy&&!lLineIsolationOnTheOtherSide;
+    			leftTop = !(verticalLineIsolation||horizontalLineIsolation
+    				||lLineIsolationNearBy||lLineIsolationOnTheOtherSide);
     		}
     	
     		boolean leftBottom = false;
@@ -92,7 +97,7 @@ public class SnakeAndLatticeGrid
     			boolean horizontalLineIsolation = headBottom&&destinationTop;
     			boolean lLineIsolationNearBy = headLeft&&headBottom;
     			boolean lLineIsolationOnTheOtherSide = destinationRight&&destinationTop;
-    	
+    			
     			leftBottom = !(verticalLineIsolation||horizontalLineIsolation
     				||lLineIsolationNearBy||lLineIsolationOnTheOtherSide);
     		}

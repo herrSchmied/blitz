@@ -84,7 +84,7 @@ public class BlitzThing extends Application
         latticeBox.setMaxWidth(Double.MAX_VALUE);
         Label latticeLbl = new Label("Nr. of Lattices");
         latticeLbl.setPrefWidth(300);
-        TextField latticeTxtField = new TextField("15");
+        TextField latticeTxtField = new TextField("11");
         latticeTxtField.setPrefWidth(40);
         latticeBox.getChildren().add(latticeLbl);
         latticeBox.getChildren().add(latticeTxtField);
@@ -124,7 +124,6 @@ public class BlitzThing extends Application
         startBtn.setOnAction((actionEvent)->
         {
         	
-        	System.out.println("Hi");
         	try
         	{
         		heightInTiles = Integer.parseInt(heightTxtField.getText());
@@ -172,38 +171,16 @@ public class BlitzThing extends Application
         	{
 				showCanvasStage();
 			}
-        	catch (LTGCException e)
+        	catch (LTGCException | SnakeException e)
         	{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	System.out.println("Bye!");
         });
         
         stage.setScene(scene);
         stage.show();
         
-        /*
-      	Snake firstSnake = new Snake(start, Snake.readyStatus);
-        snakeSet.add(firstSnake);
-
-        Platform.runLater(()->
-        {
-			try
-			{
-				setupLTGCanvas(nrOfLattices);
-				canvas.drawWholeCanvas();
-			}
-			catch (LTGCException e)
-			{
-				e.printStackTrace();
-			} catch (SnakeException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-		*/
     }    
     
     private void markStartAndEnd() throws LTGCException
@@ -293,16 +270,28 @@ public class BlitzThing extends Application
     }
     
 
-    public void showCanvasStage() throws LTGCException
+    public void showCanvasStage() throws LTGCException, SnakeException
     {
     	
     	Group root = new Group();
-        canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice, Color.BLUE);
+        canvas = new LatticeTileGridCanvas(widthInTiles, heightInTiles, tileSize, strokeWidthLattice);
         root.getChildren().add(canvas);
         markStartAndEnd();
 
         chooseWhereToDrawLattice();
-
+        
+        Snake snake = new Snake(start, Snake.readyStatus);
+        LatticeGrid lg = canvas.getLatticeGrid();
+        
+        SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snake, lg, end);
+        snlGrid.setFinalSnakes();
+        Set<Snake> successSnakes = snlGrid.filterSuccesses();
+        
+        Snake sSnake = CollectionManipulation.catchRandomElementOfSet(successSnakes);
+        
+        if(sSnake!=null)System.out.println("one of them:\n" + sSnake);
+        
+        System.out.println("Successes: " + successSnakes.size());
         Stage stage = new Stage();
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
         stage.setScene(scene);
