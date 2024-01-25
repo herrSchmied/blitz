@@ -4,6 +4,7 @@ package lightning;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeException;
-
-
-
 
 
 public class SnakeTests
@@ -111,7 +109,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points, Snake.readyStatus);
+			new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgSelfCrossing;
@@ -128,7 +126,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points, Snake.readyStatus);
+			new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgNullArgument;
@@ -150,7 +148,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points, Snake.readyStatus);
+			new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgDoublePoint;
@@ -167,7 +165,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points, Snake.readyStatus);
+			new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgEmptyArgument;
@@ -187,7 +185,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points, Snake.readyStatus);
+			new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgNullGap;
@@ -207,7 +205,7 @@ public class SnakeTests
 		
 		SnakeException exception = assertThrows(SnakeException.class, ()->
 		{
-			Snake snake = new Snake(points, Snake.readyStatus);
+			new Snake(points, Snake.readyStatus);
 		});
 		
 		 String expectedMessage = Snake.constructorExcepMsgDistanceGap;

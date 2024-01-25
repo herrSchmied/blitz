@@ -1,7 +1,6 @@
 package lightning;
 
 import static jborg.lightning.LatticeGrid.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
 import java.util.HashSet;
@@ -16,6 +15,7 @@ import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
 import jborg.lightning.SnakeException;
+import someMath.CollectionException;
 import someMath.CollectionManipulation;
 
 class LatticeTileGridCanvasTest
@@ -253,14 +253,21 @@ class LatticeTileGridCanvasTest
 		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
 		
 		Set<Snake> successes = snlGrid.filterSuccesses();
-		Snake success = CollectionManipulation.catchRandomElementOfSet(successes);
-
-		System.out.println("\nFound a way");
-		System.out.println(success);
-
+		Snake success;
 		
-		System.out.println("Final Snakes: " + snlGrid.getSnakeSet().size());
-		System.out.println("Successful Snakes: " + successes.size());
+		try
+		{
+			success = CollectionManipulation.catchRandomElementOfSet(successes);
+			System.out.println("\nFound a way");
+			System.out.println(success);
+			System.out.println("Successful Snakes: " + successes.size());
+		}
+		catch(CollectionException ce)
+		{
+			System.out.println("Didn't find any Success.\n" + ce);
+		}
+
+		System.out.println("Final Snakes: " + finalSnakes.size());
 		
 		/*
 		Snake s = null;
