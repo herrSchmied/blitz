@@ -1,0 +1,42 @@
+-------------------------------------------------------------------------------
+Test set: JUnit Jupiter
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0 s <<< FAILURE! - in JUnit Jupiter
+JUnit Jupiter.JUnit Jupiter  Time elapsed: 0 s  <<< ERROR!
+java.lang.NoClassDefFoundError: org/junit/jupiter/api/extension/ScriptEvaluationException
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:390)
+	at java.base/java.lang.Class.forName(Class.java:381)
+	at org.junit.jupiter.engine.extension.ScriptExecutionCondition$Evaluator.forName(ScriptExecutionCondition.java:153)
+	at org.junit.jupiter.engine.extension.ScriptExecutionCondition$Evaluator.forName(ScriptExecutionCondition.java:133)
+	at org.junit.jupiter.engine.extension.ScriptExecutionCondition.<init>(ScriptExecutionCondition.java:55)
+	at org.junit.jupiter.engine.extension.ScriptExecutionCondition.<init>(ScriptExecutionCondition.java:50)
+	at org.junit.jupiter.engine.extension.ExtensionRegistry.<clinit>(ExtensionRegistry.java:53)
+	at org.junit.jupiter.engine.descriptor.JupiterEngineDescriptor.prepare(JupiterEngineDescriptor.java:52)
+	at org.junit.jupiter.engine.descriptor.JupiterEngineDescriptor.prepare(JupiterEngineDescriptor.java:30)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$1(NodeTestTask.java:107)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:107)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:75)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:32)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:51)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:229)
+	at org.junit.platform.launcher.core.DefaultLauncher.lambda$execute$6(DefaultLauncher.java:197)
+	at org.junit.platform.launcher.core.DefaultLauncher.withInterceptedStreams(DefaultLauncher.java:211)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:191)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:128)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+Caused by: java.lang.ClassNotFoundException: org.junit.jupiter.api.extension.ScriptEvaluationException
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	... 30 more
+
