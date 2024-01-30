@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lightning.LatticeGridTest" time="0.103" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lightning.LatticeGridTest" time="0.085" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="DE"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-19-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240130152322654_3.jar /home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire 2024-01-30T15-23-22_264-jvmRun1 surefire-20240130152322654_1tmp surefire_0-20240130152322654_2tmp"/>
+    <property name="sun.java.command" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240130154620375_3.jar /home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire 2024-01-30T15-46-20_151-jvmRun1 surefire-20240130154620375_1tmp surefire_0-20240130154620375_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/test-classes:/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/classes:/home/bernstein/.m2/repository/jborg/myToolBoxMavenOld/0.0.1-SNAPSHOT/myToolBoxMavenOld-0.0.1-SNAPSHOT.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13-linux.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13-linux.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13-linux.jar:/home/bernstein/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.1/junit-jupiter-engine-5.9.1.jar:/home/bernstein/.m2/repository/org/junit/platform/junit-platform-engine/1.9.1/junit-platform-engine-1.9.1.jar:/home/bernstein/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/bernstein/.m2/repository/org/junit/platform/junit-platform-commons/1.9.1/junit-platform-commons-1.9.1.jar:/home/bernstein/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.1/junit-jupiter-api-5.9.1.jar:/home/bernstein/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -28,7 +28,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240130152322654_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240130154620375_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="19.0.2+7-Ubuntu-0ubuntu322.04"/>
     <property name="user.name" value="bernstein"/>
@@ -54,7 +54,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="63.0"/>
   </properties>
-  <testcase name="testLatticeGrid" classname="lightning.LatticeGridTest" time="0.067">
+  <testcase name="testLatticeGrid" classname="lightning.LatticeGridTest" time="0.05">
     <system-out><![CDATA[LatticeCode: 8
 Tile(2, 1) has Lattice on Top: true
 LatticeCode: 10
