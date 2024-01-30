@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Snake implements Cloneable
+public class Snake implements Cloneable, Serializable
 {
+	private static final long serialVersionUID = 4520949554290687793L;
 	public static final String excepMsgUnknownStatus = "Unknown Status!";
 	public static final String excepMsgStatusChangeNotAllowedMoreThanOnce = "Status can only be changed once!";
 	

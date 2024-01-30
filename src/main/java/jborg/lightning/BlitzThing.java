@@ -254,16 +254,15 @@ public class BlitzThing extends Application
     {
     	
     	Group root = new Group();
-        canvas = new LatticeTileGridCanvas(width, height, tileSize, strokeWidthLattice);
         root.getChildren().add(canvas);
         markStartAndEnd();
 
         chooseWhereToDrawLattice(width, height, latticeNr);
         
         Snake snake = new Snake(start, Snake.readyStatus);
-        LatticeGrid lg = canvas.getLatticeGrid();
+        canvas = new LatticeTileGridCanvas(width, height, end, snake);
         
-        SnakeAndLatticeGrid snlGrid = new SnakeAndLatticeGrid(snake, lg, end);
+        SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
         snlGrid.setFinalSnakes();
         Set<Snake> successSnakes = snlGrid.filterSuccesses();
         
@@ -285,7 +284,7 @@ public class BlitzThing extends Application
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
         stage.setScene(scene);
         
-        stage.showAndWait();
+        stage.show();
         
     	Thread dhCanvasThrd = new Thread(()->
     	{

@@ -30,11 +30,17 @@ public class LatticeTileGridCanvas extends Canvas
 	private GraphicsContext gc2D;
 	LatticeGrid lg;
 	
-	SnakeAndLatticeGrid snlGrid;
+	private final SnakeAndLatticeGrid snlGrid;
 	
-	//TODO: Testing next!!!!!!!!!!!!!!!!!!!!!!
+	public static final double standartStrokeWidth = 3.5;
+	public static final int standartTileWidth = 10;
 	
-	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, double strokeWidthLattice) throws LTGCException
+	public LatticeTileGridCanvas(int width, int height, Point finalPoint, Snake snake) throws LTGCException
+	{
+		this(width, height, standartTileWidth, finalPoint, snake, standartStrokeWidth);
+	}
+	
+	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, Point finalPoint, Snake snake, double strokeWidthLattice) throws LTGCException
 	{
 		super(xTileWidth*tileSize, yTileHeight*tileSize);
 		
@@ -54,6 +60,9 @@ public class LatticeTileGridCanvas extends Canvas
 	
 		lg = new LatticeGrid(widthInTiles, heightInTiles);
 		colorOfTile = new Color[widthInTiles][heightInTiles];
+		
+		snlGrid = new SnakeAndLatticeGrid(snake, lg, finalPoint);
+		
 		initGrid();
 	}
 	
@@ -135,12 +144,12 @@ public class LatticeTileGridCanvas extends Canvas
 		colorOfTile[xPos][yPos] = c;
 	}
 	
-	private void drawLattice(Point p, int latticeNr)
+	private void drawLattice(Point p, int bitNr)
 	{
-		drawLattice(p.x, p.y, latticeNr);
+		drawLattice(p.x, p.y, bitNr);
 	}
 
-	private void drawLattice(int xPosTile, int yPosTile, int latticeNr)
+	private void drawLattice(int xPosTile, int yPosTile, int bitNr)
 	{
 		
 		Double xStart = 0d;
@@ -148,7 +157,7 @@ public class LatticeTileGridCanvas extends Canvas
 		Double yStart = 0d;
 		Double yEnd = 0d;
 		
-		if(latticeNr==indexLatticeBitLeft)//Left of Tile
+		if(bitNr==indexLatticeBitLeft)//Left of Tile
 		{
 			xStart= (double)(xPosTile*tileSize);
 			xEnd = xStart;
@@ -156,7 +165,7 @@ public class LatticeTileGridCanvas extends Canvas
 			yEnd = yStart + tileSize;
 		}
 		
-		if(latticeNr==indexLatticeBitBottom)//downOfTile
+		if(bitNr==indexLatticeBitBottom)//downOfTile
 		{
 			xStart= (double)(xPosTile*tileSize);
 			xEnd = xStart + tileSize;
@@ -164,7 +173,7 @@ public class LatticeTileGridCanvas extends Canvas
 			yEnd = yStart;
 		}
 		
-		if(latticeNr==indexLatticeBitRight)//rightOfTile
+		if(bitNr==indexLatticeBitRight)//rightOfTile
 		{
 			xStart= (double)(xPosTile+1)*tileSize;
 			xEnd = xStart;
@@ -172,7 +181,7 @@ public class LatticeTileGridCanvas extends Canvas
 			yEnd = yStart + tileSize;
 		}
 		
-		if(latticeNr==indexLatticeBitTop)//TopOfTile
+		if(bitNr==indexLatticeBitTop)//TopOfTile
 		{
 			xStart= (double)(xPosTile*tileSize);
 			xEnd = xStart + tileSize;
@@ -234,8 +243,8 @@ public class LatticeTileGridCanvas extends Canvas
 		return lg.getLatticeCode(x, y);
 	}
 	
-	public LatticeGrid getLatticeGrid()
+	public SnakeAndLatticeGrid getSNLGrid()
 	{
-		return lg;
+		return snlGrid;
 	}
 }
