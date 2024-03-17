@@ -32,8 +32,8 @@ public class LatticeTileGridCanvas extends Canvas
 	
 	private final SnakeAndLatticeGrid snlGrid;
 	
-	public static final double standartStrokeWidth = 3.5;
-	public static final int standartTileWidth = 10;
+	public static final double standartStrokeWidth = 3.6;
+	public static final int standartTileWidth = 36;
 	
 	public LatticeTileGridCanvas(int width, int height, Point finalPoint, Snake snake) throws LTGCException
 	{
@@ -89,6 +89,10 @@ public class LatticeTileGridCanvas extends Canvas
 	
 	public void setOneLattice(int x, int y, int bitNr) throws LTGCException
 	{
+		if(x>widthInTiles-1||x<0)throw new LTGCException("X-Position out of Bounds.");
+		if(y>heightInTiles-1||y<0)throw new LTGCException("Y-Position out of Bounds.");
+		if(bitNr>nrOfLatticeBits||bitNr<0)throw new LTGCException("Bit Nr. not valide.");
+
 		lg.setOneLatticeOnTile(x, y, bitNr);
 	}
 	
@@ -98,14 +102,14 @@ public class LatticeTileGridCanvas extends Canvas
 		{
 			try
 			{
-				Color colorOfTile = getColorOfTile(p.x, p.y);
+				Color colorOfTile = getColorOfTile(p);
 				setColorOnTile(colorOfTile, p);
-				boolean[] latticeBits = translateLatticeCodeToLatticeBits(lg.getLatticeCode(p.x, p.y));
+				boolean[] latticeBits = translateLatticeCodeToLatticeBits(lg.getLatticeCode(p));
 				
-				if(latticeBits[indexLatticeBitLeft])drawLattice(p.x, p.y, indexLatticeBitLeft);
-				if(latticeBits[indexLatticeBitRight])drawLattice(p.x, p.y, indexLatticeBitRight);
-				if(latticeBits[indexLatticeBitTop])drawLattice(p.x, p.y, indexLatticeBitTop);
-				if(latticeBits[indexLatticeBitBottom])drawLattice(p.x, p.y, indexLatticeBitBottom);
+				if(latticeBits[indexLatticeBitLeft])drawLattice(p, indexLatticeBitLeft);
+				if(latticeBits[indexLatticeBitRight])drawLattice(p, indexLatticeBitRight);
+				if(latticeBits[indexLatticeBitTop])drawLattice(p, indexLatticeBitTop);
+				if(latticeBits[indexLatticeBitBottom])drawLattice(p, indexLatticeBitBottom);
 			}
 			catch (LTGCException e)
 			{
@@ -144,14 +148,18 @@ public class LatticeTileGridCanvas extends Canvas
 		colorOfTile[xPos][yPos] = c;
 	}
 	
-	private void drawLattice(Point p, int bitNr)
+	private void drawLattice(Point p, int bitNr) throws LTGCException
 	{
 		drawLattice(p.x, p.y, bitNr);
 	}
 
-	private void drawLattice(int xPosTile, int yPosTile, int bitNr)
+	private void drawLattice(int xPosTile, int yPosTile, int bitNr) throws LTGCException
 	{
 		
+		if(xPosTile>widthInTiles-1||xPosTile<0)throw new LTGCException("X-Position out of Bounds.");
+		if(yPosTile>heightInTiles-1||yPosTile<0)throw new LTGCException("Y-Position out of Bounds.");
+		if(bitNr>nrOfLatticeBits||bitNr<0)throw new LTGCException("Bit Nr. not valide.");
+
 		Double xStart = 0d;
 		Double xEnd = 0d;
 		Double yStart = 0d;
@@ -194,13 +202,16 @@ public class LatticeTileGridCanvas extends Canvas
 		gc2D.strokeLine(xStart, yStart, xEnd, yEnd);
 	}
 
-	public Color getColorOfTile(Point p)
+	public Color getColorOfTile(Point p) throws LTGCException
 	{
 		return getColorOfTile(p.x, p.y);
 	}
 
-	public Color getColorOfTile(int xPos, int yPos)
+	public Color getColorOfTile(int xPos, int yPos) throws LTGCException
 	{
+		if(xPos>widthInTiles-1||xPos<0)throw new LTGCException("X-Position out of Bounds.");
+		if(yPos>heightInTiles-1||yPos<0)throw new LTGCException("Y-Position out of Bounds.");
+		
 		return colorOfTile[xPos][yPos];
 	}
 	
@@ -231,6 +242,7 @@ public class LatticeTileGridCanvas extends Canvas
 	
 	public int getLatticeCode(Point p) throws LTGCException
 	{
+		
 		return getLatticeCode(p.x, p.y);
 	}
 	

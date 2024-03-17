@@ -37,13 +37,13 @@ public class BlitzThing extends Application
 	LatticeTileGridCanvas canvas;
 
 	int tileSize = 20;
-	int widthInTiles;
-	int heightInTiles;
+	int widthInTiles = 3;
+	int heightInTiles = 3;
 	double strokeWidthLattice = 3.5;
 	int nrOfLattices;
 	
-	Point start = new Point(0,0);
-	Point end = new Point(4, 3);
+	Point start = new Point(0, 0);
+	Point end;
 	
 	Set<Snake> snakeSet = new HashSet<>();
 	
@@ -62,27 +62,27 @@ public class BlitzThing extends Application
         VBox questionBox = new VBox();
         Scene scene = new Scene(questionBox, absolutWidth, absolutHeight, Color.GRAY);
         
-        int height = 4;
+
         HBox heightBox = new HBox();
         heightBox.setMaxWidth(Double.MAX_VALUE);
         Label heightLbl = new Label("Height");
         heightLbl.setPrefWidth(300);
-        TextField heightTxtField = new TextField("" + height + "");
+        TextField heightTxtField = new TextField("" + heightInTiles + "");
         heightTxtField.setPrefWidth(40);
         heightBox.getChildren().add(heightLbl);
         heightBox.getChildren().add(heightTxtField);
 
-        int width = 5;
+
         HBox widthBox = new HBox();
         widthBox.setMaxWidth(Double.MAX_VALUE);
         Label widthLbl = new Label("Width");
         widthLbl.setPrefWidth(300);
-        TextField widthTxtField = new TextField("" + width + "");
+        TextField widthTxtField = new TextField("" + widthInTiles + "");
         widthTxtField.setPrefWidth(40);
         widthBox.getChildren().add(widthLbl);
         widthBox.getChildren().add(widthTxtField);
         
-        int latticeNr = 14;
+        int latticeNr = 2;
         HBox latticeBox = new HBox();
         latticeBox.setMaxWidth(Double.MAX_VALUE);
         Label latticeLbl = new Label("Nr. of Lattices");
@@ -105,7 +105,7 @@ public class BlitzThing extends Application
         endPointBox.setMaxWidth(Double.MAX_VALUE);
         Button newEndPointBtn = new Button("Different end Point");
         newEndPointBtn.setPrefWidth(150);
-        Label endPointDisplay = new Label("Current end Point (" +  end.x + ", " + end.y + ")");
+        Label endPointDisplay = new Label("Current end Point (" +  (widthInTiles-1) + ", " + (heightInTiles-1) + ")");
         endPointDisplay.setPrefWidth(190);
         endPointBox.getChildren().add(newEndPointBtn);
         endPointBox.getChildren().add(endPointDisplay);
@@ -129,46 +129,33 @@ public class BlitzThing extends Application
         	
         	try
         	{
-        		heightInTiles = Integer.parseInt(heightTxtField.getText());
-        	}
-        	catch(NumberFormatException nfExce)
-        	{
-        		Output.errorAlert("Height invalide");
-        		return;
-        	}
-
-        	try
-        	{
         		widthInTiles = Integer.parseInt(widthTxtField.getText());
+        		heightInTiles = Integer.parseInt(heightTxtField.getText());
+        		nrOfLattices = Integer.parseInt(latticeTxtField.getText());
         	}
         	catch(NumberFormatException nfExce)
         	{
-        		Output.errorAlert("Width invalide");
+        		Output.errorAlert("Nr's aint valide");
         		return;
         	}
 
-        	try
-        	{
-        		nrOfLattices = Integer.parseInt(latticeTxtField.getText());
-        		int maxLattices = 2*widthInTiles*heightInTiles-widthInTiles-heightInTiles;
+
+        	int maxLattices = 2*widthInTiles*heightInTiles-widthInTiles-heightInTiles;
         		
-        		if(nrOfLattices>maxLattices)
-        		{
-        			Output.errorAlert("To many Lattices.");
-        			return;
-        		}
+       		if(nrOfLattices>maxLattices)
+       		{
+       			Output.errorAlert("To many Lattices.");
+       			return;
+       		}
         		
-        		if(nrOfLattices<0)
-        		{
-        			Output.errorAlert("Nr. of Lattices can't be below Zero");
-        			return;
-        		}
-        	}
-        	catch(NumberFormatException nfExce)
-        	{
-        		Output.errorAlert("nr. of Lattices invalide");
+       		if(nrOfLattices<0)
+       		{
+       			Output.errorAlert("Nr. of Lattices can't be below Zero");
         		return;
         	}
+        	
+        	start = new Point(0,0);
+        	end = new Point(widthInTiles-1, heightInTiles-1);
         	
         	try
         	{
@@ -214,8 +201,8 @@ public class BlitzThing extends Application
     	for(int n=0;n<actualLatticeNrs.size();n++)System.out.print(", " + actualLatticeNrs.get(n));
     	System.out.println("");
     	
-    	int nrOfBottomLattices = width*(height-1);
-    	System.out.println("Nr. of Bottoms: " + nrOfBottomLattices);
+    	int nrOfTopLattices = width*(height-1);
+    	System.out.println("Nr. of Tops: " + nrOfTopLattices);
     	int nrOfRightLattices = (width-1)*height;
     	System.out.println("Nr. of Rights: " + nrOfRightLattices);
     	
@@ -224,24 +211,24 @@ public class BlitzThing extends Application
     	{
     		
     		
-    		if(n<nrOfBottomLattices)
+    		if(n<nrOfTopLattices)
     		{
-    			int l = n % width;
-    			int h = (n/width);
+    			int x = n % width;
+    			int y = (n/width);
     			
-				canvas.setOneLattice(l, h, indexLatticeBitBottom);
-	    		System.out.println("Bottom(" + l + ", " + h +")");
+				canvas.setOneLattice(x, y, indexLatticeBitTop);
+	    		System.out.println("Top(" + x + ", " + y +")");
 
     		}
     		else
     		{
-    			int m = n-nrOfBottomLattices;
+    			int m = n-nrOfTopLattices;
     			
-    			int l = (m/height);
-    			int h = m % height;
+    			int x = m % height;
+    			int y = (m/height);
     			
-    			canvas.setOneLattice(l, h, indexLatticeBitRight);
-    			System.out.println("Right(" + l + ", " + h +")");
+    			canvas.setOneLattice(x, y, indexLatticeBitRight);
+    			System.out.println("Right(" + x + ", " + y +")");
     		}
     		cnt++;
     	}
@@ -254,13 +241,14 @@ public class BlitzThing extends Application
     {
     	
     	Group root = new Group();
-        root.getChildren().add(canvas);
-        markStartAndEnd();
 
-        chooseWhereToDrawLattice(width, height, latticeNr);
+
         
         Snake snake = new Snake(start, Snake.readyStatus);
         canvas = new LatticeTileGridCanvas(width, height, end, snake);
+        root.getChildren().add(canvas);
+        markStartAndEnd();
+        chooseWhereToDrawLattice(width, height, latticeNr);
         
         SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
         snlGrid.setFinalSnakes();

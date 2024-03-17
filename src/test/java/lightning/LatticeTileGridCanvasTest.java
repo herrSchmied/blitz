@@ -4,6 +4,9 @@ import static jborg.lightning.LatticeGrid.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -210,7 +213,7 @@ class LatticeTileGridCanvasTest
 		System.out.println("Successful Snakes: " + successes.size());
 	}
 
-	
+
 	@Test
 	public void anotherUntilTheyDeadTest() throws SnakeException, LTGCException
 	{
@@ -219,8 +222,9 @@ class LatticeTileGridCanvasTest
 		int height = 4;
 		System.out.println("\nUntil they Dead Test!");
 
+		Point startPoint = new Point(0, 0);
 		
-		Snake snake = new Snake(0,0, Snake.readyStatus);
+		Snake snake = new Snake(startPoint, Snake.readyStatus);
 
 		Point finalPoint = new Point(3, 3);
 		
@@ -265,7 +269,57 @@ class LatticeTileGridCanvasTest
 		assert(successes.size()==4);
 		assert(finalSnakes.size()==5);
 	}
-	
+
+	@Test
+	public void halfIsolatedTest() throws SnakeException, LTGCException
+	{
+		
+		int width = 3;
+		int height = 3;
+		System.out.println("Half isolated Test.");
+		Point startPoint = new Point(0, 0);
+		
+		Snake snake = new Snake(startPoint, Snake.readyStatus);
+
+		Point finalPoint = new Point(2, 2);
+		
+		LatticeTileGridCanvas canvas = new LatticeTileGridCanvas(width, height, finalPoint, snake);
+		
+		Point halfIsolatedPoint = new Point(1,1);
+
+		canvas.setOneLattice(halfIsolatedPoint, indexLatticeBitBottom);
+		canvas.setOneLattice(halfIsolatedPoint, indexLatticeBitLeft);
+		
+		SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
+		snlGrid.setFinalSnakes();
+		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
+		
+		Set<Snake> successes = snlGrid.filterSuccesses();
+		List<Snake> orderedSuccesses = new ArrayList<>();
+		orderedSuccesses.addAll(successes);
+		
+		Comparator<Snake> c = (s1, s2)->
+		{
+			if(s1.getLength()>s2.getLength())return 1;
+			if(s2.getLength()>s1.getLength())return -1;
+			
+			return 0;
+		};
+		orderedSuccesses.sort(c);
+
+		Snake success = orderedSuccesses.get(0);
+		System.out.println("\nOne of the short a ways");
+		System.out.println(success);
+		
+		success = orderedSuccesses.get(orderedSuccesses.size()-1);
+		System.out.println("\nOne of the long a ways");
+		System.out.println(success);
+		System.out.println("Successful Snakes: " + successes.size());
+		assert(success.getLength()==9); //All nine Fields.
+		
+		System.out.println("Final Snakes: " + finalSnakes.size() + "\n");
+	}
+
 	public Point getRandomIsolatedPoint(Set<Point> excludedPoints, LatticeTileGridCanvas ltgCanvas)
 	{
 		
