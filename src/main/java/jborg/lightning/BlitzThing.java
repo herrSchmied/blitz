@@ -1,5 +1,7 @@
 package jborg.lightning;
 
+
+//*********************************************
 import java.awt.Point;
 
 import java.util.ArrayList;
@@ -7,10 +9,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import guiTools.Output;
+
 
 import javafx.application.Application;
 import javafx.application.Platform;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,10 +26,15 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import javafx.stage.Stage;
+
+
 import someMath.CollectionException;
+
 import someMath.CollectionManipulation;
 
+
 import static jborg.lightning.LatticeGrid.*;
+//********************************************************
 
 
 /**
@@ -166,7 +176,7 @@ public class BlitzThing extends Application
 				e.printStackTrace();
 			}
         });
-        
+
         stage.setScene(scene);
         stage.show();
         
@@ -174,14 +184,16 @@ public class BlitzThing extends Application
     
     private void markStartAndEnd() throws LTGCException
     {
-    	canvas.setColorOnTile(Color.GREEN, start);
-    	canvas.setColorOnTile(Color.RED, end);
+    	canvas.markTile(start);
+    	canvas.markTile(end);
     }
 
     private void chooseWhereToDrawLattice(int width, int height, int latticeNr) throws LTGCException, CollectionException
     {
 
     	int nrOfInternPossibleLattices = 2*width*height-width-height;
+    	if(latticeNr>=nrOfInternPossibleLattices)throw new IllegalArgumentException("Much to many Lattices!");
+
     	System.out.println("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices);
     	System.out.println("Nr. of Factual Intern Lattices: " + nrOfLattices);
     	System.out.println("Percentage: " + ((double)(latticeNr)/(nrOfInternPossibleLattices)));
@@ -197,6 +209,7 @@ public class BlitzThing extends Application
     		possibleLatticeNrs.remove(i);
     		actualLatticeNrs.add(k);
     	}
+
     	System.out.println("ActualLattices: "+ actualLatticeNrs.size());
     	for(int n=0;n<actualLatticeNrs.size();n++)System.out.print(", " + actualLatticeNrs.get(n));
     	System.out.println("");
@@ -213,8 +226,9 @@ public class BlitzThing extends Application
     		
     		if(n<nrOfTopLattices)
     		{
+    			
     			int x = n % width;
-    			int y = (n/width);
+    			int y = (int)Math.floor(n/width);
     			
 				canvas.setOneLattice(x, y, indexLatticeBitTop);
 	    		System.out.println("Top(" + x + ", " + y +")");
@@ -226,36 +240,34 @@ public class BlitzThing extends Application
     			
     			int x = m % height;
     			int y = (m/height);
-    			
+
     			canvas.setOneLattice(x, y, indexLatticeBitRight);
     			System.out.println("Right(" + x + ", " + y +")");
     		}
     		cnt++;
     	}
-    	
+	
     	System.out.println("Cnt: " + cnt);
     }
-    
+
 
     public void showCanvasStage(int width, int height, int latticeNr) throws LTGCException, SnakeException, CollectionException
     {
-    	
+
     	Group root = new Group();
 
-
-        
         Snake snake = new Snake(start, Snake.readyStatus);
         canvas = new LatticeTileGridCanvas(width, height, end, snake);
         root.getChildren().add(canvas);
         markStartAndEnd();
         chooseWhereToDrawLattice(width, height, latticeNr);
-        
+
         SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
         snlGrid.setFinalSnakes();
         Set<Snake> successSnakes = snlGrid.filterSuccesses();
-        
+
         Snake sSnake = null;
-        
+
         try
         {
 			sSnake = CollectionManipulation.catchRandomElementOfSet(successSnakes);
@@ -264,38 +276,35 @@ public class BlitzThing extends Application
         {
 			System.out.println(e.getMessage());
 		}
-        
+
         if(sSnake!=null)System.out.println("one of them:\n" + sSnake);
-        
+
         System.out.println("Successes: " + successSnakes.size());
         Stage stage = new Stage();
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
         stage.setScene(scene);
-        
+
         stage.show();
-        
+
     	Thread dhCanvasThrd = new Thread(()->
     	{
 				
-			for(int n=0;n<7;n++)
+			Platform.runLater(()->
 			{
-				Platform.runLater(()->
+				try
 				{
-					try
-					{
-						canvas.drawWholeCanvas();
-						Thread.sleep(350);
-					}
-					catch(LTGCException | InterruptedException e)
-					{
-						e.printStackTrace();
-					}
-				});
-			}
+					canvas.drawWholeCanvas();
+				}
+				catch(LTGCException e)
+				{
+					e.printStackTrace();
+				}
+			});
+			
 		});
     	dhCanvasThrd.start();
     }
-    
+
     public static void main(String[] args)
     {
         Application.launch(args);

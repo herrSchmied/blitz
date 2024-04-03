@@ -1,13 +1,17 @@
 package jborg.lightning;
 
 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+
 import static jborg.lightning.LatticeGrid.*;
 
+
 import java.awt.Point;
+
 import java.util.function.Consumer;
 
 
@@ -24,6 +28,7 @@ public class LatticeTileGridCanvas extends Canvas
 	private final int tileSize;
 	private final double strokeWidthLattice;
 	
+	private boolean[][] isTileMarked;
 	private Color[][] colorOfTile;
 	private final Color latticeColor;
 
@@ -42,8 +47,9 @@ public class LatticeTileGridCanvas extends Canvas
 	
 	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, Point finalPoint, Snake snake, double strokeWidthLattice) throws LTGCException
 	{
+
 		super(xTileWidth*tileSize, yTileHeight*tileSize);
-		
+				
 		this.widthInTiles = xTileWidth;
 		this.heightInTiles = yTileHeight;
 		
@@ -54,6 +60,8 @@ public class LatticeTileGridCanvas extends Canvas
 		
 		this.latticeColor = Color.BLACK;
 		
+		isTileMarked = new boolean[xTileWidth][yTileHeight];
+
 		gc2D = this.getGraphicsContext2D();
 		
 		this.strokeWidthLattice = strokeWidthLattice;
@@ -73,6 +81,7 @@ public class LatticeTileGridCanvas extends Canvas
 			try
 			{
 				setColorOnTile(Color.GREY, p.x, p.y);
+				isTileMarked[p.x][p.y] = false;
 				lg.setLatticesOnTile(p, 0);
 			}
 			catch (LTGCException e)
@@ -102,6 +111,8 @@ public class LatticeTileGridCanvas extends Canvas
 		{
 			try
 			{
+				if(isTileMarked[p.x][p.y])drawMark(Color.AQUA, p);
+					
 				Color colorOfTile = getColorOfTile(p);
 				setColorOnTile(colorOfTile, p);
 				boolean[] latticeBits = translateLatticeCodeToLatticeBits(lg.getLatticeCode(p));
@@ -110,8 +121,10 @@ public class LatticeTileGridCanvas extends Canvas
 				if(latticeBits[indexLatticeBitRight])drawLattice(p, indexLatticeBitRight);
 				if(latticeBits[indexLatticeBitTop])drawLattice(p, indexLatticeBitTop);
 				if(latticeBits[indexLatticeBitBottom])drawLattice(p, indexLatticeBitBottom);
+				
+				Thread.sleep(150);
 			}
-			catch (LTGCException e)
+			catch (LTGCException | InterruptedException e)
 			{
 				e.printStackTrace();
 			}
@@ -134,6 +147,30 @@ public class LatticeTileGridCanvas extends Canvas
 	public void setColorOnTile(Color c, Point p) throws LTGCException
 	{
 		setColorOnTile(c, p.x, p.y);
+	}
+
+	public void markTile(Point p)
+	{
+		isTileMarked[p.x][p.y]=true;
+	}
+	
+	public void drawMark(Color c, Point p) throws LTGCException
+	{
+		
+		int xPos = p.x;
+		int yPos = p.y;
+		
+		drawMark(c, xPos, yPos);
+	}
+
+	public void drawMark(Color c, int xPos, int yPos) throws LTGCException
+	{
+		
+		if(xPos>widthInTiles-1||xPos<0)throw new LTGCException("X-Position out of Bounds.");
+		if(yPos>heightInTiles-1||yPos<0)throw new LTGCException("Y-Position out of Bounds.");
+
+		gc2D.setFill(c);
+		gc2D.strokeLine(xPos, yPos, xPos+tileSize, yPos+tileSize);
 	}
 
 	public void setColorOnTile(Color c, int xPos, int yPos) throws LTGCException

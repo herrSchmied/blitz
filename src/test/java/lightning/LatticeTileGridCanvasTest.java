@@ -1,9 +1,12 @@
 package lightning;
 
+
 import static jborg.lightning.LatticeGrid.*;
+
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,8 +22,10 @@ import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
 import jborg.lightning.SnakeException;
+
 import someMath.CollectionException;
 import someMath.CollectionManipulation;
+
 
 class LatticeTileGridCanvasTest
 {
