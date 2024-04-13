@@ -46,6 +46,24 @@ public class BlitzThing extends Application
 
 	LatticeTileGridCanvas canvas;
 
+	Thread dhCanvasThrd = new Thread(()->
+	{
+		
+		Thread t = new Thread(()->
+		{
+			try
+			{
+				canvas.drawWholeCanvas();
+			}
+			catch (LTGCException e)
+			{
+				e.printStackTrace();
+			}
+		});
+		
+		t.start();
+	});
+
 	int tileSize = 20;
 	int widthInTiles = 3;
 	int heightInTiles = 3;
@@ -170,8 +188,11 @@ public class BlitzThing extends Application
         	try
         	{
 				showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
+
+				Thread.sleep(2000);
+				Platform.runLater(dhCanvasThrd);
 			}
-        	catch (LTGCException | SnakeException | CollectionException e)
+        	catch (LTGCException | SnakeException | CollectionException | InterruptedException e)
         	{
 				e.printStackTrace();
 			}
@@ -284,25 +305,6 @@ public class BlitzThing extends Application
         stage.setScene(scene);
 
         stage.show();
-
-    	Thread dhCanvasThrd = new Thread(()->
-    	{
-				
-			Platform.runLater(()->
-			{
-				try
-				{
-					canvas.drawWholeCanvas();
-				}
-				catch(LTGCException e)
-				{
-					e.printStackTrace();
-				}
-			});
-			
-		});
-
-    	dhCanvasThrd.start();
     }
 
     public static void main(String[] args)

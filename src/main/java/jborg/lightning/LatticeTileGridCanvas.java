@@ -122,8 +122,10 @@ public class LatticeTileGridCanvas extends Canvas
 				if(latticeBits[indexLatticeBitRight])drawLattice(p, indexLatticeBitRight);
 				if(latticeBits[indexLatticeBitTop])drawLattice(p, indexLatticeBitTop);
 				if(latticeBits[indexLatticeBitBottom])drawLattice(p, indexLatticeBitBottom);
+				
+				Thread.sleep(1000);
 			}
-			catch (LTGCException e)
+			catch (LTGCException | InterruptedException e)
 			{
 				e.printStackTrace();
 			}
