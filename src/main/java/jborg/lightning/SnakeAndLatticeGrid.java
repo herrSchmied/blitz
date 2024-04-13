@@ -226,7 +226,7 @@ public class SnakeAndLatticeGrid
     	
     	if(options.isEmpty()||head.equals(finalPoint))
     	{
-    		snake.changeStatus(Snake.deadStatus);
+    		snake = snake.changeStatus(Snake.deadStatus);
     		snakeSet.add(snake);
     		return snakeSet;
     	}

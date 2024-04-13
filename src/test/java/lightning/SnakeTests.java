@@ -18,7 +18,7 @@ public class SnakeTests
 {
 
 	@Test
-	public void testSnakeGrowExceptionSelfCrossing()
+	public void testSnakeGrowExceptionSelfCrossing() throws InterruptedException
 	{
 
 		List<Point> points = new ArrayList<>();
@@ -52,11 +52,12 @@ public class SnakeTests
 		actualMessage = exception.getMessage();
 
 		assert(actualMessage.equals(expectedMessage));
-
+		
+		Thread.sleep(750);
 	}
 
 	@Test
-	public void testSnakeGrowExceptionDoublePoint()
+	public void testSnakeGrowExceptionDoublePoint() throws InterruptedException
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -74,10 +75,12 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
+
+		Thread.sleep(750);
 	}
 	
 	@Test
-	public void testSnakeGrowException()
+	public void testSnakeGrowException() throws InterruptedException
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -95,10 +98,12 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
+
+		 Thread.sleep(750);
 	}
 
 	@Test
-	public void testSnakeConstructorSelfCrossing()
+	public void testSnakeConstructorSelfCrossing() throws InterruptedException
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -116,10 +121,12 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
+		 
+		 Thread.sleep(750);
 	}
 	
 	@Test
-	public void testSnakeConstructorExceptionNullArgument()
+	public void testSnakeConstructorExceptionNullArgument() throws InterruptedException
 	{
 				
 		List<Point> points = null;
@@ -133,10 +140,12 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
+		 
+		 Thread.sleep(750);
 	}
 
 	@Test
-	public void testSnakeConstructorDoublePoint()
+	public void testSnakeConstructorDoublePoint() throws InterruptedException
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -155,10 +164,12 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
+		 
+		 Thread.sleep(750);
 	}
 	
 	@Test
-	public void testSnakeConstructorExceptionEmptyArgument()
+	public void testSnakeConstructorExceptionEmptyArgument() throws InterruptedException
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -172,10 +183,12 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
+		 
+		 Thread.sleep(750);
 	}
 
 	@Test
-	public void testSnakeConstructorExceptionNullGap()
+	public void testSnakeConstructorExceptionNullGap() throws InterruptedException
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -192,10 +205,12 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
+		 
+		 Thread.sleep(750);
 	}
 
 	@Test
-	public void testSnakeConstructorExceptionDistanceGap()
+	public void testSnakeConstructorExceptionDistanceGap() throws InterruptedException
 	{
 				
 		List<Point> points = new ArrayList<>();
@@ -212,10 +227,12 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
+		 
+		Thread.sleep(750);
 	}
 
 	@Test
-	public void testSnakeConstructor() throws SnakeException
+	public void testSnakeConstructor() throws SnakeException, InterruptedException
 	{
 		List<Point> points = new ArrayList<>();
 		//Point startPoint = new Point(1, 1);
@@ -225,10 +242,12 @@ public class SnakeTests
 		
 		Snake snake = new Snake(points, Snake.readyStatus);
 		assert(snake.getLength()==3);
+		
+		Thread.sleep(750);
 	}
 	
 	@Test
-	public void testSnakeClone() throws SnakeException
+	public void testSnakeClone() throws SnakeException, InterruptedException
 	{
 		Snake snake = new Snake(0, 0, Snake.readyStatus);
 		snake = snake.growSnake(1, 1, Snake.readyStatus);
@@ -241,10 +260,12 @@ public class SnakeTests
 		
 		assert(snake2.getHead().equals(snake.getHead()));
 		assert(snake2.getStart().equals(snake.getStart()));
+		
+		Thread.sleep(750);
 	}
 
 	@Test
-	public void testSnakeGrowth() throws SnakeException
+	public void testSnakeGrowth() throws SnakeException, InterruptedException
 	{
 		Snake snake = new Snake(0, 0, Snake.readyStatus);
 		snake = snake.growSnake(1, 0, Snake.readyStatus);
@@ -254,5 +275,7 @@ public class SnakeTests
 		snake = snake.growSnake(2, 0, Snake.readyStatus);
 		
 		assert(snake.getLength()==3);
+		
+		Thread.sleep(750);
 	}
 }

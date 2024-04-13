@@ -13,7 +13,7 @@ public class LatticeGridTest
 {
 
 	@Test
-	public void testLatticeGrid() throws LTGCException
+	public void testLatticeGrid() throws LTGCException, InterruptedException
 	{
 		
 		int widthInTiles = 10;
@@ -77,6 +77,8 @@ public class LatticeGridTest
 		
 		System.out.println("AffectedTiles: " + affectedTilesCounter);
 		assert(affectedTilesCounter==8);
+		
+		Thread.sleep(750);;
 	}
 
 }

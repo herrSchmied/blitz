@@ -35,11 +35,12 @@ public class Snake implements Cloneable, Serializable
 	private static final List<String> statie = new ArrayList<>(Arrays.asList(readyStatus, deadStatus));
 	private String status = "";
 	private boolean statusChanged = false;
-	
+
 	public Snake(Point startPoint, String status) throws SnakeException
 	{
 		
 		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
+		if(status.equals(deadStatus))statusChanged = true;
 		this.startPoint = startPoint;
 		this.status = status;
 		
@@ -53,6 +54,7 @@ public class Snake implements Cloneable, Serializable
 		Point startPoint = new Point(xPos, yPos);
 		this.startPoint = startPoint;
 		this.status = status;
+		if(status.equals(deadStatus))statusChanged = true;
 		
 		consecutiveParts.add(startPoint);
 	}
@@ -68,7 +70,7 @@ public class Snake implements Cloneable, Serializable
 		int length = parts.size();
 		this.startPoint = parts.get(0);
 		this.status = status;
-		
+		if(status.equals(deadStatus))statusChanged = true;
 		for(int n=0;n<length;n++)
 		{
 			Point p = parts.get(n);
@@ -76,8 +78,6 @@ public class Snake implements Cloneable, Serializable
 			if(n>0&&(!isNearBy(parts.get(n-1), p)))throw new SnakeException(constructorExcepMsgDistanceGap);
 			if(n>0&&consecutiveParts.contains(p))throw new SnakeException(constructorExcepMsgDoublePoint);
 			if(n>1&&isSelfCrossing(parts.get(n-1), p))throw new SnakeException(constructorExcepMsgSelfCrossing);
-			
-			
 			consecutiveParts.add(new Point(p.x, p.y));
 		}
 	}
@@ -97,6 +97,7 @@ public class Snake implements Cloneable, Serializable
 		Snake newSnake = this.clone();
 		newSnake.consecutiveParts.add(new Point(xPos, yPos));
 		this.status = status;
+		if(status.equals(deadStatus))statusChanged = true;
 		
 		return newSnake;
 	}
@@ -184,7 +185,7 @@ public class Snake implements Cloneable, Serializable
 		return true;
 	}
 	
-	public void changeStatus(String newStatus) throws SnakeException
+	public Snake changeStatus(String newStatus) throws SnakeException
 	{
 		
 		if(!statie.contains(newStatus))throw new SnakeException(excepMsgUnknownStatus);
@@ -193,6 +194,7 @@ public class Snake implements Cloneable, Serializable
 		{
 			statusChanged = true;
 			this.status = newStatus;
+			return new Snake(consecutiveParts, status);
 		}
 	}
 	
@@ -247,18 +249,17 @@ public class Snake implements Cloneable, Serializable
 	
 	public int hashCode()
 	{
-		return Objects.hash(consecutiveParts);
+		return Objects.hash(consecutiveParts, status);
 	}
 	
 	public String toString()
 	{
 		
 		String z = "";
-		List<Point> parts = this.getParts();
 
-		for(int n=0;n<parts.size();n++)
+		for(int n=0;n<consecutiveParts.size();n++)
 		{
-			Point part = parts.get(n);
+			Point part = consecutiveParts.get(n);
 			z = z + "(" + part.x + ", " + part.y + ")\n";
 		}
 		
