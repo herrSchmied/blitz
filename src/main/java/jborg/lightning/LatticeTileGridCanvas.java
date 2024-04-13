@@ -107,11 +107,12 @@ public class LatticeTileGridCanvas extends Canvas
 	
 	public void drawWholeCanvas() throws LTGCException
 	{
+
 		walkThruTiles((p)->
 		{
 			try
 			{
-				if(isTileMarked[p.x][p.y])drawMark(Color.AQUA, p);
+				if(isTileMarked[p.x][p.y])drawMark(Color.RED, p);
 					
 				Color colorOfTile = getColorOfTile(p);
 				setColorOnTile(colorOfTile, p);
@@ -121,10 +122,8 @@ public class LatticeTileGridCanvas extends Canvas
 				if(latticeBits[indexLatticeBitRight])drawLattice(p, indexLatticeBitRight);
 				if(latticeBits[indexLatticeBitTop])drawLattice(p, indexLatticeBitTop);
 				if(latticeBits[indexLatticeBitBottom])drawLattice(p, indexLatticeBitBottom);
-				
-				Thread.sleep(150);
 			}
-			catch (LTGCException | InterruptedException e)
+			catch (LTGCException e)
 			{
 				e.printStackTrace();
 			}
@@ -141,7 +140,6 @@ public class LatticeTileGridCanvas extends Canvas
 				consumer.accept(new Point(x,y));
 			}
 		}
-
 	}
 	
 	public void setColorOnTile(Color c, Point p) throws LTGCException
@@ -237,6 +235,15 @@ public class LatticeTileGridCanvas extends Canvas
 		gc2D.setStroke(latticeColor);
 		gc2D.setLineWidth(strokeWidthLattice);
 		gc2D.strokeLine(xStart, yStart, xEnd, yEnd);
+		
+		String latticeBitStr = "";
+
+		if(bitNr==indexLatticeBitLeft) latticeBitStr = "Left";
+		if(bitNr==indexLatticeBitTop) latticeBitStr = "Top";
+		if(bitNr==indexLatticeBitLeft) latticeBitStr = "Right";
+		if(bitNr==indexLatticeBitLeft) latticeBitStr = "Bottom";
+
+		if(!latticeBitStr.equals(""))System.out.println("Drawing LatticeBit" + latticeBitStr);
 	}
 
 	public Color getColorOfTile(Point p) throws LTGCException

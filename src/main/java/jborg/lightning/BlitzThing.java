@@ -222,13 +222,12 @@ public class BlitzThing extends Application
     	int cnt = 0;
     	for(int n: actualLatticeNrs)
     	{
-    		
-    		
+
     		if(n<nrOfTopLattices)
     		{
     			
-    			int x = n % width;
-    			int y = (int)Math.floor(n/width);
+    			int x = (int)Math.floor(n/width);
+    			int y = n % (width-1)+1;
     			
 				canvas.setOneLattice(x, y, indexLatticeBitTop);
 	    		System.out.println("Top(" + x + ", " + y +")");
@@ -238,8 +237,8 @@ public class BlitzThing extends Application
     		{
     			int m = n-nrOfTopLattices;
     			
-    			int x = m % height;
-    			int y = (m/height);
+    			int x = m % (height-1);
+    			int y = (int)Math.floor(m/height);
 
     			canvas.setOneLattice(x, y, indexLatticeBitRight);
     			System.out.println("Right(" + x + ", " + y +")");
@@ -302,6 +301,7 @@ public class BlitzThing extends Application
 			});
 			
 		});
+
     	dhCanvasThrd.start();
     }
 
