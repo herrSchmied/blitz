@@ -123,7 +123,7 @@ public class LatticeTileGridCanvas extends Canvas
 				if(latticeBits[indexLatticeBitTop])drawLattice(p, indexLatticeBitTop);
 				if(latticeBits[indexLatticeBitBottom])drawLattice(p, indexLatticeBitBottom);
 				
-				Thread.sleep(1000);
+				Thread.sleep(750);
 			}
 			catch (LTGCException | InterruptedException e)
 			{
@@ -242,8 +242,8 @@ public class LatticeTileGridCanvas extends Canvas
 
 		if(bitNr==indexLatticeBitLeft) latticeBitStr = "Left";
 		if(bitNr==indexLatticeBitTop) latticeBitStr = "Top";
-		if(bitNr==indexLatticeBitLeft) latticeBitStr = "Right";
-		if(bitNr==indexLatticeBitLeft) latticeBitStr = "Bottom";
+		if(bitNr==indexLatticeBitRight) latticeBitStr = "Right";
+		if(bitNr==indexLatticeBitBottom) latticeBitStr = "Bottom";
 
 		if(!latticeBitStr.equals(""))System.out.println("Drawing LatticeBit" + latticeBitStr);
 	}

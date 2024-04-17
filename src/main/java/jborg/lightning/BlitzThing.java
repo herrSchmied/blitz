@@ -49,19 +49,19 @@ public class BlitzThing extends Application
 	Thread dhCanvasThrd = new Thread(()->
 	{
 		
-		Thread t = new Thread(()->
+		Thread thread = new Thread(()->
 		{
 			try
 			{
 				canvas.drawWholeCanvas();
 			}
-			catch (LTGCException e)
+			catch(LTGCException e)
 			{
 				e.printStackTrace();
 			}
 		});
 		
-		t.start();
+		thread.start();
 	});
 
 	int tileSize = 20;
