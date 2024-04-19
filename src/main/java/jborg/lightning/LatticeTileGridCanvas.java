@@ -28,7 +28,7 @@ public class LatticeTileGridCanvas extends Canvas
 	private final int tileSize;
 	private final double strokeWidthLattice;
 	
-	private boolean[][] isTileMarked;
+	private final Point finalPoint;
 	private Color[][] colorOfTile;
 	private final Color latticeColor;
 
@@ -39,6 +39,8 @@ public class LatticeTileGridCanvas extends Canvas
 	
 	public static final double standartStrokeWidth = 3.6;
 	public static final int standartTileWidth = 36;
+	
+	public final Snake initialSnake;
 	
 	public LatticeTileGridCanvas(int width, int height, Point finalPoint, Snake snake) throws LTGCException
 	{
@@ -60,7 +62,7 @@ public class LatticeTileGridCanvas extends Canvas
 		
 		this.latticeColor = Color.BLACK;
 		
-		isTileMarked = new boolean[xTileWidth][yTileHeight];
+		this.finalPoint = finalPoint;
 
 		gc2D = this.getGraphicsContext2D();
 		
@@ -69,19 +71,20 @@ public class LatticeTileGridCanvas extends Canvas
 		lg = new LatticeGrid(widthInTiles, heightInTiles);
 		colorOfTile = new Color[widthInTiles][heightInTiles];
 		
-		snlGrid = new SnakeAndLatticeGrid(snake, lg, finalPoint);
+		this.initialSnake = snake;
+		snlGrid = new SnakeAndLatticeGrid(initialSnake, lg, finalPoint);
 		
 		initGrid();
 	}
 	
-	public void initGrid()
+	public void initGrid() throws LTGCException
 	{
+		
 		walkThruTiles((p)->
 		{
 			try
 			{
 				setColorOnTile(Color.GREY, p.x, p.y);
-				isTileMarked[p.x][p.y] = false;
 				lg.setLatticesOnTile(p, 0);
 			}
 			catch (LTGCException e)
@@ -107,12 +110,12 @@ public class LatticeTileGridCanvas extends Canvas
 	
 	public void drawWholeCanvas() throws LTGCException
 	{
-
+		
+		setColorOnTile(Color.RED, finalPoint);
 		walkThruTiles((p)->
 		{
 			try
 			{
-				if(isTileMarked[p.x][p.y])drawMark(Color.RED, p);
 					
 				Color colorOfTile = getColorOfTile(p);
 				setColorOnTile(colorOfTile, p);
@@ -147,30 +150,6 @@ public class LatticeTileGridCanvas extends Canvas
 	public void setColorOnTile(Color c, Point p) throws LTGCException
 	{
 		setColorOnTile(c, p.x, p.y);
-	}
-
-	public void markTile(Point p)
-	{
-		isTileMarked[p.x][p.y]=true;
-	}
-	
-	public void drawMark(Color c, Point p) throws LTGCException
-	{
-		
-		int xPos = p.x;
-		int yPos = p.y;
-		
-		drawMark(c, xPos, yPos);
-	}
-
-	public void drawMark(Color c, int xPos, int yPos) throws LTGCException
-	{
-		
-		if(xPos>widthInTiles-1||xPos<0)throw new LTGCException("X-Position out of Bounds.");
-		if(yPos>heightInTiles-1||yPos<0)throw new LTGCException("Y-Position out of Bounds.");
-
-		gc2D.setFill(c);
-		gc2D.strokeLine(xPos, yPos, xPos+tileSize, yPos+tileSize);
 	}
 
 	public void setColorOnTile(Color c, int xPos, int yPos) throws LTGCException
@@ -239,13 +218,13 @@ public class LatticeTileGridCanvas extends Canvas
 		gc2D.strokeLine(xStart, yStart, xEnd, yEnd);
 		
 		String latticeBitStr = "";
+		String posStr = "P("+xPosTile+", "+yPosTile+")";
+		if(bitNr==indexLatticeBitLeft) latticeBitStr = "Left ";
+		if(bitNr==indexLatticeBitTop) latticeBitStr = "Top ";
+		if(bitNr==indexLatticeBitRight) latticeBitStr = "Right ";
+		if(bitNr==indexLatticeBitBottom) latticeBitStr = "Bottom ";
 
-		if(bitNr==indexLatticeBitLeft) latticeBitStr = "Left";
-		if(bitNr==indexLatticeBitTop) latticeBitStr = "Top";
-		if(bitNr==indexLatticeBitRight) latticeBitStr = "Right";
-		if(bitNr==indexLatticeBitBottom) latticeBitStr = "Bottom";
-
-		if(!latticeBitStr.equals(""))System.out.println("Drawing LatticeBit" + latticeBitStr);
+		if(!latticeBitStr.equals(""))System.out.println("Drawing LatticeBit" + latticeBitStr + posStr);
 	}
 
 	public Color getColorOfTile(Point p) throws LTGCException
