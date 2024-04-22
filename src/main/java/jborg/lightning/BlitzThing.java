@@ -74,7 +74,42 @@ public class BlitzThing extends Application
 	Point end;
 	
 	Set<Snake> snakeSet = new HashSet<>();
-	
+
+	Thread drawSnake = new Thread(()->
+	{
+
+
+		Thread thread = new Thread(()->
+		{
+
+	        SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
+	        Set<Snake> successSnakes = snlGrid.filterSuccesses();
+	        
+	        try
+	        {
+				Snake snake = CollectionManipulation.catchRandomElementOfSet(successSnakes);
+				
+				int length = snake.getLength();
+				List<Point> parts = snake.getParts();
+
+				for(int n=0;n<length;n++)
+				{
+					Point p = parts.get(n);
+					canvas.setColorOnTile(Color.BLUE, p);
+					Thread.sleep(750);
+				}
+			}
+	        catch(CollectionException | LTGCException | InterruptedException e)
+	        {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		});
+
+		thread.start();
+	});
+
 	public BlitzThing()
 	{
 		super();
@@ -191,6 +226,7 @@ public class BlitzThing extends Application
 
 				Thread.sleep(1250);
 				Platform.runLater(dhCanvasThrd);
+				Platform.runLater(drawSnake);
 			}
         	catch (LTGCException | SnakeException | CollectionException | InterruptedException e)
         	{
