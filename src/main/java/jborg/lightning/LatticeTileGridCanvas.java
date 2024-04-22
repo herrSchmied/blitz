@@ -28,6 +28,7 @@ public class LatticeTileGridCanvas extends Canvas
 	private final int tileSize;
 	private final double strokeWidthLattice;
 	
+	private final Point startPoint;
 	private final Point finalPoint;
 	private Color[][] colorOfTile;
 	private final Color latticeColor;
@@ -52,6 +53,8 @@ public class LatticeTileGridCanvas extends Canvas
 
 		super(xTileWidth*tileSize, yTileHeight*tileSize);
 				
+		if(snake.getLength()!=1)throw new LTGCException("Snake needs to be of size One.");
+
 		this.widthInTiles = xTileWidth;
 		this.heightInTiles = yTileHeight;
 		
@@ -62,6 +65,7 @@ public class LatticeTileGridCanvas extends Canvas
 		
 		this.latticeColor = Color.BLACK;
 		
+		this.startPoint = snake.getHead();
 		this.finalPoint = finalPoint;
 
 		gc2D = this.getGraphicsContext2D();
@@ -111,6 +115,7 @@ public class LatticeTileGridCanvas extends Canvas
 	public void drawWholeCanvas() throws LTGCException
 	{
 		
+		setColorOnTile(Color.GREEN, startPoint);
 		setColorOnTile(Color.RED, finalPoint);
 		walkThruTiles((p)->
 		{
@@ -122,9 +127,7 @@ public class LatticeTileGridCanvas extends Canvas
 				boolean[] latticeBits = translateLatticeCodeToLatticeBits(lg.getLatticeCode(p));
 				
 				if(latticeBits[indexLatticeBitLeft])drawLattice(p, indexLatticeBitLeft);
-				if(latticeBits[indexLatticeBitRight])drawLattice(p, indexLatticeBitRight);
 				if(latticeBits[indexLatticeBitTop])drawLattice(p, indexLatticeBitTop);
-				if(latticeBits[indexLatticeBitBottom])drawLattice(p, indexLatticeBitBottom);
 				
 				Thread.sleep(750);
 			}
@@ -132,6 +135,7 @@ public class LatticeTileGridCanvas extends Canvas
 			{
 				e.printStackTrace();
 			}
+
 		});
 	}
 	
@@ -224,7 +228,7 @@ public class LatticeTileGridCanvas extends Canvas
 		if(bitNr==indexLatticeBitRight) latticeBitStr = "Right ";
 		if(bitNr==indexLatticeBitBottom) latticeBitStr = "Bottom ";
 
-		if(!latticeBitStr.equals(""))System.out.println("Drawing LatticeBit" + latticeBitStr + posStr);
+		if(!latticeBitStr.equals(""))System.out.println("Drawing LatticeBit " + latticeBitStr + posStr);
 	}
 
 	public Color getColorOfTile(Point p) throws LTGCException

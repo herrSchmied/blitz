@@ -189,7 +189,7 @@ public class BlitzThing extends Application
         	{
 				showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
 
-				Thread.sleep(2000);
+				Thread.sleep(1250);
 				Platform.runLater(dhCanvasThrd);
 			}
         	catch (LTGCException | SnakeException | CollectionException | InterruptedException e)
