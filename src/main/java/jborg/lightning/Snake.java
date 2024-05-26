@@ -94,11 +94,9 @@ public class Snake implements Cloneable, Serializable
 		if(consecutiveParts.contains(successorPoint))throw new SnakeException(growExcepMsgNewHeadAlreadyContained);
 		if(isSelfCrossing(head, successorPoint))throw new SnakeException(growExcepMsgSelfCrossing);
 
-		Snake newSnake = this.clone();
+		Snake newSnake = new Snake(consecutiveParts, status);
 		newSnake.consecutiveParts.add(new Point(xPos, yPos));
-		this.status = status;
-		if(status.equals(deadStatus))statusChanged = true;
-		
+
 		return newSnake;
 	}
 	
@@ -190,12 +188,7 @@ public class Snake implements Cloneable, Serializable
 		
 		if(!statie.contains(newStatus))throw new SnakeException(excepMsgUnknownStatus);
 		if(statusChanged)throw new SnakeException(excepMsgStatusChangeNotAllowedMoreThanOnce);
-		else
-		{
-			statusChanged = true;
-			this.status = newStatus;
-			return new Snake(consecutiveParts, status);
-		}
+		else return new Snake(consecutiveParts, newStatus);
 	}
 	
 	public <E> List<E> doFuncPartByPart(Function<Point, E> func)

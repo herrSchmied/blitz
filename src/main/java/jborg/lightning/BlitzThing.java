@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
-import guiTools.Output;
+import static guiTools.Input.*;
+import static guiTools.Output.*;
 
 
 import javafx.application.Application;
@@ -71,7 +71,7 @@ public class BlitzThing extends Application
 	int nrOfLattices;
 	
 	Point start = new Point(0, 0);
-	Point end;
+	Point end = new Point(widthInTiles-1, heightInTiles-1);
 	
 	Set<Snake> snakeSet = new HashSet<>();
 
@@ -110,6 +110,42 @@ public class BlitzThing extends Application
 		thread.start();
 	});
 
+    VBox questionBox = new VBox();
+
+    HBox heightBox = new HBox();
+    Label heightLbl = new Label("Height");
+    TextField heightTxtField = new TextField("" + heightInTiles + "");
+
+    HBox widthBox = new HBox();
+    Label widthLbl = new Label("Width");
+    TextField widthTxtField = new TextField("" + widthInTiles + "");
+
+    int latticeNr = 2;
+    HBox latticeBox = new HBox();
+    Label latticeLbl = new Label("Nr. of Lattices");
+    TextField latticeTxtField = new TextField("" + latticeNr + "");
+
+    int minXStart = 0;
+    int maxXStart = 0;
+    int minYStart = 0;
+    int maxYStart = 0;
+    
+    int minXEnd = 1;
+    int maxXEnd = 1;
+    int minYEnd = 1;
+    int maxYEnd = 1;
+  
+    HBox startPointBox = new HBox();
+    Button newStartPointBtn = new Button("Different start Point");
+    Label startPointDisplay = new Label("Current start Point (" +  start.x + ", " + start.y + ")");
+
+    HBox endPointBox = new HBox();
+    Button newEndPointBtn = new Button("Different end Point");
+    Label endPointDisplay = new Label("Current end Point (" +  (widthInTiles-1) + ", " + (heightInTiles-1) + ")");
+
+    HBox startBox = new HBox();
+    Button startBtn = new Button("Start");
+
 	public BlitzThing()
 	{
 		super();
@@ -122,63 +158,65 @@ public class BlitzThing extends Application
         int absolutWidth = 340;
         int absolutHeight = 200;
         	//questionBox = root
-        VBox questionBox = new VBox();
         Scene scene = new Scene(questionBox, absolutWidth, absolutHeight, Color.GRAY);
-        
 
-        HBox heightBox = new HBox();
         heightBox.setMaxWidth(Double.MAX_VALUE);
-        Label heightLbl = new Label("Height");
+        
         heightLbl.setPrefWidth(300);
-        TextField heightTxtField = new TextField("" + heightInTiles + "");
         heightTxtField.setPrefWidth(40);
         heightBox.getChildren().add(heightLbl);
         heightBox.getChildren().add(heightTxtField);
 
-
-        HBox widthBox = new HBox();
         widthBox.setMaxWidth(Double.MAX_VALUE);
-        Label widthLbl = new Label("Width");
         widthLbl.setPrefWidth(300);
-        TextField widthTxtField = new TextField("" + widthInTiles + "");
         widthTxtField.setPrefWidth(40);
         widthBox.getChildren().add(widthLbl);
         widthBox.getChildren().add(widthTxtField);
         
-        int latticeNr = 2;
-        HBox latticeBox = new HBox();
         latticeBox.setMaxWidth(Double.MAX_VALUE);
-        Label latticeLbl = new Label("Nr. of Lattices");
         latticeLbl.setPrefWidth(300);
-        TextField latticeTxtField = new TextField("" + latticeNr + "");
         latticeTxtField.setPrefWidth(40);
         latticeBox.getChildren().add(latticeLbl);
         latticeBox.getChildren().add(latticeTxtField);
 
-        HBox startPointBox = new HBox();
         startPointBox.setMaxWidth(Double.MAX_VALUE);
-        Button newStartPointBtn = new Button("Different start Point");
+        newStartPointBtn.setOnAction((e)->
+        {
+        	getInput();
+        	maxXStart = widthInTiles-1;
+        	maxYStart = heightInTiles-1;
+        	start.x = getIntInput("X-Coordinate", "Give it an Integer Value.", minXStart, maxXStart);
+        	start.y = getIntInput("Y-Coordinate", "Integer Value.", minYStart, maxYStart);
+        	
+        	startPointDisplay.setText("Current start Point (" +  start.x + ", " + start.y + ")");
+        });
+        
         newStartPointBtn.setPrefWidth(150);
-        Label startPointDisplay = new Label("Current start Point (" +  start.x + ", " + start.y + ")");
         startPointDisplay.setPrefWidth(190);
         startPointBox.getChildren().add(newStartPointBtn);
         startPointBox.getChildren().add(startPointDisplay);
         
-        HBox endPointBox = new HBox();
         endPointBox.setMaxWidth(Double.MAX_VALUE);
-        Button newEndPointBtn = new Button("Different end Point");
+        newEndPointBtn.setOnAction((e)->
+        {
+        	getInput();
+        	maxXEnd = widthInTiles-1;
+        	maxYEnd = heightInTiles-1;
+        	        	
+        	end.x = getIntInput("X-Coordinate", "Give it an Integer Value.", minXEnd, maxXEnd);
+        	end.y = getIntInput("Y-Coordinate", "Integer Value.", minYEnd, maxYEnd);
+        	
+        	endPointDisplay.setText("Current start Point (" +  end.x + ", " + end.y + ")");
+        });
+        
         newEndPointBtn.setPrefWidth(150);
-        Label endPointDisplay = new Label("Current end Point (" +  (widthInTiles-1) + ", " + (heightInTiles-1) + ")");
         endPointDisplay.setPrefWidth(190);
         endPointBox.getChildren().add(newEndPointBtn);
         endPointBox.getChildren().add(endPointDisplay);
         
-        HBox startBox = new HBox();
         startBox.setMaxWidth(Double.MAX_VALUE);
-        Button startBtn = new Button("Start");
         startBtn.setPrefWidth(340);
         startBox.getChildren().add(startBtn);
-        
         
         questionBox.getChildren().add(heightBox);
         questionBox.getChildren().add(widthBox);
@@ -190,35 +228,21 @@ public class BlitzThing extends Application
         startBtn.setOnAction((actionEvent)->
         {
         	
-        	try
-        	{
-        		widthInTiles = Integer.parseInt(widthTxtField.getText());
-        		heightInTiles = Integer.parseInt(heightTxtField.getText());
-        		nrOfLattices = Integer.parseInt(latticeTxtField.getText());
-        	}
-        	catch(NumberFormatException nfExce)
-        	{
-        		Output.errorAlert("Nr's aint valide");
-        		return;
-        	}
-
+        	if(!getInput())return;
 
         	int maxLattices = 2*widthInTiles*heightInTiles-widthInTiles-heightInTiles;
         		
        		if(nrOfLattices>maxLattices)
        		{
-       			Output.errorAlert("To many Lattices.");
+       			errorAlert("To many Lattices.");
        			return;
        		}
         		
        		if(nrOfLattices<0)
        		{
-       			Output.errorAlert("Nr. of Lattices can't be below Zero");
+       			errorAlert("Nr. of Lattices can't be below Zero");
         		return;
         	}
-        	
-        	start = new Point(0,0);
-        	end = new Point(widthInTiles-1, heightInTiles-1);
         	
         	try
         	{
@@ -342,6 +366,24 @@ public class BlitzThing extends Application
         stage.setScene(scene);
 
         stage.show();
+    }
+
+    private boolean getInput()
+    {
+    	
+    	try
+    	{
+    		widthInTiles = Integer.parseInt(widthTxtField.getText());
+			heightInTiles = Integer.parseInt(heightTxtField.getText());
+			nrOfLattices = Integer.parseInt(latticeTxtField.getText());
+    	}
+    	catch(NumberFormatException e)
+    	{
+       		errorAlert("Nr's aint valide");
+    		return false;
+    	}
+    	
+		return true;
     }
 
     public static void main(String[] args)
