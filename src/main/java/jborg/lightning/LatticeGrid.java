@@ -12,9 +12,9 @@ public class LatticeGrid
 	public static final int nrOfLatticeBits = 4;
 
 	public static final int indexLatticeBitLeft = 0;
-	public static final int indexLatticeBitBottom = 1;
+	public static final int indexLatticeBitBottom = 1;//Bottom means up !!!!!!!!!!!
 	public static final int indexLatticeBitRight = 2;
-	public static final int indexLatticeBitTop = 3;
+	public static final int indexLatticeBitTop = 3; //Top means down!!!!!!!!!!
 
 	public LatticeGrid(int width, int height)
 	{

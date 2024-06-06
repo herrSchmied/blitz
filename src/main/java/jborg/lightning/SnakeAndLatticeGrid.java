@@ -219,7 +219,8 @@ public class SnakeAndLatticeGrid
     public Set<Snake> theDivergence(Snake snake) throws LTGCException, SnakeException
     {
     	Set<Snake> snakeSet = new HashSet<>();
-    	
+    	if(snake.getStatus().equals(Snake.deadStatus)) return snakeSet;
+
     	List<Point> options = getOptions(snake);
     	
     	Point head = snake.getHead();

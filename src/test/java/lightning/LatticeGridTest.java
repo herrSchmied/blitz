@@ -77,8 +77,6 @@ public class LatticeGridTest
 		
 		System.out.println("AffectedTiles: " + affectedTilesCounter);
 		assert(affectedTilesCounter==8);
-		
-		Thread.sleep(750);;
 	}
 
 }

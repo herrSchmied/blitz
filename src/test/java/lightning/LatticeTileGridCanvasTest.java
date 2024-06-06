@@ -8,16 +8,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.awt.Point;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import jborg.lightning.LTGCException;
-import jborg.lightning.LatticeGrid;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
@@ -29,7 +28,23 @@ import someMath.CollectionManipulation;
 
 class LatticeTileGridCanvasTest
 {
+	
+	static int width1 = 3, height1 = 3;
+	
+	static LatticeTileGridCanvas canvas1;
+	static Point startPoint1;
+	static Point finalPoint1;
+	static Snake snake1;
 
+	@BeforeAll
+	public static void initStndrt() throws SnakeException, LTGCException
+	{
+		startPoint1 = new Point(0, 0);
+		finalPoint1 = new Point(2, 2);
+		snake1 = new Snake(startPoint1, Snake.readyStatus);
+		canvas1 = new LatticeTileGridCanvas(width1, height1, finalPoint1, snake1);
+	}
+	
 	@Test
 	public void optionsTest() throws SnakeException, LTGCException
 	{
@@ -37,19 +52,14 @@ class LatticeTileGridCanvasTest
 		
 		System.out.println("\nOptions Test.");
 		
+		canvas1.setOneLattice(0, 0, indexLatticeBitTop);
 		
-		int width = 2;
-		int height = 2;
-		Point startPoint = new Point(0, 0);
-		Point finalPoint = new Point(1,1);
-		
-		Snake snake = new Snake(startPoint, Snake.readyStatus);
+		SnakeAndLatticeGrid snlGrid = canvas1.getSNLGrid();
+		List<Point> options = snlGrid.getOptions(snake1);
 
-		LatticeTileGridCanvas canvas = new LatticeTileGridCanvas(width, height, finalPoint, snake);
-		canvas.setOneLattice(0, 0, indexLatticeBitTop);
-		
-		SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
-		List<Point> options = snlGrid.getOptions(snake);
+		String s = "";
+		for(int n=0;n<options.size();n++)s=s+Snake.pointToString(options.get(n)) + "\n";
+		System.out.println(s);
 		
 		assert(options.contains(new Point(1,1)));
 		assert(options.contains(new Point(1,0)));
@@ -62,20 +72,12 @@ class LatticeTileGridCanvasTest
 	
 		System.out.println("\nDivergence Test.");
 		
-		int width = 3;
-		int height = 3;
+		canvas1.setOneLattice(0, 0, indexLatticeBitRight);
+		canvas1.setOneLattice(0, 1, indexLatticeBitRight);
 		
-		Snake snake = new Snake(new Point(0,0), Snake.readyStatus);
-		Point finalPoint = new Point(2,2);
+		SnakeAndLatticeGrid snlGrid = canvas1.getSNLGrid();
 		
-		LatticeTileGridCanvas canvas = new LatticeTileGridCanvas(width, height, finalPoint, snake);
-		
-		canvas.setOneLattice(0, 0, indexLatticeBitRight);
-		canvas.setOneLattice(0, 1, indexLatticeBitRight);
-		
-		SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
-		
-		Set<Snake> theNewGrownOnes = snlGrid.theDivergence(snake);
+		Set<Snake> theNewGrownOnes = snlGrid.theDivergence(snake1);
 		System.out.println("The new Snake Set Size: " + theNewGrownOnes.size());
 		assert(theNewGrownOnes.size()==1);
 		
@@ -99,6 +101,7 @@ class LatticeTileGridCanvasTest
 			Point head = s.getHead();
 			System.out.println("Head of Snake(" + i + "): " + "P(" + head.x + ", " +head.y + ")");
 			i++;
+			assert(s.getStart().equals(startPoint1));
 		}
 	}
 	
@@ -108,23 +111,15 @@ class LatticeTileGridCanvasTest
 	
 		System.out.println("\nAnother Divergence Test.");
 		
-		int width = 3;
-		int height = 3;
-		
-		Point startPoint = new Point(0, 0);
 		Point rightPoint = new Point(1, 0);
 		Point upPoint = new Point(0, 1);
-		Point upRightPoint = SnakeAndLatticeGrid.addPoints(upPoint, rightPoint);
-		Snake snake = new Snake(startPoint, Snake.readyStatus);
-		Point finalPoint = new Point(2,2);
+		//Point upRightPoint = SnakeAndLatticeGrid.addPoints(upPoint, rightPoint);
 		
-		LatticeTileGridCanvas canvas = new LatticeTileGridCanvas(width, height, finalPoint, snake);
+		canvas1.setOneLattice(startPoint1, indexLatticeBitTop);
+		canvas1.setOneLattice(rightPoint, indexLatticeBitTop);
 		
-		canvas.setOneLattice(startPoint, indexLatticeBitTop);
-		canvas.setOneLattice(rightPoint, indexLatticeBitTop);
-		
-		SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
-		Set<Snake> theNewGrownOnes = snlGrid.theDivergence(snake);
+		SnakeAndLatticeGrid snlGrid = canvas1.getSNLGrid();
+		Set<Snake> theNewGrownOnes = snlGrid.theDivergence(snake1);
 		System.out.println("The new Snake Set Size: " + theNewGrownOnes.size());
 		assert(theNewGrownOnes.size()==1);
 		
@@ -225,7 +220,7 @@ class LatticeTileGridCanvasTest
 		
 		int width = 4;
 		int height = 4;
-		System.out.println("\nUntil they Dead Test!");
+		System.out.println("\nAnother until they Dead Test!");
 
 		Point startPoint = new Point(0, 0);
 		

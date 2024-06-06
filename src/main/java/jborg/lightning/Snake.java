@@ -253,9 +253,14 @@ public class Snake implements Cloneable, Serializable
 		for(int n=0;n<consecutiveParts.size();n++)
 		{
 			Point part = consecutiveParts.get(n);
-			z = z + "(" + part.x + ", " + part.y + ")\n";
+			z = z + pointToString(part) + "\n";
 		}
 		
 		return z;
+	}
+	
+	public static String pointToString(Point p)
+	{
+		return "("+p.x+", "+p.y+")";
 	}
 }
