@@ -332,7 +332,7 @@ public class BlitzThing extends Application
     }
 
 
-    public void showCanvasStage(int width, int height, int latticeNr) throws LTGCException, SnakeException, CollectionException
+    public void showCanvasStage(int width, int height, int latticeNr) throws LTGCException, SnakeException, CollectionException, InterruptedException
     {
 
     	Group root = new Group();

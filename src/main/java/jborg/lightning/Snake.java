@@ -4,6 +4,9 @@ package jborg.lightning;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static consoleTools.TerminalXDisplay.*;
+
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -91,13 +94,15 @@ public class Snake implements Cloneable, Serializable
 		Point successorPoint = new Point(xPos, yPos);
 		
 		if(!isNearBy(head, successorPoint))throw new SnakeException(growExcepMsgNewHeadNotNearBy);
-		if(consecutiveParts.contains(successorPoint))throw new SnakeException(growExcepMsgNewHeadAlreadyContained);
+		if(this.consecutiveParts.contains(successorPoint))throw new SnakeException(growExcepMsgNewHeadAlreadyContained);
 		if(isSelfCrossing(head, successorPoint))throw new SnakeException(growExcepMsgSelfCrossing);
 
-		Snake newSnake = new Snake(consecutiveParts, status);
-		newSnake.consecutiveParts.add(new Point(xPos, yPos));
+		List<Point> consecutiveParts_ii = new ArrayList<>();
+		consecutiveParts_ii.addAll(this.consecutiveParts);
+		consecutiveParts_ii.add(successorPoint);
+		
+		return new Snake(consecutiveParts_ii, status);
 
-		return newSnake;
 	}
 	
 	
@@ -253,14 +258,10 @@ public class Snake implements Cloneable, Serializable
 		for(int n=0;n<consecutiveParts.size();n++)
 		{
 			Point part = consecutiveParts.get(n);
-			z = z + pointToString(part) + "\n";
+			z = z + pointToString("P", part) + "\n";
 		}
 		
 		return z;
 	}
 	
-	public static String pointToString(Point p)
-	{
-		return "("+p.x+", "+p.y+")";
-	}
 }

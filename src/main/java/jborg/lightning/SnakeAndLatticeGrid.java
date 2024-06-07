@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static consoleTools.TerminalXDisplay.*;
 
 public class SnakeAndLatticeGrid
 {
@@ -216,13 +217,19 @@ public class SnakeAndLatticeGrid
     	return snakeSet;
     }
     
-    public Set<Snake> theDivergence(Snake snake) throws LTGCException, SnakeException
+    public Set<Snake> theDivergence(Snake snake) throws LTGCException, SnakeException, InterruptedException
     {
     	Set<Snake> snakeSet = new HashSet<>();
-    	if(snake.getStatus().equals(Snake.deadStatus)) return snakeSet;
-
+    	if(snake.getStatus().equals(Snake.deadStatus))
+    	{
+    		
+    		System.out.println("U gave me a dead Snake.");
+    		Thread.sleep(1000);
+    		return snakeSet;
+    	}
+    
     	List<Point> options = getOptions(snake);
-    	
+
     	Point head = snake.getHead();
     	
     	if(options.isEmpty()||head.equals(finalPoint))
@@ -243,12 +250,12 @@ public class SnakeAndLatticeGrid
     	return snakeSet;
     }
     
-    public void setFinalSnakes() throws LTGCException, SnakeException
+    public void setFinalSnakes() throws LTGCException, SnakeException, InterruptedException
     {
     	this.snakeSet = untilTheyAreAllDeadLoop(this.snakeSet);
     }
     
-    public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException
+    public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException, InterruptedException
     {
     	
     	Set<Snake> copy = new HashSet<>(snakeSet);
