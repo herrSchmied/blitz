@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jborg.lightning.LTGCException;
@@ -56,8 +57,8 @@ class LatticeTileGridCanvasTest
 
 	}
 
-	@BeforeAll
-	public static void initStndrt() throws SnakeException, LTGCException
+	@BeforeEach
+	public void initStndrt() throws SnakeException, LTGCException
 	{
 		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 	}
