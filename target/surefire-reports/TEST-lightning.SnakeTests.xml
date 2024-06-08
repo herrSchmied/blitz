@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lightning.SnakeTests" time="9.082" tests="12" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lightning.SnakeTests" time="9.141" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="DE"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-19-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240413231240752_3.jar /home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire 2024-04-13T23-12-40_323-jvmRun1 surefire-20240413231240752_1tmp surefire_0-20240413231240752_2tmp"/>
+    <property name="sun.java.command" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240608184657259_3.jar /home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire 2024-06-08T18-46-56_944-jvmRun1 surefire-20240608184657259_1tmp surefire_0-20240608184657259_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/test-classes:/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/classes:/home/bernstein/.m2/repository/jborg/myToolBoxMavenOld/0.0.1-SNAPSHOT/myToolBoxMavenOld-0.0.1-SNAPSHOT.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13-linux.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13-linux.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13-linux.jar:/home/bernstein/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.1/junit-jupiter-engine-5.9.1.jar:/home/bernstein/.m2/repository/org/junit/platform/junit-platform-engine/1.9.1/junit-platform-engine-1.9.1.jar:/home/bernstein/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/bernstein/.m2/repository/org/junit/platform/junit-platform-commons/1.9.1/junit-platform-commons-1.9.1.jar:/home/bernstein/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.1/junit-jupiter-api-5.9.1.jar:/home/bernstein/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -28,13 +28,13 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240413231240752_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240608184657259_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="19.0.2+7-Ubuntu-0ubuntu322.04"/>
     <property name="user.name" value="bernstein"/>
     <property name="stdout.encoding" value="UTF-8"/>
     <property name="path.separator" value=":"/>
-    <property name="os.version" value="6.5.0-27-generic"/>
+    <property name="os.version" value="6.5.0-35-generic"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
@@ -54,7 +54,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="63.0"/>
   </properties>
-  <testcase name="testSnakeGrowExceptionDoublePoint" classname="lightning.SnakeTests" time="0.76">
+  <testcase name="testSnakeGrowExceptionDoublePoint" classname="lightning.SnakeTests" time="0.759">
     <system-out><![CDATA[New Head already contained.
 ]]></system-out>
   </testcase>
@@ -62,36 +62,36 @@
     <system-out><![CDATA[Constructor argument is empty.
 ]]></system-out>
   </testcase>
-  <testcase name="testSnakeConstructorExceptionNullGap" classname="lightning.SnakeTests" time="0.754">
+  <testcase name="testSnakeConstructorExceptionNullGap" classname="lightning.SnakeTests" time="0.756">
     <system-out><![CDATA[Constructor argument contains null.
 ]]></system-out>
   </testcase>
-  <testcase name="testSnakeGrowth" classname="lightning.SnakeTests" time="0.754"/>
-  <testcase name="testSnakeConstructorSelfCrossing" classname="lightning.SnakeTests" time="0.753">
+  <testcase name="testSnakeGrowth" classname="lightning.SnakeTests" time="0.757"/>
+  <testcase name="testSnakeConstructorSelfCrossing" classname="lightning.SnakeTests" time="0.757">
     <system-out><![CDATA[In Argument is a self crossing contained.
 ]]></system-out>
   </testcase>
-  <testcase name="testSnakeConstructorExceptionNullArgument" classname="lightning.SnakeTests" time="0.757">
+  <testcase name="testSnakeConstructorExceptionNullArgument" classname="lightning.SnakeTests" time="0.754">
     <system-out><![CDATA[Constructor argument is null.
 ]]></system-out>
   </testcase>
-  <testcase name="testSnakeConstructor" classname="lightning.SnakeTests" time="0.752"/>
-  <testcase name="testSnakeConstructorDoublePoint" classname="lightning.SnakeTests" time="0.752">
+  <testcase name="testSnakeConstructor" classname="lightning.SnakeTests" time="0.756"/>
+  <testcase name="testSnakeConstructorDoublePoint" classname="lightning.SnakeTests" time="0.759">
     <system-out><![CDATA[Argument has at least two identical Points
 ]]></system-out>
   </testcase>
-  <testcase name="testSnakeGrowException" classname="lightning.SnakeTests" time="0.755">
+  <testcase name="testSnakeGrowException" classname="lightning.SnakeTests" time="0.757">
     <system-out><![CDATA[New Head not near by!
 ]]></system-out>
   </testcase>
-  <testcase name="testSnakeGrowExceptionSelfCrossing" classname="lightning.SnakeTests" time="0.753">
+  <testcase name="testSnakeGrowExceptionSelfCrossing" classname="lightning.SnakeTests" time="0.755">
     <system-out><![CDATA[Selfcrossing not allowed.
 Selfcrossing not allowed.
 ]]></system-out>
   </testcase>
-  <testcase name="testSnakeConstructorExceptionDistanceGap" classname="lightning.SnakeTests" time="0.752">
+  <testcase name="testSnakeConstructorExceptionDistanceGap" classname="lightning.SnakeTests" time="0.762">
     <system-out><![CDATA[At least two consecutive Points are not near each other.
 ]]></system-out>
   </testcase>
-  <testcase name="testSnakeClone" classname="lightning.SnakeTests" time="0.752"/>
+  <testcase name="testSnakeClone" classname="lightning.SnakeTests" time="0.755"/>
 </testsuite>

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static guiTools.Input.*;
 import static guiTools.Output.*;
@@ -44,6 +45,8 @@ import static jborg.lightning.LatticeGrid.*;
 public class BlitzThing extends Application
 {
 
+	AtomicBoolean canvasDone = new AtomicBoolean(false);
+	
 	LatticeTileGridCanvas canvas;
 
 	Thread dhCanvasThrd = new Thread(()->
@@ -54,6 +57,7 @@ public class BlitzThing extends Application
 			try
 			{
 				canvas.drawWholeCanvas();
+				canvasDone.set(true);
 			}
 			catch(LTGCException e)
 			{
@@ -78,7 +82,7 @@ public class BlitzThing extends Application
 	Thread drawSnake = new Thread(()->
 	{
 
-
+		
 		Thread thread = new Thread(()->
 		{
 
@@ -87,6 +91,12 @@ public class BlitzThing extends Application
 	        
 	        try
 	        {
+				while(!canvasDone.get())
+				{
+						Thread.sleep(12000);
+						System.out.println("Waiting for other Canvas Thread!");
+				}
+
 				Snake snake = CollectionManipulation.catchRandomElementOfSet(successSnakes);
 				
 				int length = snake.getLength();
@@ -106,7 +116,8 @@ public class BlitzThing extends Application
 			}
 
 		});
-
+		
+		dhCanvasThrd.start();
 		thread.start();
 	});
 
@@ -249,7 +260,6 @@ public class BlitzThing extends Application
 				showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
 
 				Thread.sleep(1250);
-				Platform.runLater(dhCanvasThrd);
 				Platform.runLater(drawSnake);
 			}
         	catch (LTGCException | SnakeException | CollectionException | InterruptedException e)

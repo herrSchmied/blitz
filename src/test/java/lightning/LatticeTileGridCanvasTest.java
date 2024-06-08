@@ -84,6 +84,45 @@ class LatticeTileGridCanvasTest
 	}
 	
 	@Test
+	public void anotherOptionsTest() throws SnakeException, LTGCException
+	{
+
+		
+		System.out.println("\nAnother Options Test.");
+		
+		canvas.setOneLattice(0, 0, indexLatticeBitRight);
+		
+		List<Point> options = snlGrid.getOptions(snake);
+
+		String s = "";
+		for(int n=0;n<options.size();n++)s=s + pointToString("P", options.get(n)) + "\n";
+		System.out.println(s);  
+		
+		assert(options.contains(new Point(1,1)));
+		assert(options.contains(new Point(0,1)));
+		assert(options.size()==2);
+	}
+
+	@Test
+	public void againOptionsTest() throws SnakeException, LTGCException
+	{
+
+		
+		System.out.println("\nAgain Options Test.");
+
+		List<Point> options = snlGrid.getOptions(snake);
+
+		String s = "";
+		for(int n=0;n<options.size();n++)s=s + pointToString("P", options.get(n)) + "\n";
+		System.out.println(s);  
+		
+		assert(options.contains(new Point(1,1)));
+		assert(options.contains(new Point(0,1)));
+		assert(options.contains(new Point(1,0)));
+		assert(options.size()==3);
+	}
+
+	@Test
 	public void divergenceTest() throws SnakeException, LTGCException, InterruptedException
 	{
 	

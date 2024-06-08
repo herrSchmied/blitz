@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lightning.LatticeTileGridCanvasTest" time="0.714" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lightning.LatticeTileGridCanvasTest" time="0.486" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="19"/>
     <property name="javafx.runtime.version" value="13+14"/>
@@ -14,7 +14,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="DE"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-19-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240413231240752_3.jar /home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire 2024-04-13T23-12-40_323-jvmRun1 surefire-20240413231240752_1tmp surefire_0-20240413231240752_2tmp"/>
+    <property name="sun.java.command" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240608184657259_3.jar /home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire 2024-06-08T18-46-56_944-jvmRun1 surefire-20240608184657259_1tmp surefire_0-20240608184657259_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/test-classes:/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/classes:/home/bernstein/.m2/repository/jborg/myToolBoxMavenOld/0.0.1-SNAPSHOT/myToolBoxMavenOld-0.0.1-SNAPSHOT.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13-linux.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13-linux.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13.jar:/home/bernstein/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13-linux.jar:/home/bernstein/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.1/junit-jupiter-engine-5.9.1.jar:/home/bernstein/.m2/repository/org/junit/platform/junit-platform-engine/1.9.1/junit-platform-engine-1.9.1.jar:/home/bernstein/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/bernstein/.m2/repository/org/junit/platform/junit-platform-commons/1.9.1/junit-platform-commons-1.9.1.jar:/home/bernstein/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.1/junit-jupiter-api-5.9.1.jar:/home/bernstein/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,13 +30,13 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240413231240752_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/bernstein/Projex/Code/EclipseWorqueRooms/blitz/lightning/target/surefire/surefirebooter-20240608184657259_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="19.0.2+7-Ubuntu-0ubuntu322.04"/>
     <property name="user.name" value="bernstein"/>
     <property name="stdout.encoding" value="UTF-8"/>
     <property name="path.separator" value=":"/>
-    <property name="os.version" value="6.5.0-27-generic"/>
+    <property name="os.version" value="6.5.0-35-generic"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
@@ -56,53 +56,65 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="63.0"/>
   </properties>
-  <testcase name="halfIsolatedTest" classname="lightning.LatticeTileGridCanvasTest" time="0.634">
+  <testcase name="halfIsolatedTest" classname="lightning.LatticeTileGridCanvasTest" time="0.422">
     <system-out><![CDATA[Half isolated Test.
 
 One of the short a ways
-(0, 0)
-(1, 0)
-(2, 1)
-(2, 2)
+P(0, 0)
+P(1, 0)
+P(2, 1)
+P(2, 2)
 
 
 One of the long a ways
-(0, 0)
-(0, 1)
-(1, 0)
-(2, 0)
-(1, 1)
-(0, 2)
-(1, 2)
-(2, 1)
-(2, 2)
+P(0, 0)
+P(0, 1)
+P(1, 0)
+P(2, 0)
+P(1, 1)
+P(0, 2)
+P(1, 2)
+P(2, 1)
+P(2, 2)
 
 Successful Snakes: 68
 Final Snakes: 126
 
 ]]></system-out>
   </testcase>
-  <testcase name="reversedEndAndStartUntilTheyDeadTest" classname="lightning.LatticeTileGridCanvasTest" time="0.018">
+  <testcase name="swappedUntilTheyDeadTest" classname="lightning.LatticeTileGridCanvasTest" time="0.011">
     <system-out><![CDATA[Until they Dead Test! Swap start/end
 Final Snakes: 73
 Successful Snakes: 39
 ]]></system-out>
   </testcase>
-  <testcase name="optionsTest" classname="lightning.LatticeTileGridCanvasTest" time="0.002">
+  <testcase name="optionsTest" classname="lightning.LatticeTileGridCanvasTest" time="0.005">
     <system-out><![CDATA[
 Options Test.
+P(1, 0)
+P(1, 1)
+
 ]]></system-out>
   </testcase>
-  <testcase name="divergenceTest" classname="lightning.LatticeTileGridCanvasTest" time="0.01">
+  <testcase name="divergenceTest" classname="lightning.LatticeTileGridCanvasTest" time="0.005">
     <system-out><![CDATA[
 Divergence Test.
 The new Snake Set Size: 1
 Head: P(0, 1)
+Even Newer Size:2
 Head of Snake(0): P(0, 2)
 Head of Snake(1): P(1, 2)
 ]]></system-out>
   </testcase>
-  <testcase name="anotherDivergenceTest" classname="lightning.LatticeTileGridCanvasTest" time="0.01">
+  <testcase name="anotherOptionsTest" classname="lightning.LatticeTileGridCanvasTest" time="0.004">
+    <system-out><![CDATA[
+Options Test.
+P(0, 1)
+P(1, 1)
+
+]]></system-out>
+  </testcase>
+  <testcase name="anotherDivergenceTest" classname="lightning.LatticeTileGridCanvasTest" time="0.004">
     <system-out><![CDATA[
 Another Divergence Test.
 The new Snake Set Size: 1
@@ -118,18 +130,18 @@ Final Snakes: 32
 Successful Snakes: 16
 ]]></system-out>
   </testcase>
-  <testcase name="anotherUntilTheyDeadTest" classname="lightning.LatticeTileGridCanvasTest" time="0.01">
+  <testcase name="anotherUntilTheyDeadTest" classname="lightning.LatticeTileGridCanvasTest" time="0.006">
     <system-out><![CDATA[
-Until they Dead Test!
+Another until they Dead Test!
 
 Found a way
-(0, 0)
-(1, 0)
-(2, 0)
-(3, 0)
-(3, 1)
-(3, 2)
-(3, 3)
+P(0, 0)
+P(1, 0)
+P(2, 0)
+P(3, 1)
+P(3, 2)
+P(2, 3)
+P(3, 3)
 
 Successful Snakes: 4
 Final Snakes: 5
