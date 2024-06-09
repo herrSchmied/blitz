@@ -52,8 +52,6 @@ public class SnakeTests
 		actualMessage = exception.getMessage();
 
 		assert(actualMessage.equals(expectedMessage));
-		
-		Thread.sleep(750);
 	}
 
 	@Test
@@ -75,8 +73,6 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
-
-		Thread.sleep(750);
 	}
 	
 	@Test
@@ -98,8 +94,6 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
-
-		 Thread.sleep(750);
 	}
 
 	@Test
@@ -121,8 +115,6 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
-		 
-		 Thread.sleep(750);
 	}
 	
 	@Test
@@ -140,8 +132,6 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
-		 
-		 Thread.sleep(750);
 	}
 
 	@Test
@@ -164,8 +154,6 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
-		 
-		 Thread.sleep(750);
 	}
 	
 	@Test
@@ -183,8 +171,6 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
-		 
-		 Thread.sleep(750);
 	}
 
 	@Test
@@ -205,8 +191,6 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
-		 
-		 Thread.sleep(750);
 	}
 
 	@Test
@@ -227,8 +211,6 @@ public class SnakeTests
 		 String actualMessage = exception.getMessage();
 
 		 assert(actualMessage.equals(expectedMessage));
-		 
-		Thread.sleep(750);
 	}
 
 	@Test
@@ -242,8 +224,6 @@ public class SnakeTests
 		
 		Snake snake = new Snake(points, Snake.readyStatus);
 		assert(snake.getLength()==3);
-		
-		Thread.sleep(750);
 	}
 	
 	@Test
@@ -260,8 +240,6 @@ public class SnakeTests
 		
 		assert(snake2.getHead().equals(snake.getHead()));
 		assert(snake2.getStart().equals(snake.getStart()));
-		
-		Thread.sleep(750);
 	}
 
 	@Test
@@ -275,7 +253,16 @@ public class SnakeTests
 		snake = snake.growSnake(2, 0, Snake.readyStatus);
 		
 		assert(snake.getLength()==3);
+	}
+	
+	@Test
+	public void testImmutabilityUnderGrowth() throws SnakeException
+	{
 		
-		Thread.sleep(750);
+		Snake snake1 = new Snake(0, 0, Snake.readyStatus);
+		Snake snake2 = snake1.growSnake(1, 0, Snake.readyStatus);
+		
+		assert(snake1!=snake2);
+		assert(!snake2.equals(snake1));
 	}
 }
