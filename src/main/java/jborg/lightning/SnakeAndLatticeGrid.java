@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import jborg.lightning.exceptions.LTGCException;
+import jborg.lightning.exceptions.SnakeException;
+
 import static consoleTools.TerminalXDisplay.*;
 
 public class SnakeAndLatticeGrid

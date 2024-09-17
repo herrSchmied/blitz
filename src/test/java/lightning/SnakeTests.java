@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import jborg.lightning.Snake;
-import jborg.lightning.SnakeException;
+import jborg.lightning.exceptions.SnakeException;
 
 
 public class SnakeTests

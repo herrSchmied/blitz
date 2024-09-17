@@ -3,10 +3,12 @@ package lightning;
 
 import static jborg.lightning.LatticeGrid.*;
 
+import java.lang.reflect.Method;
+
 import org.junit.jupiter.api.Test;
 
-import jborg.lightning.LTGCException;
 import jborg.lightning.LatticeGrid;
+import jborg.lightning.exceptions.LTGCException;
 
 
 public class LatticeGridTest 

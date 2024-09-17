@@ -5,10 +5,10 @@ package jborg.lightning;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-
+import jborg.lightning.exceptions.LTGCException;
 
 import static jborg.lightning.LatticeGrid.*;
-
+import jborg.lightning.*;
 
 import java.awt.Point;
 
@@ -124,7 +124,7 @@ public class LatticeTileGridCanvas extends Canvas
 					
 				Color colorOfTile = getColorOfTile(p);
 				setColorOnTile(colorOfTile, p);
-				boolean[] latticeBits = translateLatticeCodeToLatticeBits(lg.getLatticeCode(p));
+				boolean[] latticeBits = lg.translateLatticeCodeToLatticeBits(lg.getLatticeCode(p));
 				
 				if(latticeBits[indexLatticeBitLeft])drawLattice(p, indexLatticeBitLeft);
 				if(latticeBits[indexLatticeBitTop])drawLattice(p, indexLatticeBitTop);

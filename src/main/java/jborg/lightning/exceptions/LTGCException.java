@@ -1,4 +1,4 @@
-package jborg.lightning;
+package jborg.lightning.exceptions;
 
 public class LTGCException extends Exception
 {

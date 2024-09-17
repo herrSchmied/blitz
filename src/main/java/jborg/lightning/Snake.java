@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+import jborg.lightning.exceptions.SnakeException;
+
 import static consoleTools.TerminalXDisplay.*;
 
 import java.awt.Point;

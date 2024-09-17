@@ -17,12 +17,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jborg.lightning.LTGCException;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
-import jborg.lightning.SnakeException;
-
+import jborg.lightning.exceptions.LTGCException;
+import jborg.lightning.exceptions.SnakeException;
 import someMath.CollectionException;
 import someMath.CollectionManipulation;
 
@@ -43,7 +42,6 @@ class LatticeTileGridCanvasTest
 	static Snake snake;
 	static SnakeAndLatticeGrid snlGrid;
 
-	
 	public static void frameIt(Point startP, Point endP, int w, int h) throws SnakeException, LTGCException
 	{
 		startPoint = startP;
