@@ -45,40 +45,40 @@ public class LatticeGridTest
 		{
 			for(int m=0;m<heightInTiles;m++)
 			{
-				boolean bottom = lg.hasLatticeOnTheBottom(n, m);
-				boolean top = lg.hasLatticeOnTheTop(n, m);
-				boolean right = lg.hasLatticeOnTheRight(n, m);
-				boolean left = lg.hasLatticeOnTheLeft(n, m);
-				
-				if((left||right||top||bottom))
+				if(lg.hasLatticeOnTheBottom(n, m))
 				{
-					if(bottom)
-					{
-						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
-						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Bottom: " + bottom);
-					}
-					if(top)
-					{
-						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
-						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Top: " + top);
-					}
-					if(right)
-					{
-						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
-						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Right: " + right);
-					}
-					if(left)
-					{
-						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
-						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Left: " + left);
-					}
 					affectedTilesCounter++;
+					continue;
+				}
+				if(lg.hasLatticeOnTheTop(n, m))
+				{
+					affectedTilesCounter++;
+					continue;
+					
+				}
+				if(lg.hasLatticeOnTheLeft(n, m))
+				{
+					affectedTilesCounter++;
+					continue;
+				}
+				if(lg.hasLatticeOnTheRight(n, m))
+				{
+					affectedTilesCounter++;
+					continue;
 				}
 			}
 		}
 		
 		System.out.println("AffectedTiles: " + affectedTilesCounter);
 		assert(affectedTilesCounter==8);
+		assert(lg.hasLatticeOnTheBottom(2,2));
+		assert(lg.hasLatticeOnTheTop(2,2));
+		assert(!lg.hasLatticeOnTheRight(2,2));
+		assert(!lg.hasLatticeOnTheLeft(2,2));
+		assert(!lg.hasLatticeOnTheBottom(7,7));
+		assert(!lg.hasLatticeOnTheTop(7,7));
+		assert(lg.hasLatticeOnTheRight(7,7));
+		assert(lg.hasLatticeOnTheLeft(7,7));
 	}
 
 }
