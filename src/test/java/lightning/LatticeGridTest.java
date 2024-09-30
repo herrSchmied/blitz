@@ -41,10 +41,14 @@ public class LatticeGridTest
 		lg.setOneLatticeOnTile(5, 5, indexLatticeBitLeft);
 		
 		int affectedTilesCounter =0;
+		int hasLatticeAnywhere = 0;
 		for(int n=0;n<widthInTiles;n++)
 		{
 			for(int m=0;m<heightInTiles;m++)
 			{
+				
+				if(lg.hasLatticeSomeWhere(n,m)) hasLatticeAnywhere++;
+				
 				if(lg.hasLatticeOnTheBottom(n, m))
 				{
 					affectedTilesCounter++;
@@ -71,6 +75,7 @@ public class LatticeGridTest
 		
 		System.out.println("AffectedTiles: " + affectedTilesCounter);
 		assert(affectedTilesCounter==8);
+		assert(hasLatticeAnywhere==affectedTilesCounter);
 		assert(lg.hasLatticeOnTheBottom(2,2));
 		assert(lg.hasLatticeOnTheTop(2,2));
 		assert(!lg.hasLatticeOnTheRight(2,2));

@@ -364,6 +364,23 @@ public class LatticeGrid
 		return latticeBits[indexLatticeBitTop];
 	}
 
+	/**
+	 * @param x x-Coordinate of Tile in question.
+	 * @param y y-Coordinate of Tile in question.
+	 * @return Does the Tile in Question have a Lattice
+	 * anywhere?
+	 * @throws LTGCExceptionLTGCException if x or/and y is out of Bounds.
+	 */
+	public boolean hasLatticeSomeWhere(int x, int y)throws LTGCException
+	{
+
+		boolean l = hasLatticeOnTheLeft(x,y);
+		boolean r = hasLatticeOnTheRight(x,y);
+		boolean b = hasLatticeOnTheBottom(x,y);
+		boolean t = hasLatticeOnTheTop(x,y);
+		
+		return(l||r||b||t);		
+	}
 
 	/**
 	 * @param p contains the Coordinates of Tile in question.
@@ -407,6 +424,17 @@ public class LatticeGrid
 	public boolean hasLatticeOnTheTop(Point p) throws LTGCException
 	{
 		return hasLatticeOnTheTop(p.x, p.y);
+	}
+	
+	/**
+	 * @param p contains the Coordinates of Tile in question.
+	 * @return Does the Tile in Question have a Lattice
+	 * anywhere?
+	 * @throws LTGCException if p is out of Bounds.
+	 */
+	public boolean hasLatticeSomeWhere(Point p)throws LTGCException
+	{
+		return hasLatticeSomeWhere(p.x, p.y);
 	}
 	
 	/**
