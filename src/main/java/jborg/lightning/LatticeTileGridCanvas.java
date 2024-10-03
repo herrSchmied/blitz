@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 import jborg.lightning.exceptions.LTGCException;
 
 import static jborg.lightning.LatticeGrid.*;
-import jborg.lightning.*;
 
 import java.awt.Point;
 

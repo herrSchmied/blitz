@@ -2,7 +2,7 @@ package jborg.lightning;
 
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 
 import jborg.lightning.exceptions.SnakeException;
@@ -13,10 +13,12 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 
 public class Snake implements Cloneable, Serializable
 {
+
 	private static final long serialVersionUID = 4520949554290687793L;
 	public static final String excepMsgUnknownStatus = "Unknown Status!";
 	public static final String excepMsgStatusChangeNotAllowedMoreThanOnce = "Status can only be changed once!";
@@ -28,6 +30,7 @@ public class Snake implements Cloneable, Serializable
 	public static final String constructorExcepMsgDoublePoint = "Argument has at least two identical Points";
 	public static final String constructorExcepMsgSelfCrossing = "In Argument is a self crossing contained.";
 
+	public static final String cantTestExcepMsgNullArgument = "Can't test if it is nearby because one or both Points are null!";
 	public static final String growExcepMsgNewHeadNotNearBy = "New Head not near by!";
 	public static final String growExcepMsgNewHeadAlreadyContained = "New Head already contained.";
 	public static final String growExcepMsgSelfCrossing = "Selfcrossing not allowed.";
@@ -43,8 +46,9 @@ public class Snake implements Cloneable, Serializable
 
 	public Snake(Point startPoint, String status) throws SnakeException
 	{
-		
-		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
+
+		throwsExceptionIfPointIsNull(startPoint);
+		throwsExceptionIfStatusIsUnknown(status);
 		if(status.equals(deadStatus))statusChanged = true;
 		this.startPoint = startPoint;
 		this.status = status;
@@ -54,50 +58,38 @@ public class Snake implements Cloneable, Serializable
 	
 	public Snake(int xPos, int yPos, String status) throws SnakeException
 	{
-		
-		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
-		Point startPoint = new Point(xPos, yPos);
-		this.startPoint = startPoint;
-		this.status = status;
-		if(status.equals(deadStatus))statusChanged = true;
-		
-		consecutiveParts.add(startPoint);
+		this(new Point(xPos, yPos), status);
 	}
 	
 	public Snake(List<Point> parts, String status) throws SnakeException
 	{
 		
-		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
-		if(parts==null)throw new SnakeException(constructorExcepMsgNullArgument);
-		if(parts.isEmpty())throw new SnakeException(constructorExcepMsgEmptyArgument);
-		if(parts.contains(null))throw new SnakeException(constructorExcepMsgNullGap);
-
-		int length = parts.size();
+		throwsExceptionIfStatusIsUnknown(status);
+		throwsExceptionIfPartsNotValid(parts);
+		
 		this.startPoint = parts.get(0);
 		this.status = status;
 		if(status.equals(deadStatus))statusChanged = true;
-		for(int n=0;n<length;n++)
-		{
-			Point p = parts.get(n);
-			
-			if(n>0&&(!isNearBy(parts.get(n-1), p)))throw new SnakeException(constructorExcepMsgDistanceGap);
-			if(n>0&&consecutiveParts.contains(p))throw new SnakeException(constructorExcepMsgDoublePoint);
-			if(n>1&&isSelfCrossing(parts.get(n-1), p))throw new SnakeException(constructorExcepMsgSelfCrossing);
-			consecutiveParts.add(new Point(p.x, p.y));
-		}
+		
+		consecutiveParts.addAll(parts);
+	}
+
+	public Snake growSnake(Point p, String status) throws SnakeException
+	{
+		return growSnake(p.x, p.y, status);
 	}
 
 	public Snake growSnake(int xPos, int yPos, String status) throws SnakeException
 	{
 
-		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);
+		throwsExceptionIfStatusIsUnknown(status);
 
 		Point head = getHead();
 		Point successorPoint = new Point(xPos, yPos);
+
+		throwsExceptionIfIsAlreadyInSnake(successorPoint);
+		throwsExceptionIfIsIllegalSuccessor(head, successorPoint);
 		
-		if(!isNearBy(head, successorPoint))throw new SnakeException(growExcepMsgNewHeadNotNearBy);
-		if(this.consecutiveParts.contains(successorPoint))throw new SnakeException(growExcepMsgNewHeadAlreadyContained);
-		if(isSelfCrossing(head, successorPoint))throw new SnakeException(growExcepMsgSelfCrossing);
 
 		List<Point> consecutiveParts_ii = new ArrayList<>();
 		consecutiveParts_ii.addAll(this.consecutiveParts);
@@ -110,25 +102,36 @@ public class Snake implements Cloneable, Serializable
 	
 	/** Only makes Sense if p and successorPoint are near to
 	 * 	each other.
+	 * @throws SnakeException 
 	 */
-	public boolean isSelfCrossing(Point p, Point successorPoint)
+	public boolean isSelfCrossing(Point p, Point successorPoint, List<Point> parts) throws SnakeException
 	{
 		
-		int xDiff = p.x-successorPoint.x;
-		int yDiff = p.y-successorPoint.y;
+		throwsExceptionIfPointIsNull(p);
+		throwsExceptionIfPointIsNull(successorPoint);
+		//Couldn't use throwsExceptionIfIsIllegalSuccessor because infinite Loop.
+		if(!isNearBy(p, successorPoint))throw new SnakeException(growExcepMsgNewHeadNotNearBy);
+
+		int xDiff = successorPoint.x-p.x;
+		int yDiff = successorPoint.y-p.y;
 		
-		if(Math.abs(xDiff)>1||xDiff==0)return false;//Diagonal Test
-		if(Math.abs(yDiff)>1||yDiff==0)return false;//Diagonal Test
+		
+		if(!(Math.abs(xDiff)==1&&Math.abs(yDiff)==1))return false;//Diagonal Test
 
 		boolean xFlanke = 
-				(consecutiveParts.contains(new Point(p.x-xDiff, p.y)));
+				(parts.contains(new Point(p.x+xDiff, p.y)));
 		
 		boolean yFlanke =
-				(consecutiveParts.contains(new Point(p.x, p.y-yDiff)));
+				(parts.contains(new Point(p.x, p.y+yDiff)));
 		
 		return yFlanke&&xFlanke;
 	}
 	
+	public boolean isSelfCrossing(Point p, Point successorPoint) throws SnakeException
+	{
+		return isSelfCrossing(p, successorPoint, consecutiveParts);
+	}
+
 	@SuppressWarnings("unchecked")
 	public Snake clone()//Deep copy?!?!
 	{
@@ -179,8 +182,11 @@ public class Snake implements Cloneable, Serializable
 		
 	}
 	
-	public boolean isNearBy(Point point, Point successorPoint)
+	public boolean isNearBy(Point point, Point successorPoint) throws SnakeException
 	{
+		
+		throwsExceptionIfPointIsNull(point);
+		throwsExceptionIfPointIsNull(successorPoint);
 		int absoluteXDiff = Math.abs(point.x-successorPoint.x);
 		int absoluteYDiff = Math.abs(point.y-successorPoint.y);
 		
@@ -193,7 +199,7 @@ public class Snake implements Cloneable, Serializable
 	public Snake changeStatus(String newStatus) throws SnakeException
 	{
 		
-		if(!statie.contains(newStatus))throw new SnakeException(excepMsgUnknownStatus);
+		throwsExceptionIfStatusIsUnknown(newStatus);
 		if(statusChanged)throw new SnakeException(excepMsgStatusChangeNotAllowedMoreThanOnce);
 		else return new Snake(consecutiveParts, newStatus);
 	}
@@ -210,9 +216,10 @@ public class Snake implements Cloneable, Serializable
 		
 	}
 	
-	public boolean containsPart(Point p)
+	public boolean containsPart(Point p) throws SnakeException
 	{
-		
+
+		throwsExceptionIfPointIsNull(p);
 		for(Point point: consecutiveParts)
 		{
 			if(point.equals(p))return true;
@@ -223,6 +230,66 @@ public class Snake implements Cloneable, Serializable
 	public String getStatus()
 	{
 		return new String(status);//Immutable?
+	}
+	
+
+	
+	public void throwsExceptionIfStatusIsUnknown(String status) throws SnakeException
+	{
+		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);	
+	}
+		
+	public void throwsExceptionIfIsAlreadyInSnake(Point p) throws SnakeException
+	{
+		if(this.consecutiveParts.contains(p))throw new SnakeException(growExcepMsgNewHeadAlreadyContained);
+	}
+
+	public void throwsExceptionIfPartsNotValid(List<Point> parts) throws SnakeException
+	{
+		if(parts==null)throw new SnakeException(constructorExcepMsgNullArgument);
+		if(parts.isEmpty())throw new SnakeException(constructorExcepMsgEmptyArgument);
+		if(parts.contains(null))throw new SnakeException(constructorExcepMsgNullGap);
+
+		
+		Set<Point> uniqueness = new HashSet<>(parts);
+		if(uniqueness.size()<parts.size())throw new SnakeException(constructorExcepMsgDoublePoint);
+		
+		
+		for(int n=0;n<parts.size();n++)
+		{
+			Point p2 = parts.get(n);
+			Point p1 = null;
+			if(n>0)
+			{
+				p1 = parts.get(n-1);
+				if(!isNearBy(p1, p2))throw new SnakeException(constructorExcepMsgDistanceGap);			
+				if(isSelfCrossing(p1, p2, parts))throw new SnakeException(constructorExcepMsgSelfCrossing);
+			}
+		}
+}
+	public void throwsExceptionIfIsIllegalSuccessor(Point A, Point successorOfA) throws SnakeException
+	{
+		if(isSelfCrossing(A, successorOfA))throw new SnakeException(growExcepMsgSelfCrossing);
+		if(!isNearBy(A, successorOfA))throw new SnakeException(growExcepMsgNewHeadNotNearBy);
+	}
+
+	public void throwsExceptionIfPointIsNull(Point p) throws SnakeException
+	{
+		if(p==null)throw new SnakeException("Point is null!");
+	}
+
+	public int hashCode()
+	{
+	       int result = 17;
+	       
+	       result = 31 * result + status.hashCode();
+	       
+	       for(int n=0;n<getLength();n++)
+	       {
+	    	   result = 31 * result + consecutiveParts.get(n).hashCode();
+	       }
+
+	       return result;
 	}
 	
 	public boolean equals(Object obj)
@@ -237,21 +304,26 @@ public class Snake implements Cloneable, Serializable
 	    if(other.getLength()!=this.getLength())return false;
 	    
 	    int length = other.getLength();
+	    int l2 = this.getLength();
+	    if(l2!=length)return false;
+	    
 	    for(int n=0;n<length;n++)
 	    {
-	    	Point otherP = other.consecutiveParts.get(n);
-	    	Point thisP = this.consecutiveParts.get(n);
-	    	if(!otherP.equals(thisP))return false;
-	    }
+
+	    	Point thisPoint = this.consecutiveParts.get(n);
+	    	Point otherPoint = other.consecutiveParts.get(n);
 	    	
+	    	if(!(thisPoint.x==otherPoint.x&&thisPoint.y==otherPoint.y))
+	    	{
+	    		System.out.println("Expected: P("+thisPoint.x+", "+thisPoint.y+")");
+	    		System.out.println("Actual: P("+otherPoint.x+", "+otherPoint.y+")");
+	    		return false;
+	    	}
+	    }
+
 	    return true;
 	}
-	
-	public int hashCode()
-	{
-		return Objects.hash(consecutiveParts, status);
-	}
-	
+
 	public String toString()
 	{
 		

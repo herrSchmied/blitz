@@ -10,7 +10,6 @@ import java.util.Set;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.exceptions.SnakeException;
 
-import static consoleTools.TerminalXDisplay.*;
 
 public class SnakeAndLatticeGrid
 {
@@ -201,7 +200,7 @@ public class SnakeAndLatticeGrid
     		return growthOptions;
     }
 
-    private boolean checkOption(Snake snake, Point newHead)
+    private boolean checkOption(Snake snake, Point newHead) throws SnakeException
     {
     	if(snake.isSelfCrossing(snake.getHead(), newHead))return false;
     	if(snake.getParts().contains(newHead))return false;

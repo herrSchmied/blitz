@@ -482,7 +482,7 @@ public class LatticeGrid
 	 * @return What if latticeCode.
 	 * @throws LTGCException if p is out of Bounds.
 	 */
-	private int getLatticeCode(int bitNr, Point p) throws LTGCException
+	public int getLatticeCode(int bitNr, Point p) throws LTGCException
 	{
 		return getLatticeCode(bitNr, p.x, p.y);
 	}
@@ -538,7 +538,7 @@ public class LatticeGrid
 	 */
 	public void throwsExceptionIfLatticeCodeAintValide(int latticeCode) throws LTGCException
 	{
-		if(latticeCode<0||latticeCode>maxLatticeCode)throw new LTGCException("Lattice Code ain't valide");
+		if(latticeCode<minLatticeCode||latticeCode>maxLatticeCode)throw new LTGCException("Lattice Code ain't valide");
 	}
 
 	/**

@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -165,7 +164,7 @@ class LatticeTileGridCanvasTest
 		System.out.println("\nAnother Divergence Test.");
 		
 		Point rightPoint = new Point(1, 0);
-		Point upPoint = new Point(0, 1);
+		//Point upPoint = new Point(0, 1);
 		//Point upRightPoint = SnakeAndLatticeGrid.addPoints(upPoint, rightPoint);
 		
 		canvas.setOneLattice(startPoint, indexLatticeBitTop);
@@ -255,8 +254,6 @@ class LatticeTileGridCanvasTest
 		frameIt(new Point(0, 0), new Point(3,3), 4, 4);
 		System.out.println("\nAnother until they Dead Test!");
 
-		
-		Snake snake = new Snake(startPoint, Snake.readyStatus);
 		
 		Point pointA = new Point(0,0);
 		Point pointB = new Point(1,0);

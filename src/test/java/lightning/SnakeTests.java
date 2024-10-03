@@ -2,6 +2,7 @@ package lightning;
 
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Point;
 
@@ -59,7 +60,7 @@ public class SnakeTests
 	{
 				
 		List<Point> points = new ArrayList<>();
-		points.add(new Point(1, 1));
+		points.add(new Point(0, 1));
 		points.add(new Point(0, 2));
 		points.add(new Point(0, 3));
 		
@@ -113,7 +114,7 @@ public class SnakeTests
 		
 		 String expectedMessage = Snake.constructorExcepMsgSelfCrossing;
 		 String actualMessage = exception.getMessage();
-
+		 
 		 assert(actualMessage.equals(expectedMessage));
 	}
 	
@@ -258,11 +259,23 @@ public class SnakeTests
 	@Test
 	public void testImmutabilityUnderGrowth() throws SnakeException
 	{
+
+		Point p0 = new Point(0,0);
+		Point p1 = new Point(1,0);
+		List<Point> parts = new ArrayList<>();
+		parts.add(p0);
+		parts.add(p1);
+
+		Snake snake0A = new Snake(parts, Snake.readyStatus);
+		Snake snake1 = new Snake(p0, Snake.readyStatus);
+		Snake snake0B = snake1.growSnake(p1, Snake.readyStatus);
 		
-		Snake snake1 = new Snake(0, 0, Snake.readyStatus);
-		Snake snake2 = snake1.growSnake(1, 0, Snake.readyStatus);
+		assert(snake1!=snake0A);
 		
-		assert(snake1!=snake2);
-		assert(!snake2.equals(snake1));
+		assert(!snake0B.equals(snake1));
+		assert(snake0B!=snake0A);
+
+		if(!snake0B.equals(snake0A))System.out.println(consoleTools.BashSigns.boldBBCPX+"hmm"+consoleTools.BashSigns.boldBBCSX);
+		assertTrue(snake0B.equals(snake0A));
 	}
 }
