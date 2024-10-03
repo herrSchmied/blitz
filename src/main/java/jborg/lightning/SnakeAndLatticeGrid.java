@@ -50,10 +50,10 @@ public class SnakeAndLatticeGrid
     		boolean hasTop = head.y<height-1;
     		boolean hasBottom = head.y>0;
     		
-    		boolean left = (hasLeft&&!lg.hasLatticeOnTheLeft(head));
-    		boolean right = (hasRight&&!lg.hasLatticeOnTheRight(head));
-    		boolean top = (hasTop&&!lg.hasLatticeOnTheTop(head));    		
-    		boolean bottom = (hasBottom&&!lg.hasLatticeOnTheBottom(head));
+    		boolean leftIsAnOption = (hasLeft&&!lg.hasLatticeOnTheLeft(head));
+    		boolean rightIsAnOption = (hasRight&&!lg.hasLatticeOnTheRight(head));
+    		boolean topIsAnOption = (hasTop&&!lg.hasLatticeOnTheTop(head));    		
+    		boolean bottomIsAnOption = (hasBottom&&!lg.hasLatticeOnTheBottom(head));
 
     		boolean hasLeftTop = head.x>0&&head.y<height-1;
     		boolean hasLeftBottom = head.x>0&&head.y>0;
@@ -141,28 +141,28 @@ public class SnakeAndLatticeGrid
     				||lLineIsolationNearBy|lLineIsolationOnTheOtherSide);
     		}
     		
-    		if(left)
+    		if(leftIsAnOption)
     		{
     			Point newHead = addPoints(snake.getHead(), relativeLeft);
     			
     			if(checkOption(snake, newHead))growthOptions.add(relativeLeft);
     		}
     		
-    		if(right)
+    		if(rightIsAnOption)
     		{
     			Point newHead = addPoints(snake.getHead(), relativeRight);
 
     			if(checkOption(snake, newHead))growthOptions.add(relativeRight);
     		}
     		
-    		if(top)
+    		if(topIsAnOption)
        		{
     			Point newHead = addPoints(snake.getHead(), relativeTop);
     			
     			if(checkOption(snake, newHead))growthOptions.add(relativeTop);
     		}
     		
-    		if(bottom)
+    		if(bottomIsAnOption)
        		{
     			Point newHead = addPoints(snake.getHead(), relativeBottom);
     			
@@ -200,11 +200,17 @@ public class SnakeAndLatticeGrid
     		return growthOptions;
     }
 
-    private boolean checkOption(Snake snake, Point newHead) throws SnakeException
+    private boolean checkOption(Snake snake, Point newHead)
     {
-    	if(snake.isSelfCrossing(snake.getHead(), newHead))return false;
-    	if(snake.getParts().contains(newHead))return false;
-    	if(!snake.isNearBy(snake.getHead(), newHead))return false;
+
+    	try
+    	{
+			Snake snake2 = snake.growSnake(newHead, snake.getStatus());
+		}
+    	catch (SnakeException e) 
+    	{
+    		return false;
+		}
 
     	return true;
     }

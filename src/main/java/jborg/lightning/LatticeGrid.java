@@ -239,6 +239,28 @@ public class LatticeGrid
 	}
 
 	/**
+	 * Sets all four Lattices on a Tile.
+	 * @param p x and y Coordinates of the Tile in question.
+	 * @throws LTGCException if p is out of Bounds.
+	 */
+	public void setAllLatticesOnTile(Point p) throws LTGCException
+	{
+		setLatticesOnTile(p.x, p.y, maxLatticeCode);
+	}
+	
+	/**
+	 * Sets all four lattices on a Tile.
+	 * 
+	 * @param x x-Coordinate of Tile in question.
+	 * @param y y-Coordinate of Tile in question.
+	 * @throws LTGCException if the Coordinates out of Bounds.
+	 */
+	public void setAllLatticesOnTile(int x, int y) throws LTGCException
+	{
+		setAllLatticesOnTile(new Point(x, y));
+	}
+
+	/**
 	 * If u for some reason have a valid latticeBit Array and
 	 * u want to know the corresponding latticeCode.
 	 * @param latticeBits Array which contains min. nrOfLatticeBits.
