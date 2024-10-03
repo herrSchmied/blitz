@@ -15,7 +15,7 @@ import jborg.lightning.Snake;
 import jborg.lightning.exceptions.SnakeException;
 
 
-public class SnakeTests
+public class SnakeTest
 {
 
 	@Test

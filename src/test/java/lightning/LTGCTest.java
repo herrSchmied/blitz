@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import jborg.lightning.LatticeTileGridCanvas;
@@ -26,7 +26,7 @@ import someMath.CollectionManipulation;
 
 import static consoleTools.TerminalXDisplay.*;
 
-class LatticeTileGridCanvasTest
+public class LTGCTest
 {
 	
 	final static int stndrtWidth = 3, stndrtHeight = 3;
@@ -53,18 +53,13 @@ class LatticeTileGridCanvasTest
 		snlGrid = canvas.getSNLGrid();
 
 	}
-
-	@BeforeEach
-	public void initStndrt() throws SnakeException, LTGCException
-	{
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
-	}
 	
 	@Test
-	public void optionsTest() throws SnakeException, LTGCException
+	public void testOptions() throws SnakeException, LTGCException
 	{
 
-		
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+
 		System.out.println("\nOptions Test.");
 		
 		canvas.setOneLattice(0, 0, indexLatticeBitTop);
@@ -81,10 +76,11 @@ class LatticeTileGridCanvasTest
 	}
 	
 	@Test
-	public void anotherOptionsTest() throws SnakeException, LTGCException
+	public void testOtherOptions() throws SnakeException, LTGCException
 	{
 
-		
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+
 		System.out.println("\nAnother Options Test.");
 		
 		canvas.setOneLattice(0, 0, indexLatticeBitRight);
@@ -101,10 +97,11 @@ class LatticeTileGridCanvasTest
 	}
 
 	@Test
-	public void againOptionsTest() throws SnakeException, LTGCException
+	public void testAgainOptions() throws SnakeException, LTGCException
 	{
 
-		
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+
 		System.out.println("\nAgain Options Test.");
 
 		List<Point> options = snlGrid.getOptions(snake);
@@ -120,9 +117,11 @@ class LatticeTileGridCanvasTest
 	}
 
 	@Test
-	public void divergenceTest() throws SnakeException, LTGCException, InterruptedException
+	public void testDivergence() throws SnakeException, LTGCException, InterruptedException
 	{
 	
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+
 		System.out.println("\nDivergence Test.");
 		
 		canvas.setOneLattice(0, 0, indexLatticeBitRight);
@@ -158,9 +157,11 @@ class LatticeTileGridCanvasTest
 	}
 	
 	@Test
-	public void anotherDivergenceTest() throws SnakeException, LTGCException, InterruptedException
+	public void testOtherDivergence() throws SnakeException, LTGCException, InterruptedException
 	{
 	
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+
 		System.out.println("\nAnother Divergence Test.");
 		
 		Point rightPoint = new Point(1, 0);
@@ -198,8 +199,10 @@ class LatticeTileGridCanvasTest
 	}
 
 	@Test
-	public void untilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
+	public void testUntilTheyDead() throws SnakeException, LTGCException, InterruptedException
 	{
+
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 
 		System.out.println("\nUntil they Dead Test!");
 
@@ -220,9 +223,11 @@ class LatticeTileGridCanvasTest
 	}
 	
 	@Test
-	public void swappedUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
+	public void testSwappedUntilTheyDead() throws SnakeException, LTGCException, InterruptedException
 	{
     
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+
 		System.out.println("Until they Dead Test! Swap start/end");
 		
 
@@ -248,10 +253,11 @@ class LatticeTileGridCanvasTest
 
 
 	@Test
-	public void anotherUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
+	public void testAnotherUntilTheyDead() throws SnakeException, LTGCException, InterruptedException
 	{
 		
 		frameIt(new Point(0, 0), new Point(3,3), 4, 4);
+		
 		System.out.println("\nAnother until they Dead Test!");
 
 		
@@ -295,9 +301,11 @@ class LatticeTileGridCanvasTest
 	}
 
 	@Test
-	public void halfIsolatedTest() throws SnakeException, LTGCException, InterruptedException
+	public void testHalfIsolated() throws SnakeException, LTGCException, InterruptedException
 	{
 		
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+
 		System.out.println("Half isolated Test.");
 				
 		Point halfIsolatedPoint = new Point(1,1);
