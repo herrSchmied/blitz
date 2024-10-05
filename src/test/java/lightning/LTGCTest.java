@@ -359,9 +359,6 @@ public class LTGCTest
 	
 	public void isolate(Point p, LatticeTileGridCanvas ltgCanvas) throws LTGCException
 	{
-		ltgCanvas.setOneLattice(p, indexLatticeBitTop);
-		ltgCanvas.setOneLattice(p, indexLatticeBitBottom);
-		ltgCanvas.setOneLattice(p, indexLatticeBitLeft);
-		ltgCanvas.setOneLattice(p, indexLatticeBitRight);
+		ltgCanvas.setAllLatticesOnTile(p);
 	}
 }

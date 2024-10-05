@@ -104,11 +104,17 @@ public class LatticeTileGridCanvas extends Canvas
 	
 	public void setOneLattice(int x, int y, int bitNr) throws LTGCException
 	{
-		if(x>widthInTiles-1||x<0)throw new LTGCException("X-Position out of Bounds.");
-		if(y>heightInTiles-1||y<0)throw new LTGCException("Y-Position out of Bounds.");
-		if(bitNr>nrOfLatticeBits||bitNr<0)throw new LTGCException("Bit Nr. not valide.");
-
 		lg.setOneLatticeOnTile(x, y, bitNr);
+	}
+	
+	public void setAllLatticesOnTile(int x, int y) throws LTGCException
+	{
+		lg.setAllLatticesOnTile(x,y);
+	}
+	
+	public void setAllLatticesOnTile(Point p) throws LTGCException
+	{
+		lg.setAllLatticesOnTile(p);
 	}
 	
 	public void drawWholeCanvas() throws LTGCException

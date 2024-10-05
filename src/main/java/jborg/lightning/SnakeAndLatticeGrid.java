@@ -205,7 +205,7 @@ public class SnakeAndLatticeGrid
 
     	try
     	{
-			Snake snake2 = snake.growSnake(newHead, snake.getStatus());
+			snake.growSnake(newHead, snake.getStatus());
 		}
     	catch (SnakeException e) 
     	{
