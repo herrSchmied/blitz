@@ -141,7 +141,17 @@ public class Snake implements Cloneable, Serializable
 		consecutiveParts.addAll(parts);
 	}
 
-	
+	/**
+	 * Creates Snake with given parts and ready Status.
+	 * 
+	 * @param parts predefined parts of the Snake.
+	 * @throws SnakeException if parts are invalid.
+	 */
+	public Snake(List<Point> parts) throws SnakeException
+	{
+		this(parts, readyStatus);
+	}
+
 	public Snake growSnake(Point p, String status) throws SnakeException
 	{
 		return growSnake(p.x, p.y, status);
