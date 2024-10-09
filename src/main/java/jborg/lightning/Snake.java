@@ -27,19 +27,65 @@ public class Snake implements Cloneable, Serializable
 {
 
 	private static final long serialVersionUID = 4520949554290687793L;
-	public static final String excepMsgUnknownStatus = "Unknown Status!";
-	public static final String excepMsgStatusChangeNotAllowedMoreThanOnce = "Status can only be changed once!";
 	
+	/**
+	 * Exception Message String.
+	 */
+	public static final String excepMsgUnknownStatus = "Unknown Status!";
+
+	/**
+	 * Exception Message String.
+	 */
+	public static final String excepMsgStatusChangeNotAllowedMoreThanOnce = "Status can only be changed once!";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String constructorExcepMsgNullArgument = "Constructor argument is null.";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String constructorExcepMsgEmptyArgument = "Constructor argument is empty.";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String constructorExcepMsgNullGap = "Constructor argument contains null.";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String constructorExcepMsgDistanceGap ="At least two consecutive Points are not near each other.";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String constructorExcepMsgDoublePoint = "Argument has at least two identical Points";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String constructorExcepMsgSelfCrossing = "In Argument is a self crossing contained.";
 
+	/**
+	 * Exception Message String.
+	 */
 	public static final String cantTestExcepMsgNullArgument = "Can't test if it is nearby because one or both Points are null!";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String growExcepMsgNewHeadNotNearBy = "New Head not near by!";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String growExcepMsgNewHeadAlreadyContained = "New Head already contained.";
+
+	/**
+	 * Exception Message String.
+	 */
 	public static final String growExcepMsgSelfCrossing = "Selfcrossing not allowed.";
 
 	/**
@@ -71,6 +117,10 @@ public class Snake implements Cloneable, Serializable
 	 * Current status of this Snake.
 	 */
 	private String status = readyStatus;
+	
+	/**
+	 * Did the Status get changed?
+	 */
 	private boolean statusChanged = false;
 
 	/**
@@ -84,6 +134,8 @@ public class Snake implements Cloneable, Serializable
 	}
 
 	/**
+	 * Constructor
+	 * 
 	 * @param startPoint the first and oldest part of the Snake.
 	 * @param status The dead status will block any further change
 	 * that means no Growing.
@@ -152,6 +204,14 @@ public class Snake implements Cloneable, Serializable
 		this(parts, readyStatus);
 	}
 
+	/** See below.
+	 * 
+	 * @param p new Head.
+	 * @param status new Status.
+	 * @return new bigger Snake.
+	 * @throws SnakeException if status is unknown or if the new
+	 * part is not a neighbor of the last part of the old snake.
+	 */
 	public Snake growSnake(Point p, String status) throws SnakeException
 	{
 		return growSnake(p.x, p.y, status);
@@ -259,18 +319,26 @@ public class Snake implements Cloneable, Serializable
 		}
 	}
 	
+	/**
+	 * Self Explanatory.
+	 * @return Oldest and First Part of the Snake.
+	 */
 	public Point getStart()
 	{
 		return (Point) startPoint.clone();
 	}
 	
+	/**
+	 * Self Explanatory.
+	 * @return Number of Parts of this Snake.
+	 */
 	public int getLength()
 	{
 		return consecutiveParts.size();
 	}
 	
 	/**
-	 * 
+	 * Self Explanatory.
 	 * @return the last and youngest part of the Snake.
 	 */
 	public Point getHead()//Immutability just returning a Deep Copy
@@ -279,10 +347,15 @@ public class Snake implements Cloneable, Serializable
 		return new Point(head.x, head.y);
 	}
 	
+	/**
+	 * Self Explanatory.
+	 * @return List of Parts of the Snake. Order Matters.
+	 * Because of Immutability it's a clone.
+	 */
 	@SuppressWarnings("unchecked")
-	public List<Point> getParts()//Im not returning the original 
-	{							 //because of immutability.
-		
+	public List<Point> getParts() 
+	{
+
 		ArrayList<Point> newParts = new ArrayList<>();
 		ArrayList<Point> cast = (ArrayList<Point>)consecutiveParts;
 		newParts = (ArrayList<Point>) cast.clone();
@@ -329,6 +402,12 @@ public class Snake implements Cloneable, Serializable
 		}
 	}
 
+	/**
+	 * Self Explanatory.
+	 * @param p Potential part of this Snake?
+	 * @return Is p Part of this Snake?
+	 * @throws SnakeException If p is null.
+	 */
 	public boolean containsPart(Point p) throws SnakeException
 	{
 
@@ -340,23 +419,45 @@ public class Snake implements Cloneable, Serializable
 		
 		return false;
 	}
+	
+	/**
+	 * Status of this Snake.
+	 * @return Status.
+	 */
 	public String getStatus()
 	{
 		return new String(status);//Immutable?
 	}
-	
 
-	
+	/**
+	 * Self Explanatory.
+	 * @param status To be checked.
+	 * @throws SnakeException If Status is null or not known.
+	 */
 	public void throwsExceptionIfStatusIsUnknown(String status) throws SnakeException
 	{
 		if(!statie.contains(status))throw new SnakeException(excepMsgUnknownStatus);	
 	}
-		
+	
+	/**
+	 * Self Explanatory.
+	 * @param p Point.
+	 * @throws SnakeException if p is already part of this Snake.
+	 */
 	public void throwsExceptionIfIsAlreadyInSnake(Point p) throws SnakeException
 	{
 		if(this.consecutiveParts.contains(p))throw new SnakeException(growExcepMsgNewHeadAlreadyContained);
 	}
 
+	/**
+	 * Exeception thrower
+	 * @param parts List of Parts of a Snake.
+	 * @throws SnakeException 
+	 * If the Parts contain Null or are Null.
+	 * If it is a empty List.
+	 * If a Part is more than one time in the List.
+	 * If the order of the Parts don't follow the Neighbor rule.
+	 */
 	public void throwsExceptionIfPartsNotValid(List<Point> parts) throws SnakeException
 	{
 		if(parts==null)throw new SnakeException(constructorExcepMsgNullArgument);
@@ -379,13 +480,26 @@ public class Snake implements Cloneable, Serializable
 				if(isSelfCrossing(p1, p2, parts))throw new SnakeException(constructorExcepMsgSelfCrossing);
 			}
 		}
-}
+	}
+	
+	/**
+	 * SelfExplanatory
+	 * 
+	 * @param A To be checked.
+	 * @param successorOfA To be checked.
+	 * @throws SnakeException If successorOfA can't follow Point A.
+	 */
 	public void throwsExceptionIfIsIllegalSuccessor(Point A, Point successorOfA) throws SnakeException
 	{
 		if(isSelfCrossing(A, successorOfA))throw new SnakeException(growExcepMsgSelfCrossing);
 		if(!isNearBy(A, successorOfA))throw new SnakeException(growExcepMsgNewHeadNotNearBy);
 	}
 
+	/**
+	 * Simple Nullcheck.
+	 * @param p Point to be checked.
+	 * @throws SnakeException if p is null.
+	 */
 	public void throwsExceptionIfPointIsNull(Point p) throws SnakeException
 	{
 		if(p==null)throw new SnakeException("Point is null!");

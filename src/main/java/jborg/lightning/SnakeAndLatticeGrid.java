@@ -11,13 +11,42 @@ import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.exceptions.SnakeException;
 
 
+/**
+ * Put's a Snake, Lattice-Grid and a final-Point together
+ * to explore all ways a snake with just one Part(Point) 
+ * can grow. The Lattices in the Lattice-Grid and the Parts of
+ * the Snake narrow the Options. There maybe no Options.
+ * In that case the snake will change status to
+ * dead-Status. Once a snake reached the finalPoint it is
+ * also Dead(dead-status). A Dead Snake will not grow further.
+*/
 public class SnakeAndLatticeGrid
 {
 	
+	/**
+	 * Starting Snake-Set which will be just one 
+	 * And May grow after executing certain Methods.
+	 */
 	private Set<Snake> snakeSet;
+	
+	/**
+	 * Contains the Positions of the Lattices.
+	 */
 	private final LatticeGrid lg;
+	
+	/**
+	 * Is the Point, when reached, will Kill the
+	 * Snake and the Snake is then a success.
+	 */
 	private final Point finalPoint;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param snake Start Snake.
+	 * @param lg contains the Postion of the Lattices.
+	 * @param finalPoint Destination for Successful Snakes.
+	 */
 	public SnakeAndLatticeGrid(Snake snake, LatticeGrid lg, Point finalPoint)
     {
 		
@@ -26,7 +55,17 @@ public class SnakeAndLatticeGrid
 		this.lg = lg;
 		this.finalPoint = finalPoint;
     }
-	
+
+	/**
+	 * Gives the Options the Argument(Snake) has for growth.
+	 * The Options are based on the Lattice Grid and the
+	 * Position of the given Snake.
+	 * @param snake Input
+	 * @return List of Points as the Options the Snake has to
+	 * grow.
+	 * @throws LTGCException Shouldn't.
+	 * @throws SnakeException Shouldn't.
+	 */
 	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException
     {
     
@@ -200,6 +239,22 @@ public class SnakeAndLatticeGrid
     		return growthOptions;
     }
 
+	/**
+	 * Given that there is no Lattice blocking or 'Frame'-Border
+	 * is a given point an Option? The only things that hinders
+	 * that is SnakeExceptions. And that's Tested here.
+	 * SnakeExceptions will be thrown if:
+	 * 1.) SelfCrossing.
+	 * 2.) Is already Part of the Snake.
+	 * 3.) Other.
+	 * Other will not happen in this API. This Method will apply
+	 * the grow Method to the given Snake and given Point. If the
+	 * Exception is thrown checkOption returns false. Otherwise
+	 * true.
+	 * @param snake To be grown.
+	 * @param newHead new Part of the grown Snake.
+	 * @return
+	 */
     private boolean checkOption(Snake snake, Point newHead)
     {
 
@@ -215,17 +270,44 @@ public class SnakeAndLatticeGrid
     	return true;
     }
     
+    /**
+     * Just convenient Point(Vector) addition.
+     * of p1 and p2.
+     * @param p1 Summand.
+     * @param p2 Summand.
+     * @return Sum of those Points.
+     */
     public static Point addPoints(Point p1, Point p2)
     {
     	return new Point(p1.x+p2.x, p1.y+p2.y);
     }
     
+    /**
+     * Set of all Snakes also the Dead ones.
+     * @return Set of Snakes.
+     */
     public Set<Snake> getSnakeSet()
     {
     	return snakeSet;
     }
     
-    public Set<Snake> theDivergence(Snake snake) throws LTGCException, SnakeException, InterruptedException
+    /**
+     * Takes a Snake and makes Potential many Snakes out of it.
+     * It may make only one out of it or zero. Each Snake in the
+     * Result Set is just the old Snake plus one part. Every valid
+     * Option will be taken to do that. This relies on the getOptions
+     * Method.
+     * @param snake Snake to grow in several Directions.
+     * @return Snake Set.of the Snakes grown.
+     * @throws LTGCException If Something goes wrong with getOptions. It is 
+     * in this API not probable.
+     * @throws SnakeException If something goes wrong with the Options Method.
+     * Or the Snake can't grow or can't change status. It is in this API not
+     * probable.
+     * @throws InterruptedException If something goes wrong with Thread.sleep().
+     * Not probable.
+     */
+    public Set<Snake> theDivergence(Snake snake) throws InterruptedException, SnakeException, LTGCException
     {
     	Set<Snake> snakeSet = new HashSet<>();
     	if(snake.getStatus().equals(Snake.deadStatus))
@@ -258,11 +340,27 @@ public class SnakeAndLatticeGrid
     	return snakeSet;
     }
     
+    /**
+     * Over-arching Method one of the only Methods that will be exposed
+     * in the final Version.
+     * @throws LTGCException Shouldn't.
+     * @throws SnakeException Shouldn't.
+     * @throws InterruptedException Shouldn't.
+     */
     public void setFinalSnakes() throws LTGCException, SnakeException, InterruptedException
     {
     	this.snakeSet = untilTheyAreAllDeadLoop(this.snakeSet);
     }
     
+    /**
+     * Takes a Set of Snakes and does the work. The Set can contain
+     * just one Snake.(Or zero).
+     * @param snakeSet Input may just be one Snake in the Set.
+     * @return Set of 'Dead' Snakes.
+     * @throws LTGCException Shouldn't.
+     * @throws SnakeException Shouldn't.
+     * @throws InterruptedException Shouldn't.
+     */
     public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException, InterruptedException
     {
     	
@@ -289,6 +387,13 @@ public class SnakeAndLatticeGrid
     	return untilTheyAreAllDeadLoop(newSnakes);
     }
     
+    /**
+     * Filters the Snake-Set for successes. Makes most sense
+     * when called after setFinalSnakes Method. A Successful
+     * Snake is one that made it to the Final-Point. Will be 
+     * exposed at the final Version.
+     * @return Snake Set
+     */
     public Set<Snake> filterSuccesses()
     {
     
