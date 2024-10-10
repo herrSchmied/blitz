@@ -1,13 +1,23 @@
 package jborg.lightning;
 
-public class SystemInfo {
+public class SystemInfo
+{
 
-    public static String javaVersion() {
+	/**
+	 * Self Explanatory.
+	 * @return java Version.
+	 */
+    public static String javaVersion()
+    {
         return System.getProperty("java.version");
     }
 
-    public static String javafxVersion() {
+    /**
+     * Self Explanatory.
+     * @return javaFX Version.
+     */
+    public static String javafxVersion()
+    {
         return System.getProperty("javafx.version");
     }
-
 }

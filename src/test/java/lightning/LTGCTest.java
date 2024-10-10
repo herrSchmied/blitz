@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jborg.lightning.LatticeTileGridCanvas;
@@ -41,7 +41,13 @@ public class LTGCTest
 	static Snake snake;
 	static SnakeAndLatticeGrid snlGrid;
 
-	public static void frameIt(Point startP, Point endP, int w, int h) throws SnakeException, LTGCException
+	@BeforeEach
+	public void stndrtFrame() throws SnakeException, LTGCException
+	{
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+	}
+
+	public void frameIt(Point startP, Point endP, int w, int h) throws SnakeException, LTGCException
 	{
 		startPoint = startP;
 		finalPoint = endP;
@@ -57,8 +63,6 @@ public class LTGCTest
 	@Test
 	public void testOptions() throws SnakeException, LTGCException
 	{
-
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 
 		System.out.println("\nOptions Test.");
 		
@@ -79,8 +83,6 @@ public class LTGCTest
 	public void testOtherOptions() throws SnakeException, LTGCException
 	{
 
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
-
 		System.out.println("\nAnother Options Test.");
 		
 		canvas.setOneLattice(0, 0, indexLatticeBitRight);
@@ -100,8 +102,6 @@ public class LTGCTest
 	public void testAgainOptions() throws SnakeException, LTGCException
 	{
 
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
-
 		System.out.println("\nAgain Options Test.");
 
 		List<Point> options = snlGrid.getOptions(snake);
@@ -120,8 +120,6 @@ public class LTGCTest
 	public void testDivergence() throws SnakeException, LTGCException, InterruptedException
 	{
 	
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
-
 		System.out.println("\nDivergence Test.");
 		
 		canvas.setOneLattice(0, 0, indexLatticeBitRight);
@@ -159,8 +157,6 @@ public class LTGCTest
 	@Test
 	public void testOtherDivergence() throws SnakeException, LTGCException, InterruptedException
 	{
-	
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 
 		System.out.println("\nAnother Divergence Test.");
 		
@@ -202,8 +198,6 @@ public class LTGCTest
 	public void testUntilTheyDead() throws SnakeException, LTGCException, InterruptedException
 	{
 
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
-
 		System.out.println("\nUntil they Dead Test!");
 
 		Point isolatedPoint = new Point(1,1);
@@ -225,8 +219,6 @@ public class LTGCTest
 	@Test
 	public void testSwappedUntilTheyDead() throws SnakeException, LTGCException, InterruptedException
 	{
-    
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 
 		System.out.println("Until they Dead Test! Swap start/end");
 		
@@ -303,8 +295,6 @@ public class LTGCTest
 	@Test
 	public void testHalfIsolated() throws SnakeException, LTGCException, InterruptedException
 	{
-		
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 
 		System.out.println("Half isolated Test.");
 				

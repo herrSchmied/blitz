@@ -14,39 +14,125 @@ import java.awt.Point;
 import java.util.function.Consumer;
 
 
-
+/**
+ * It is a Canvas. It inherits from javafx.scene.canvas.Canvas.
+ * Receives width, height, a Snake and a final-Point. It 
+ * creates a Lattice-Grid. From that a SnakeAndLatticeGrid.
+ * The Stage where this Canvas is displayed is in BlitzThing.
+ * If visuals happen than thru this class.
+ */
 public class LatticeTileGridCanvas extends Canvas
 {
 
+	/**
+	 * Canvas width in Tiles.
+	 */
 	private final int widthInTiles;
+
+	/**
+	 * Canvas height in Tiles.
+	 */
 	private final int heightInTiles;
 	
+	/**
+	 * Canvas width in Pixels.
+	 */
 	private final int absolutWidthInPixels;
+	
+	/**
+	 * Canvas height in Pixels.
+	 */
 	private final int absolutHeightInPixels;
 	
+	/**
+	 * The Tiles are quadratic. This side length
+	 * of Tiles in Pixels.
+	 */
 	private final int tileSize;
+	
+	/**
+	 * Lattice Stroke width in Pixels.
+	 */
 	private final double strokeWidthLattice;
 	
+	/**
+	 * Start point of Snake growth. Is identical
+	 * with Snake-Head at the Start.
+	 */
 	private final Point startPoint;
+	
+	/**
+	 * final Destination for successful Snakes.
+	 */
 	private final Point finalPoint;
+	
+	/**
+	 * Color of each Tile.
+	 */
 	private Color[][] colorOfTile;
+	
+	/**
+	 * Lattice Color.
+	 */
 	private final Color latticeColor;
 
+	/**
+	 * This Canvas GrapicsContext.
+	 */
 	private GraphicsContext gc2D;
+	
+	/**
+	 * LatticeGrid.
+	 */
 	LatticeGrid lg;
 	
+	/**
+	 * Snake and Lattice-Grid.
+	 * Calculation Basis for The Canvas.
+	 */
 	private final SnakeAndLatticeGrid snlGrid;
 	
+	/**
+	 * Standard stroke width Lattices.
+	 */
 	public static final double standartStrokeWidth = 3.6;
+
+	/**
+	 * Standard Tile Width.
+	 */
 	public static final int standartTileWidth = 36;
 	
+	/**
+	 * Initial Snake.
+	 */
 	public final Snake initialSnake;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param width Grid width.
+	 * @param height Grid height.
+	 * @param finalPoint success Coordinates.
+	 * @param snake initial Snake.
+	 * @throws LTGCException If Given Snake is not of length 1.
+	 */
 	public LatticeTileGridCanvas(int width, int height, Point finalPoint, Snake snake) throws LTGCException
 	{
 		this(width, height, standartTileWidth, finalPoint, snake, standartStrokeWidth);
 	}
 	
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param xTileWidth custom width in Tiles.
+	 * @param yTileHeight custom height in Tiles.
+	 * @param tileSize Tile side lenght in Pixel.
+	 * @param finalPoint Destination of successful Snakes.
+	 * @param snake initial Snake.
+	 * @param strokeWidthLattice custom stroke for lattices in Pixel.
+	 * @throws LTGCException If the given Snake has more parts then just one.
+	 */
 	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, Point finalPoint, Snake snake, double strokeWidthLattice) throws LTGCException
 	{
 
@@ -80,14 +166,17 @@ public class LatticeTileGridCanvas extends Canvas
 		initGrid();
 	}
 	
-	public void initGrid() throws LTGCException
+	/**
+	 * Sets a Plain and clear Canvas and Lattic-Grid.
+	 */
+	public void initGrid()
 	{
-		
 		walkThruTiles((p)->
 		{
+			
 			try
 			{
-				setColorOnTile(Color.GREY, p.x, p.y);
+				setColorOnTile(Color.GRAY, p);
 				lg.setLatticesOnTile(p, 0);
 			}
 			catch (LTGCException e)
@@ -97,26 +186,54 @@ public class LatticeTileGridCanvas extends Canvas
 		});
 	}
 	
+	/**
+	 * Sets one Lattice on a Tile Border.
+	 * @param p Tile Coordinates.
+	 * @param bitNr See Lattice-Grid Documentation.
+	 * @throws LTGCException See Lattice-Grid Documentation.
+	 */
 	public void setOneLattice(Point p, int bitNr) throws LTGCException
 	{
 		setOneLattice(p.x, p.y, bitNr);
 	}
 	
+	/**
+	 * Sets one Lattice on Tile Border.
+	 * @param x Tile x-Coordinate.
+	 * @param y Tile y-Coordinate.
+	 * @param bitNr See Lattice-Grid Documentation.
+	 * @throws LTGCException See Lattice-Grid Documentation.
+	 */
 	public void setOneLattice(int x, int y, int bitNr) throws LTGCException
 	{
 		lg.setOneLatticeOnTile(x, y, bitNr);
 	}
 	
+	/**
+	 * Sets Lattices on all sides of a Tile.
+	 * @param x Tile x-Coordinate.
+	 * @param y Tile y-Coordinate.
+	 * @throws LTGCException See Lattice-Grid Documentation.
+	 */
 	public void setAllLatticesOnTile(int x, int y) throws LTGCException
 	{
 		lg.setAllLatticesOnTile(x,y);
 	}
 	
+	/**
+	 * Sets Lattices on all Sides of a Tile.
+	 * @param p Tile Coordinates.
+	 * @throws LTGCException See Lattice-Grid Documentation.
+	 */
 	public void setAllLatticesOnTile(Point p) throws LTGCException
 	{
 		lg.setAllLatticesOnTile(p);
 	}
 	
+	/**
+	 * draws whole Canvas except the Snakes.
+	 * @throws LTGCException Shouldn't
+	 */
 	public void drawWholeCanvas() throws LTGCException
 	{
 		
@@ -144,6 +261,10 @@ public class LatticeTileGridCanvas extends Canvas
 		});
 	}
 	
+	/**
+	 * Applies a given Consumer to every Tile.
+	 * @param consumer What should happen at a given Point?
+	 */
 	public void walkThruTiles(Consumer<Point> consumer)
 	{
 	
@@ -155,12 +276,27 @@ public class LatticeTileGridCanvas extends Canvas
 			}
 		}
 	}
-	
+
+	/**
+	 * Changes Color of a Tile. Also the Color Data.
+	 *
+	 * @param c Color the Tile will have.
+	 * @param p Tile Coordinate.
+	 * @throws LTGCException Shouldn't
+	 */
 	public void setColorOnTile(Color c, Point p) throws LTGCException
 	{
 		setColorOnTile(c, p.x, p.y);
 	}
 
+	/**
+	 * Changes Color of a Tile. Also the Color Data.
+	 *
+	 * @param c Color the Tile will have.
+	 * @param xPos x-Coordinate of Tile.
+	 * @param yPos y-Coordinate of Tile.
+	 * @throws LTGCException Shouldn't
+	 */
 	public void setColorOnTile(Color c, int xPos, int yPos) throws LTGCException
 	{
 		
@@ -173,11 +309,24 @@ public class LatticeTileGridCanvas extends Canvas
 		colorOfTile[xPos][yPos] = c;
 	}
 	
+	/**
+	 * Draws one Lattice on a quadratic Tile.
+	 * @param p Tile Coordinates.
+	 * @param bitNr See Lattice-Grid Documentation.
+	 * @throws LTGCException Shouldn't
+	 */
 	private void drawLattice(Point p, int bitNr) throws LTGCException
 	{
 		drawLattice(p.x, p.y, bitNr);
 	}
 
+	/**
+	 * Draws one Lattice on a quadratic Tile.
+	 * @param xPosTile x-Coordinate of Tile.
+	 * @param yPosTile y-Coordinate of Tile.
+	 * @param bitNr See Lattice-Grid Documentation.
+	 * @throws LTGCException Shouldn't.
+	 */
 	private void drawLattice(int xPosTile, int yPosTile, int bitNr) throws LTGCException
 	{
 		
@@ -236,11 +385,26 @@ public class LatticeTileGridCanvas extends Canvas
 		if(!latticeBitStr.equals(""))System.out.println("Drawing LatticeBit " + latticeBitStr + posStr);
 	}
 
+	/**
+	 * Which Color has the Tile on Position p?
+	 * 
+	 * @param p Tile Coordinates.
+	 * @return Color
+	 * @throws LTGCException Shouldn't.
+	 */
 	public Color getColorOfTile(Point p) throws LTGCException
 	{
 		return getColorOfTile(p.x, p.y);
 	}
 
+	/**
+	 * Which Color has the Tile on Position (xPos, yPos)?
+	 * 
+	 * @param xPos Tile x-Coordinate.
+	 * @param yPos Tile y-Coordinate.
+	 * @return Color.
+	 * @throws LTGCException Shouldn't.
+	 */
 	public Color getColorOfTile(int xPos, int yPos) throws LTGCException
 	{
 		if(xPos>widthInTiles-1||xPos<0)throw new LTGCException("X-Position out of Bounds.");
@@ -249,37 +413,76 @@ public class LatticeTileGridCanvas extends Canvas
 		return colorOfTile[xPos][yPos];
 	}
 	
+	/**
+	 * Canvas width in Tiles.
+	 * 
+	 * @return width.
+	 */
 	public int getWidthInTiles()
 	{
 		return widthInTiles;
 	}
 
+	/**
+	 *  Canvas height in Tiles.
+	 *  
+	 * @return height.
+	 */
 	public int getHeightInTiles()
 	{
 		return heightInTiles;
 	}
 
+	/**
+	 * Canvas width in Pixels.
+	 * 
+	 * @return width.
+	 */
 	public int getAbsolutWidthInPixels()
 	{
 		return absolutWidthInPixels;
 	}
 
+	/**
+	 * Canvas height in Pixels.
+	 * 
+	 * @return height.
+	 */
 	public int getAbsolutHeightInPixels()
 	{
 		return absolutHeightInPixels;
 	}
 
+	/**
+	 * Tile side length in Pixels.
+	 * 
+	 * @return side length.
+	 */
 	public int getTileSize()
 	{
 		return tileSize;
 	}
 	
+	/**
+	 * Which lattices are on the border of a Tile at
+	 * Position p.
+	 * @param p Tile Coordinates.
+	 * @return latticeCode.
+	 * @throws LTGCException Shouldn't.
+	 */
 	public int getLatticeCode(Point p) throws LTGCException
 	{
 		
 		return getLatticeCode(p.x, p.y);
 	}
 	
+	/**
+	 * Which lattices are on Tile at Position(x,y)?
+	 * @param x x-Coordinate of Tile.
+	 * @param y y-Coordinate of Tile.
+	 * @return LatticeCode.
+	 * @throws LTGCException Shouldn't.
+	 */
 	public int getLatticeCode(int x, int y) throws LTGCException
 	{
 		
@@ -289,6 +492,10 @@ public class LatticeTileGridCanvas extends Canvas
 		return lg.getLatticeCode(x, y);
 	}
 	
+	/**
+	 * Positions, Lattices and more. All in SNL-Grid.
+	 * @return Data.
+	 */
 	public SnakeAndLatticeGrid getSNLGrid()
 	{
 		return snlGrid;

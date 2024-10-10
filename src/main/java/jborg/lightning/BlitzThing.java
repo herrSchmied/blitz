@@ -40,6 +40,8 @@ import static jborg.lightning.LatticeGrid.*;
 
 /**
  * JavaFX App
+ * Provides a Stage with some Buttons and TextFields for
+ * Lattice-Tile-Grid-Canvas.(LTGC).
  */
 
 public class BlitzThing extends Application
@@ -157,11 +159,15 @@ public class BlitzThing extends Application
     HBox startBox = new HBox();
     Button startBtn = new Button("Start");
 
+    /**
+     * Constructor
+     * 
+     */
 	public BlitzThing()
 	{
 		super();
 	}
-		
+
     @Override
     public void start(Stage stage) throws LTGCException, SnakeException
     {
@@ -272,13 +278,6 @@ public class BlitzThing extends Application
         stage.show();
         
     }    
-    
-    private void markStartAndEnd() throws LTGCException
-    {
-
-    	canvas.setColorOnTile(Color.GREEN, start);
-    	canvas.setColorOnTile(Color.RED, end);
-    }
 
     private void chooseWhereToDrawLattice(int width, int height, int latticeNr) throws LTGCException, CollectionException
     {
@@ -342,6 +341,17 @@ public class BlitzThing extends Application
     }
 
 
+    /**
+     * Graphic and LTGC Setup.
+     * 
+     * @param width Canvas width in Tiles.
+     * @param height Canvas height in Tiles.
+     * @param latticeNr How many Lattices on the Grid/Canvas?
+     * @throws LTGCException Shouldn't.
+     * @throws SnakeException Shouldn't.
+     * @throws CollectionException Shouldn't.
+     * @throws InterruptedException Shouldn't.
+     */
     public void showCanvasStage(int width, int height, int latticeNr) throws LTGCException, SnakeException, CollectionException, InterruptedException
     {
 
@@ -350,7 +360,6 @@ public class BlitzThing extends Application
         Snake snake = new Snake(start, Snake.readyStatus);
         canvas = new LatticeTileGridCanvas(width, height, end, snake);
         root.getChildren().add(canvas);
-        markStartAndEnd();
         chooseWhereToDrawLattice(width, height, latticeNr);
 
         SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
@@ -396,6 +405,10 @@ public class BlitzThing extends Application
 		return true;
     }
 
+    /**
+     * Entry Point. It starts here.
+     * @param args Theoretical Input.
+     */
     public static void main(String[] args)
     {
         Application.launch(args);

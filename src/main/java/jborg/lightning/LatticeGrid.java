@@ -64,6 +64,8 @@ public class LatticeGrid
 	public static final int indexLatticeBitTop = 3; //Top means down!!!!!!!!!!
 
 	/**
+	 * Constructor
+	 * 
 	 * @param width is the max. of how far x-Coordinate of a Lattice goes. 
 	 * How far right a Lattice can be. The min.=0 always.
 	 * @param height is the max of how far y-Coordiante of a Lattice goes.
@@ -313,6 +315,8 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Has Tile at Position(x,y) a Lattice on The Right?
+	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
@@ -331,6 +335,8 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Has Tile at Position(x,y) a Lattice on The Left?
+	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
@@ -350,6 +356,8 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Has Tile at Position(x,y) a Lattice on The Bottom.
+	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
@@ -368,11 +376,13 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Has Tile at Position(x,y) a Lattice on The Top?
+	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
 	 * on the Top?
-	 * @throws LTGCExceptionLTGCException if x or/and y is out of Bounds.
+	 * @throws LTGCException if x or/and y is out of Bounds.
 	 */
 	public boolean hasLatticeOnTheTop(int x, int y) throws LTGCException
 	{
@@ -387,11 +397,13 @@ public class LatticeGrid
 	}
 
 	/**
+	 * Has Tile at Position(x,y) a Lattice on The anywhere?
+	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
 	 * anywhere?
-	 * @throws LTGCExceptionLTGCException if x or/and y is out of Bounds.
+	 * @throws LTGCException if x or/and y is out of Bounds.
 	 */
 	public boolean hasLatticeSomeWhere(int x, int y)throws LTGCException
 	{
@@ -405,6 +417,8 @@ public class LatticeGrid
 	}
 
 	/**
+	 * Has Tile at Position p a Lattice on The Right?
+	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
 	 * on the Right?
@@ -416,6 +430,8 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Has Tile at Position p a Lattice on The Left?
+	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
 	 * on the Left?
@@ -427,6 +443,8 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Has Tile at Position p a Lattice on The Bottom?
+	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
 	 * on the Bottom?
@@ -438,6 +456,8 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Has Tile at Position p a Lattice on The Top?
+	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
 	 * on the Top?
@@ -449,6 +469,8 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Does Tile on Position p have any Lattices?
+	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
 	 * anywhere?
@@ -463,6 +485,7 @@ public class LatticeGrid
 	 * If Tile on the given position (x, y) has latticeBit(bitNr)
 	 * changed to true. What would be the latticeCode of that Tile
 	 * be?
+	 * 
 	 * @param bitNr
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
@@ -499,7 +522,7 @@ public class LatticeGrid
 	 * If Tile on the given position p has latticeBit(bitNr)
 	 * changed to true. What would be the latticeCode of that Tile
 	 * be?
-	 * @param bitNr
+	 * @param bitNr See Lattice-Grid Documentation.
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return What if latticeCode.
 	 * @throws LTGCException if p is out of Bounds.
@@ -521,6 +544,7 @@ public class LatticeGrid
 	}
 
 	/**
+	 * Grid Width.
 	 * 
 	 * @return max. x Coordinate for lattices.
 	 */
@@ -530,6 +554,7 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Grid Height.
 	 * 
 	 * @return max. y Coordinate for lattices.
 	 */
@@ -575,12 +600,23 @@ public class LatticeGrid
 		if(bitNr<0||bitNr>(nrOfLatticeBits-1))throw new LTGCException("Bit Nr. ain't valide");
 	}
 	
+	/**
+	 * Exception thrower.
+	 * @param p To be checked.
+	 * @throws LTGCException if p is null.
+	 */
 	public void throwsExceptionIfPIsNull(Point p) throws LTGCException
 	{
 		if(p==null)throw new LTGCException("Point is null!");
 
 	}
 	
+	/**
+	 * Exception thrower.
+	 * 
+	 * @param latticeBits to be checked.
+	 * @throws LTGCException if latticeBits are not valid.
+	 */
 	public void throwsExceptionIfArrayIsNotValid(boolean [] latticeBits) throws LTGCException
 	{
 
