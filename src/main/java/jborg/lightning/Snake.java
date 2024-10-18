@@ -540,12 +540,8 @@ public class Snake implements Cloneable, Serializable
 	    	Point thisPoint = this.consecutiveParts.get(n);
 	    	Point otherPoint = other.consecutiveParts.get(n);
 	    	
-	    	if(!(thisPoint.x==otherPoint.x&&thisPoint.y==otherPoint.y))
-	    	{
-	    		System.out.println("Expected: P("+thisPoint.x+", "+thisPoint.y+")");
-	    		System.out.println("Actual: P("+otherPoint.x+", "+otherPoint.y+")");
-	    		return false;
-	    	}
+	    	if(!(thisPoint.x==otherPoint.x&&thisPoint.y==otherPoint.y))return false;
+
 	    }
 
 	    return true;

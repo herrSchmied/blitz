@@ -95,7 +95,7 @@ public class BlitzThing extends Application
 	        {
 				while(!canvasDone.get())
 				{
-						Thread.sleep(12000);
+						Thread.sleep(1200);
 						System.out.println("Waiting for other Canvas Thread!");
 				}
 
@@ -168,6 +168,9 @@ public class BlitzThing extends Application
 		super();
 	}
 
+	/**
+	 * Responsible for setting up The primary-Stage.
+	 */
     @Override
     public void start(Stage stage) throws LTGCException, SnakeException
     {
@@ -265,7 +268,7 @@ public class BlitzThing extends Application
         	{
 				showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
 
-				Thread.sleep(1250);
+				Thread.sleep(250);
 				Platform.runLater(drawSnake);
 			}
         	catch (LTGCException | SnakeException | CollectionException | InterruptedException e)

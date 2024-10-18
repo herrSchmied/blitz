@@ -3,8 +3,11 @@ package jborg.lightning;
 import java.awt.Point;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import jborg.lightning.exceptions.LTGCException;
@@ -22,6 +25,18 @@ import jborg.lightning.exceptions.SnakeException;
 */
 public class SnakeAndLatticeGrid
 {
+	
+	private Point lPos = new Point(-1, 0);
+	private Point rPos = new Point(+1, 0);
+	private Point tPos = new Point(0,+1);
+	private Point bPos = new Point(0,-1);
+	private Point ltPos = addPoints(lPos, tPos);
+	private Point lbPos = addPoints(lPos, bPos);
+	private Point rtPos = addPoints(rPos, tPos);
+	private Point rbPos = addPoints(rPos, bPos);
+	
+	private Set<Point> posPointSet = new HashSet<>(Arrays.asList(lPos,rPos,tPos,bPos,ltPos,lbPos,rtPos,rbPos));
+
 	
 	/**
 	 * Starting Snake-Set which will be just one 
@@ -68,176 +83,106 @@ public class SnakeAndLatticeGrid
 	 */
 	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException
     {
-    
-    	
-    		Point relativeLeft = new Point(-1, 0);
-    		Point relativeRight = new Point(+1, 0);
-    		Point relativeTop = new Point(0,+1);
-    		Point relativeBottom = new Point(0,-1);
-    		Point relativeLeftTop = addPoints(relativeLeft, relativeTop);
-    		Point relativeLeftBottom = addPoints(relativeLeft, relativeBottom);
-    		Point relativeRightTop = addPoints(relativeRight, relativeTop);
-    		Point relativeRightBottom = addPoints(relativeRight, relativeBottom);
-    		
-    		Point head = snake.getHead();
-    		List<Point> growthOptions = new ArrayList<>();
-    		int width = lg.getWidth();
-    		int height = lg.getHeight();
-    		
-    		boolean hasLeft = head.x>0;
-    		boolean hasRight = head.x<width-1;
-    		boolean hasTop = head.y<height-1;
-    		boolean hasBottom = head.y>0;
-    		
-    		boolean leftIsAnOption = (hasLeft&&!lg.hasLatticeOnTheLeft(head));
-    		boolean rightIsAnOption = (hasRight&&!lg.hasLatticeOnTheRight(head));
-    		boolean topIsAnOption = (hasTop&&!lg.hasLatticeOnTheTop(head));    		
-    		boolean bottomIsAnOption = (hasBottom&&!lg.hasLatticeOnTheBottom(head));
 
-    		boolean hasLeftTop = head.x>0&&head.y<height-1;
-    		boolean hasLeftBottom = head.x>0&&head.y>0;
-    		boolean hasRightTop = head.x<width-1&&head.y<height-1;
-    		boolean hasRightBottom = head.x<width-1&&head.y>0;
-    		
-    		boolean leftTop = false;
-    		if(!hasLeftTop)leftTop= false;
-    		else
-    		{
-    			
-    			Point dest = addPoints(head, relativeLeftTop);
-    			boolean destinationRight = lg.hasLatticeOnTheRight(dest);
-    			boolean destinationBottom = lg.hasLatticeOnTheBottom(dest);
-    			boolean headLeft = lg.hasLatticeOnTheLeft(head);
-    			boolean headTop = lg.hasLatticeOnTheTop(head);
-    			
-    			boolean verticalLineIsolation = headLeft&&destinationRight;
-    			boolean horizontalLineIsolation = headTop&&destinationBottom;
-    			boolean lLineIsolationNearBy = headLeft&&headTop;
-    			boolean lLineIsolationOnTheOtherSide = destinationRight
-    													&&destinationBottom;
-    	
-    			leftTop = !(verticalLineIsolation||horizontalLineIsolation
-    				||lLineIsolationNearBy||lLineIsolationOnTheOtherSide);
-    		}
-    	
-    		boolean leftBottom = false;
-    		if(!hasLeftBottom)leftBottom= false;
-    		else
-    		{
-    			
-    			Point dest = addPoints(head, relativeLeftBottom);
-    			boolean destinationRight = lg.hasLatticeOnTheRight(dest);
-    			boolean destinationTop = lg.hasLatticeOnTheTop(dest);
-    			boolean headLeft = lg.hasLatticeOnTheLeft(head);
-    			boolean headBottom = lg.hasLatticeOnTheBottom(head);
-    			
-    			boolean verticalLineIsolation = headLeft&&destinationRight;
-    			boolean horizontalLineIsolation = headBottom&&destinationTop;
-    			boolean lLineIsolationNearBy = headLeft&&headBottom;
-    			boolean lLineIsolationOnTheOtherSide = destinationRight&&destinationTop;
-    			
-    			leftBottom = !(verticalLineIsolation||horizontalLineIsolation
-    				||lLineIsolationNearBy||lLineIsolationOnTheOtherSide);
-    		}
+		Point head = snake.getHead();
+   		
+		List<Point> growthOptions = new ArrayList<>();
+   		int width = lg.getWidth();
+   		int height = lg.getHeight();
+   		    		
+   		boolean hasLeft = head.x>0;
+   		boolean hasRight = head.x<width-1;
+   		boolean hasTop = head.y<height-1;
+   		boolean hasBottom = head.y>0;
 
-    		boolean rightBottom = false;
-    		if(!hasRightBottom)rightBottom= false;
-    		else
-    		{
-    			
-    			Point dest = addPoints(head, relativeRightBottom);
-    			boolean destinationLeft = lg.hasLatticeOnTheLeft(dest);
-    			boolean destinationTop = lg.hasLatticeOnTheTop(dest);
-    			boolean headRight = lg.hasLatticeOnTheRight(head);
-    			boolean headBottom = lg.hasLatticeOnTheBottom(head);
-    			
-    			boolean verticalLineIsolation = headRight&&destinationLeft;
-    			boolean horizontalLineIsolation = headBottom&&destinationTop;
-    			boolean lLineIsolationNearBy = headRight&&headBottom;
-    			boolean lLineIsolationOnTheOtherSide = destinationLeft&&destinationTop;
-    	
-    			rightBottom = !(verticalLineIsolation||horizontalLineIsolation
-    				||lLineIsolationNearBy||lLineIsolationOnTheOtherSide);
-    		}
+   		boolean orthogonalBits[]=new boolean[4];
+   		Map<Point, Boolean> pointToThePoint = new HashMap<>();
     		
-    		boolean rightTop = false;
-    		if(!hasRightTop)rightTop= false;
-    		else
-    		{
-    			
-    			Point dest = addPoints(head, relativeRightTop);
-    			boolean destinationLeft = lg.hasLatticeOnTheLeft(dest);
-        		boolean headRight = lg.hasLatticeOnTheRight(head);
-        		boolean headTop = lg.hasLatticeOnTheTop(head);
-    			boolean destinationBottom = lg.hasLatticeOnTheBottom(dest);
-    			
-    			boolean verticalLineIsolation = headRight&&destinationLeft;
-    			boolean horizontalLineIsolation = headTop&&destinationBottom;
-    			boolean lLineIsolationNearBy = headRight&&headTop;
-    			boolean lLineIsolationOnTheOtherSide = destinationBottom&&destinationLeft;
-    	
-    			rightTop = !(verticalLineIsolation||horizontalLineIsolation
-    				||lLineIsolationNearBy|lLineIsolationOnTheOtherSide);
-    		}
-    		
-    		if(leftIsAnOption)
-    		{
-    			Point newHead = addPoints(snake.getHead(), relativeLeft);
-    			
-    			if(checkOption(snake, newHead))growthOptions.add(relativeLeft);
-    		}
-    		
-    		if(rightIsAnOption)
-    		{
-    			Point newHead = addPoints(snake.getHead(), relativeRight);
+   		boolean leftIsAnOption = (hasLeft&&!lg.hasLatticeOnTheLeft(head));
+   		pointToThePoint.put(lPos, leftIsAnOption);
+   		boolean rightIsAnOption = (hasRight&&!lg.hasLatticeOnTheRight(head));
+   		pointToThePoint.put(rPos, rightIsAnOption);
+   		boolean topIsAnOption = (hasTop&&!lg.hasLatticeOnTheTop(head));    		
+   		pointToThePoint.put(tPos, topIsAnOption);
+   		boolean bottomIsAnOption = (hasBottom&&!lg.hasLatticeOnTheBottom(head));
+   		pointToThePoint.put(bPos, bottomIsAnOption);
 
-    			if(checkOption(snake, newHead))growthOptions.add(relativeRight);
-    		}
+   		boolean hasLeftTop = head.x>0&&head.y<height-1;
+   		boolean hasLeftBottom = head.x>0&&head.y>0;
+   		boolean hasRightTop = head.x<width-1&&head.y<height-1;
+   		boolean hasRightBottom = head.x<width-1&&head.y>0;
+
+		boolean leftTop = false;
+		if(hasLeftTop&&checkDiagonal(head, ltPos))leftTop=true;
+		pointToThePoint.put(ltPos, leftTop);
+
+   		boolean leftBottom = false;
+   		if(hasLeftBottom&&checkDiagonal(head, lbPos))leftBottom=true;
+   		pointToThePoint.put(lbPos, leftBottom);
+
+   		boolean rightBottom = false;
+   		if(hasRightBottom&&checkDiagonal(head, rbPos))rightBottom=true;
+   		pointToThePoint.put(rbPos, rightBottom);
+
+   		boolean rightTop = false;
+   		if(hasRightTop&&checkDiagonal(head, rtPos))rightTop=true;
+   		pointToThePoint.put(rtPos, rightTop);
     		
-    		if(topIsAnOption)
-       		{
-    			Point newHead = addPoints(snake.getHead(), relativeTop);
-    			
-    			if(checkOption(snake, newHead))growthOptions.add(relativeTop);
-    		}
-    		
-    		if(bottomIsAnOption)
-       		{
-    			Point newHead = addPoints(snake.getHead(), relativeBottom);
-    			
-    			if(checkOption(snake, newHead))growthOptions.add(relativeBottom);
-    		}
-    		
-    		if(leftTop)
-       		{
-    			Point newHead = addPoints(snake.getHead(), relativeLeftTop);
-    			
-    			if(checkOption(snake, newHead))growthOptions.add(relativeLeftTop);
-    		}
-       		
-    		if(leftBottom)
-       		{
-    			Point newHead = addPoints(snake.getHead(), relativeLeftBottom);
-    			
-    			if(checkOption(snake, newHead))growthOptions.add(relativeLeftBottom);
-    		}
-    		
-    		if(rightTop)
-       		{
-    			Point newHead = addPoints(snake.getHead(), relativeRightTop);
-    			
-    			if(checkOption(snake, newHead))growthOptions.add(relativeRightTop);
-    		}
-    		
-    		if(rightBottom)
-       		{
-    			Point newHead = addPoints(snake.getHead(), relativeRightBottom);
-    			
-    			if(checkOption(snake, newHead))growthOptions.add(relativeRightBottom);
-    		}
-    		
-    		return growthOptions;
+   		for(Point posPoint: pointToThePoint.keySet())
+   		{
+  			if(pointToThePoint.get(posPoint))
+   			{
+   				Point newHead = addPoints(head, posPoint);
+   				if(checkOption(snake, newHead))growthOptions.add(newHead);
+   			}
+   		}
+
+    	return growthOptions;
     }
+
+	private boolean checkDiagonal(Point p, Point relative) throws LTGCException
+	{
+
+		
+		Point dest = addPoints(p, relative);
+
+		int cnt=0;
+
+		if(relative.x==-1&&relative.y==-1)
+		{
+			if(lg.hasLatticeOnTheLeft(p))cnt++;
+			if(lg.hasLatticeOnTheRight(dest))cnt++;
+			if(lg.hasLatticeOnTheBottom(p))cnt++;
+			if(lg.hasLatticeOnTheTop(dest))cnt++;
+		}
+
+		if(relative.x==-1&&relative.y==1)
+		{
+				
+			if(lg.hasLatticeOnTheLeft(p))cnt++;
+			if(lg.hasLatticeOnTheRight(dest))cnt++;
+			if(lg.hasLatticeOnTheTop(p))cnt++;
+			if(lg.hasLatticeOnTheBottom(dest))cnt++;
+		}
+
+		if(relative.x==1&&relative.y==-1)
+		{
+			if(lg.hasLatticeOnTheRight(p))cnt++;
+			if(lg.hasLatticeOnTheLeft(dest))cnt++;
+			if(lg.hasLatticeOnTheBottom(p))cnt++;
+			if(lg.hasLatticeOnTheTop(dest))cnt++;
+		}
+
+		if(relative.x==1&&relative.y==1)
+		{	
+			if(lg.hasLatticeOnTheRight(p))cnt++;
+			if(lg.hasLatticeOnTheLeft(dest))cnt++;
+			if(lg.hasLatticeOnTheTop(p))cnt++;
+			if(lg.hasLatticeOnTheBottom(dest))cnt++;
+		}
+
+		return (cnt>=2);
+	}
 
 	/**
 	 * Given that there is no Lattice blocking or 'Frame'-Border
@@ -332,8 +277,7 @@ public class SnakeAndLatticeGrid
     	for(Point p: options)
     	{
     		
-    		Point newHead = addPoints(snake.getHead(), p);
-    		Snake spawn = snake.growSnake(newHead.x, newHead.y, Snake.readyStatus);
+    		Snake spawn = snake.growSnake(p.x, p.y, Snake.readyStatus);
     		snakeSet.add(spawn);
     	}
     	
