@@ -13,20 +13,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
-import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.exceptions.SnakeException;
+
 import someMath.CollectionException;
 import someMath.CollectionManipulation;
 
 import static consoleTools.TerminalXDisplay.*;
 
-public class LTGCTest
+public class LatticeTileGridCanvasTest
 {
 	
 	final static int stndrtWidth = 3, stndrtHeight = 3;
@@ -41,13 +43,8 @@ public class LTGCTest
 	static Snake snake;
 	static SnakeAndLatticeGrid snlGrid;
 
-	@BeforeEach
-	public void stndrtFrame() throws SnakeException, LTGCException
-	{
-		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
-	}
-
-	public void frameIt(Point startP, Point endP, int w, int h) throws SnakeException, LTGCException
+	
+	public static void frameIt(Point startP, Point endP, int w, int h) throws SnakeException, LTGCException
 	{
 		startPoint = startP;
 		finalPoint = endP;
@@ -59,11 +56,18 @@ public class LTGCTest
 		snlGrid = canvas.getSNLGrid();
 
 	}
+
+	@BeforeEach
+	public void initStndrt() throws SnakeException, LTGCException
+	{
+		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
+	}
 	
 	@Test
-	public void testOptions() throws SnakeException, LTGCException
+	public void optionsTest() throws SnakeException, LTGCException
 	{
 
+		
 		System.out.println("\nOptions Test.");
 		
 		canvas.setOneLattice(0, 0, indexLatticeBitTop);
@@ -80,9 +84,10 @@ public class LTGCTest
 	}
 	
 	@Test
-	public void testOtherOptions() throws SnakeException, LTGCException
+	public void anotherOptionsTest() throws SnakeException, LTGCException
 	{
 
+		
 		System.out.println("\nAnother Options Test.");
 		
 		canvas.setOneLattice(0, 0, indexLatticeBitRight);
@@ -99,9 +104,10 @@ public class LTGCTest
 	}
 
 	@Test
-	public void testAgainOptions() throws SnakeException, LTGCException
+	public void againOptionsTest() throws SnakeException, LTGCException
 	{
 
+		
 		System.out.println("\nAgain Options Test.");
 
 		List<Point> options = snlGrid.getOptions(snake);
@@ -117,7 +123,7 @@ public class LTGCTest
 	}
 
 	@Test
-	public void testDivergence() throws SnakeException, LTGCException, InterruptedException
+	public void divergenceTest() throws SnakeException, LTGCException, InterruptedException
 	{
 	
 		System.out.println("\nDivergence Test.");
@@ -155,13 +161,13 @@ public class LTGCTest
 	}
 	
 	@Test
-	public void testOtherDivergence() throws SnakeException, LTGCException, InterruptedException
+	public void anotherDivergenceTest() throws SnakeException, LTGCException, InterruptedException
 	{
-
+	
 		System.out.println("\nAnother Divergence Test.");
 		
 		Point rightPoint = new Point(1, 0);
-		//Point upPoint = new Point(0, 1);
+		Point upPoint = new Point(0, 1);
 		//Point upRightPoint = SnakeAndLatticeGrid.addPoints(upPoint, rightPoint);
 		
 		canvas.setOneLattice(startPoint, indexLatticeBitTop);
@@ -195,7 +201,7 @@ public class LTGCTest
 	}
 
 	@Test
-	public void testUntilTheyDead() throws SnakeException, LTGCException, InterruptedException
+	public void untilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
 	{
 
 		System.out.println("\nUntil they Dead Test!");
@@ -217,9 +223,9 @@ public class LTGCTest
 	}
 	
 	@Test
-	public void testSwappedUntilTheyDead() throws SnakeException, LTGCException, InterruptedException
+	public void swappedUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
 	{
-
+    
 		System.out.println("Until they Dead Test! Swap start/end");
 		
 
@@ -245,13 +251,14 @@ public class LTGCTest
 
 
 	@Test
-	public void testAnotherUntilTheyDead() throws SnakeException, LTGCException, InterruptedException
+	public void anotherUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
 	{
 		
 		frameIt(new Point(0, 0), new Point(3,3), 4, 4);
-		
 		System.out.println("\nAnother until they Dead Test!");
 
+		
+		Snake snake = new Snake(startPoint, Snake.readyStatus);
 		
 		Point pointA = new Point(0,0);
 		Point pointB = new Point(1,0);
@@ -293,9 +300,9 @@ public class LTGCTest
 	}
 
 	@Test
-	public void testHalfIsolated() throws SnakeException, LTGCException, InterruptedException
+	public void halfIsolatedTest() throws SnakeException, LTGCException, InterruptedException
 	{
-
+		
 		System.out.println("Half isolated Test.");
 				
 		Point halfIsolatedPoint = new Point(1,1);
@@ -327,7 +334,7 @@ public class LTGCTest
 		System.out.println("\nOne of the long a ways");
 		System.out.println(success);
 		System.out.println("Successful Snakes: " + successes.size());
-		//TODO: assert(success.getLength()==9); //All nine Fields.
+		assert(success.getLength()==9); //All nine Fields.
 		
 		System.out.println("Final Snakes: " + finalSnakes.size() + "\n");
 	}
@@ -349,6 +356,9 @@ public class LTGCTest
 	
 	public void isolate(Point p, LatticeTileGridCanvas ltgCanvas) throws LTGCException
 	{
-		ltgCanvas.setAllLatticesOnTile(p);
+		ltgCanvas.setOneLattice(p, indexLatticeBitTop);
+		ltgCanvas.setOneLattice(p, indexLatticeBitBottom);
+		ltgCanvas.setOneLattice(p, indexLatticeBitLeft);
+		ltgCanvas.setOneLattice(p, indexLatticeBitRight);
 	}
 }

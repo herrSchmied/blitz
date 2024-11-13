@@ -96,45 +96,27 @@ public class SnakeAndLatticeGrid
    		boolean hasBottom = head.y>0;
 
    		boolean orthogonalBits[]=new boolean[4];
-   		Map<Point, Boolean> pointToThePoint = new HashMap<>();
+   		Set<Point> pointToThePoint = new HashSet<>();
     		
-   		boolean leftIsAnOption = (hasLeft&&!lg.hasLatticeOnTheLeft(head));
-   		pointToThePoint.put(lPos, leftIsAnOption);
-   		boolean rightIsAnOption = (hasRight&&!lg.hasLatticeOnTheRight(head));
-   		pointToThePoint.put(rPos, rightIsAnOption);
-   		boolean topIsAnOption = (hasTop&&!lg.hasLatticeOnTheTop(head));    		
-   		pointToThePoint.put(tPos, topIsAnOption);
-   		boolean bottomIsAnOption = (hasBottom&&!lg.hasLatticeOnTheBottom(head));
-   		pointToThePoint.put(bPos, bottomIsAnOption);
+   		if(hasLeft&&!lg.hasLatticeOnTheLeft(head))pointToThePoint.add(lPos);
+   		if(hasRight&&!lg.hasLatticeOnTheRight(head))pointToThePoint.add(rPos);
+   		if(hasTop&&!lg.hasLatticeOnTheTop(head))pointToThePoint.add(tPos);
+   		if(hasBottom&&!lg.hasLatticeOnTheBottom(head))pointToThePoint.add(bPos);
 
    		boolean hasLeftTop = head.x>0&&head.y<height-1;
    		boolean hasLeftBottom = head.x>0&&head.y>0;
    		boolean hasRightTop = head.x<width-1&&head.y<height-1;
    		boolean hasRightBottom = head.x<width-1&&head.y>0;
 
-		boolean leftTop = false;
-		if(hasLeftTop&&checkDiagonal(head, ltPos))leftTop=true;
-		pointToThePoint.put(ltPos, leftTop);
-
-   		boolean leftBottom = false;
-   		if(hasLeftBottom&&checkDiagonal(head, lbPos))leftBottom=true;
-   		pointToThePoint.put(lbPos, leftBottom);
-
-   		boolean rightBottom = false;
-   		if(hasRightBottom&&checkDiagonal(head, rbPos))rightBottom=true;
-   		pointToThePoint.put(rbPos, rightBottom);
-
-   		boolean rightTop = false;
-   		if(hasRightTop&&checkDiagonal(head, rtPos))rightTop=true;
-   		pointToThePoint.put(rtPos, rightTop);
+		if(hasLeftTop&&checkDiagonal(head, ltPos))pointToThePoint.add(ltPos);
+   		if(hasLeftBottom&&checkDiagonal(head, lbPos))pointToThePoint.add(lbPos);
+   		if(hasRightBottom&&checkDiagonal(head, rbPos))pointToThePoint.add(rbPos);
+   		if(hasRightTop&&checkDiagonal(head, rtPos))pointToThePoint.add(rtPos);
     		
-   		for(Point posPoint: pointToThePoint.keySet())
+   		for(Point posPoint: pointToThePoint)
    		{
-  			if(pointToThePoint.get(posPoint))
-   			{
-   				Point newHead = addPoints(head, posPoint);
-   				if(checkOption(snake, newHead))growthOptions.add(newHead);
-   			}
+   			Point newHead = addPoints(head, posPoint);
+   			if(checkOption(snake, newHead))growthOptions.add(newHead);
    		}
 
     	return growthOptions;

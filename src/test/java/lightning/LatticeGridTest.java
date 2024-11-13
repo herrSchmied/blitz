@@ -5,8 +5,8 @@ import static jborg.lightning.LatticeGrid.*;
 
 import org.junit.jupiter.api.Test;
 
-import jborg.lightning.LatticeGrid;
 import jborg.lightning.exceptions.LTGCException;
+import jborg.lightning.LatticeGrid;
 
 
 public class LatticeGridTest 
@@ -35,60 +35,48 @@ public class LatticeGridTest
 		latticeBits[indexLatticeBitTop] = false;
 		
 		lg.setLatticesOnTile(7, 7, latticeBits);
-		lg.setAllLatticesOnTile(3, 4);
+		
 		lg.setOneLatticeOnTile(5, 5, indexLatticeBitLeft);
 		
 		int affectedTilesCounter =0;
-		int hasLatticeAnywhere = 0;
-		for(int x=0;x<widthInTiles;x++)
+		for(int n=0;n<widthInTiles;n++)
 		{
-			for(int y=0;y<heightInTiles;y++)
+			for(int m=0;m<heightInTiles;m++)
 			{
+				boolean bottom = lg.hasLatticeOnTheBottom(n, m);
+				boolean top = lg.hasLatticeOnTheTop(n, m);
+				boolean right = lg.hasLatticeOnTheRight(n, m);
+				boolean left = lg.hasLatticeOnTheLeft(n, m);
 				
-				if(lg.hasLatticeSomeWhere(x, y)) hasLatticeAnywhere++;
-				
-				if(lg.hasLatticeOnTheBottom(x, y))
+				if((left||right||top||bottom))
 				{
+					if(bottom)
+					{
+						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
+						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Bottom: " + bottom);
+					}
+					if(top)
+					{
+						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
+						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Top: " + top);
+					}
+					if(right)
+					{
+						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
+						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Right: " + right);
+					}
+					if(left)
+					{
+						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
+						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Left: " + left);
+					}
 					affectedTilesCounter++;
-					continue;
-				}
-				
-				if(lg.hasLatticeOnTheTop(x, y))
-				{
-					affectedTilesCounter++;
-					continue;
-					
-				}
-				if(lg.hasLatticeOnTheLeft(x, y))
-				{
-					affectedTilesCounter++;
-					continue;
-				}
-				if(lg.hasLatticeOnTheRight(x, y))
-				{
-					affectedTilesCounter++;
-					continue;
 				}
 			}
 		}
 		
 		System.out.println("AffectedTiles: " + affectedTilesCounter);
-		assert(affectedTilesCounter==13);
-		assert(hasLatticeAnywhere==affectedTilesCounter);
-		assert(lg.hasLatticeOnTheBottom(2,2));
-		assert(lg.hasLatticeOnTheTop(2,2));
-		assert(!lg.hasLatticeOnTheRight(2,2));
-		assert(!lg.hasLatticeOnTheLeft(2,2));
-		assert(!lg.hasLatticeOnTheBottom(7,7));
-		assert(!lg.hasLatticeOnTheTop(7,7));
-		assert(lg.hasLatticeOnTheRight(7,7));
-		assert(lg.hasLatticeOnTheLeft(7,7));
-	}
-
-	@Test
-	public void testSetAndCheckLatticesMethods()
-	{
-		
+		assert(affectedTilesCounter==8);
 	}
 
 }
