@@ -316,6 +316,7 @@ public class LatticeGrid
 	
 	/**
 	 * Has Tile at Position(x,y) a Lattice on The Right?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
@@ -326,7 +327,7 @@ public class LatticeGrid
 	public boolean hasLatticeOnTheRight(int x, int y) throws LTGCException
 	{
 		throwsExceptionIfOutOfBounds(x, y);
-		//TODO: Figure this out!!if(x==width-1)return true;
+		if(x==width-1)return true;
 		
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
@@ -336,6 +337,7 @@ public class LatticeGrid
 	
 	/**
 	 * Has Tile at Position(x,y) a Lattice on The Left?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
@@ -347,7 +349,7 @@ public class LatticeGrid
 	{
 		
 		throwsExceptionIfOutOfBounds(x, y);
-		//TODO: Figure this out!!if(x==0)return true;
+		if(x==0)return true;
 
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
@@ -357,6 +359,7 @@ public class LatticeGrid
 	
 	/**
 	 * Has Tile at Position(x,y) a Lattice on The Bottom.
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
@@ -367,7 +370,7 @@ public class LatticeGrid
 	public boolean hasLatticeOnTheBottom(int x, int y) throws LTGCException
 	{
 		throwsExceptionIfOutOfBounds(x, y);
-		//TODO: Figure this out!!if(y==height-1)return true;
+		if(y==0)return true;
 
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
@@ -377,6 +380,7 @@ public class LatticeGrid
 	
 	/**
 	 * Has Tile at Position(x,y) a Lattice on The Top?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
@@ -388,7 +392,7 @@ public class LatticeGrid
 	{
 		
 		throwsExceptionIfOutOfBounds(x, y);
-		//TODO: Figure this out!!if(y==0)return true;
+		if(y==height-1)return true;
 		
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
@@ -398,6 +402,7 @@ public class LatticeGrid
 
 	/**
 	 * Has Tile at Position(x,y) a Lattice on The anywhere?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param x x-Coordinate of Tile in question.
 	 * @param y y-Coordinate of Tile in question.
@@ -418,6 +423,7 @@ public class LatticeGrid
 
 	/**
 	 * Has Tile at Position p a Lattice on The Right?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
@@ -431,6 +437,7 @@ public class LatticeGrid
 	
 	/**
 	 * Has Tile at Position p a Lattice on The Left?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
@@ -444,6 +451,7 @@ public class LatticeGrid
 	
 	/**
 	 * Has Tile at Position p a Lattice on The Bottom?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
@@ -457,6 +465,7 @@ public class LatticeGrid
 	
 	/**
 	 * Has Tile at Position p a Lattice on The Top?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice
@@ -470,6 +479,7 @@ public class LatticeGrid
 	
 	/**
 	 * Does Tile on Position p have any Lattices?
+	 * Framborders are considered to have a Lattice!!!!
 	 * 
 	 * @param p contains the Coordinates of Tile in question.
 	 * @return Does the Tile in Question have a Lattice

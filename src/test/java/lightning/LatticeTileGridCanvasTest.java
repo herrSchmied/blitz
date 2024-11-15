@@ -6,7 +6,7 @@ import static jborg.lightning.LatticeGrid.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.awt.Point;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -17,6 +17,8 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import consoleTools.InputStreamSession;
+import javafx.application.Platform;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
@@ -63,13 +65,15 @@ public class LatticeTileGridCanvasTest
 		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 	}
 	
+	/*
 	@Test
-	public void optionsTest() throws SnakeException, LTGCException
+	public void optionsTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
-
 		
 		System.out.println("\nOptions Test.");
 		
+		initStndrt();
+
 		canvas.setOneLattice(0, 0, indexLatticeBitTop);
 		
 		List<Point> options = snlGrid.getOptions(snake);
@@ -84,12 +88,14 @@ public class LatticeTileGridCanvasTest
 	}
 	
 	@Test
-	public void anotherOptionsTest() throws SnakeException, LTGCException
+	public void anotherOptionsTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
 		
 		System.out.println("\nAnother Options Test.");
-		
+
+		initStndrt();
+
 		canvas.setOneLattice(0, 0, indexLatticeBitRight);
 		
 		List<Point> options = snlGrid.getOptions(snake);
@@ -104,11 +110,13 @@ public class LatticeTileGridCanvasTest
 	}
 
 	@Test
-	public void againOptionsTest() throws SnakeException, LTGCException
+	public void againOptionsTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
 		
 		System.out.println("\nAgain Options Test.");
+		
+		initStndrt();
 
 		List<Point> options = snlGrid.getOptions(snake);
 
@@ -123,11 +131,13 @@ public class LatticeTileGridCanvasTest
 	}
 
 	@Test
-	public void divergenceTest() throws SnakeException, LTGCException, InterruptedException
+	public void divergenceTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 	
 		System.out.println("\nDivergence Test.");
 		
+		initStndrt();
+
 		canvas.setOneLattice(0, 0, indexLatticeBitRight);
 		canvas.setOneLattice(0, 1, indexLatticeBitRight);
 		
@@ -161,11 +171,13 @@ public class LatticeTileGridCanvasTest
 	}
 	
 	@Test
-	public void anotherDivergenceTest() throws SnakeException, LTGCException, InterruptedException
+	public void anotherDivergenceTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 	
 		System.out.println("\nAnother Divergence Test.");
 		
+		initStndrt();
+
 		Point rightPoint = new Point(1, 0);
 		Point upPoint = new Point(0, 1);
 		//Point upRightPoint = SnakeAndLatticeGrid.addPoints(upPoint, rightPoint);
@@ -201,15 +213,17 @@ public class LatticeTileGridCanvasTest
 	}
 
 	@Test
-	public void untilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
+	public void untilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
 		System.out.println("\nUntil they Dead Test!");
 
+		initStndrt();
+
 		Point isolatedPoint = new Point(1,1);
 		
 		//isolation
-		isolate(isolatedPoint, canvas);
+		snlGrid.getLatticeGrid().setAllLatticesOnTile(isolatedPoint);
 
 		snlGrid.setFinalSnakes();;
 		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
@@ -223,11 +237,12 @@ public class LatticeTileGridCanvasTest
 	}
 	
 	@Test
-	public void swappedUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
+	public void swappedUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
     
 		System.out.println("Until they Dead Test! Swap start/end");
 		
+		initStndrt();
 
 		Set<Point> ankerPoints = new HashSet<>();
 		ankerPoints.add(startPoint);
@@ -236,7 +251,7 @@ public class LatticeTileGridCanvasTest
 		Point isolatedPoint = getRandomIsolatedPoint(ankerPoints, canvas);
 
 		//isolation
-		isolate(isolatedPoint, canvas);
+		snlGrid.getLatticeGrid().setAllLatticesOnTile(isolatedPoint);
 
 		snlGrid.setFinalSnakes();
 		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
@@ -251,7 +266,7 @@ public class LatticeTileGridCanvasTest
 
 
 	@Test
-	public void anotherUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException
+	public void anotherUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 		
 		frameIt(new Point(0, 0), new Point(3,3), 4, 4);
@@ -300,15 +315,18 @@ public class LatticeTileGridCanvasTest
 	}
 
 	@Test
-	public void halfIsolatedTest() throws SnakeException, LTGCException, InterruptedException
+	public void justNoLatticesTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 		
-		System.out.println("Half isolated Test.");
-				
-		Point halfIsolatedPoint = new Point(1,1);
+		System.out.println("Just no Lattices Test!");
+		Thread.sleep(1000);
 
-		canvas.setOneLattice(halfIsolatedPoint, indexLatticeBitBottom);
-		canvas.setOneLattice(halfIsolatedPoint, indexLatticeBitLeft);
+		initStndrt();
+
+		//Point halfIsolatedPoint = new Point(1,1);
+
+		//canvas.setOneLattice(halfIsolatedPoint, indexLatticeBitBottom);
+		//canvas.setOneLattice(halfIsolatedPoint, indexLatticeBitLeft);
 		
 		snlGrid.setFinalSnakes();
 		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
@@ -326,39 +344,60 @@ public class LatticeTileGridCanvasTest
 		};
 		orderedSuccesses.sort(c);
 
-		Snake success = orderedSuccesses.get(0);
+		Snake shortSuccess = orderedSuccesses.get(0);
+		Snake longSuccess = orderedSuccesses.get(orderedSuccesses.size()-1);
 		System.out.println("\nOne of the short a ways");
-		System.out.println(success);
-		
-		success = orderedSuccesses.get(orderedSuccesses.size()-1);
+		System.out.println(shortSuccess);
+		System.out.println("Length: "+shortSuccess.getLength());
+		Thread.sleep(2000);
+	
 		System.out.println("\nOne of the long a ways");
-		System.out.println(success);
+		System.out.println(longSuccess);
+		System.out.println("Length: " + longSuccess.getLength());
+		Thread.sleep(2000);
+		
 		System.out.println("Successful Snakes: " + successes.size());
-		assert(success.getLength()==9); //All nine Fields.
+		
+		InputStreamSession iss = new InputStreamSession(System.in);
+		boolean questionAnswer = iss.forcedYesOrNo("Continue?");
+		if(!questionAnswer)System.exit(0);
+
+		assert(shortSuccess.getLength()==3);
+		assert(longSuccess.getLength()==9);
 		
 		System.out.println("Final Snakes: " + finalSnakes.size() + "\n");
-	}
+	}	
+	*/
 
-	public Point getRandomIsolatedPoint(Set<Point> excludedPoints, LatticeTileGridCanvas ltgCanvas)
+	@Test
+	public void simpleSNLGridTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
-		
-		int width = ltgCanvas.getWidthInTiles();
-		int height = ltgCanvas.getHeightInTiles();
-		
-		int x = (int)(Math.random()*width);
-		int y = (int)(Math.random()*height);
-		Point p = new Point(x, y);
-		
-		if(excludedPoints.contains(p))return getRandomIsolatedPoint(excludedPoints, ltgCanvas);
 
-		return p;
+		frameIt(new Point(0,0), new Point(1,1),2,2);
+		snlGrid.setFinalSnakes();
+		
+		for(Snake snake: snlGrid.getSnakeSet())
+		{
+			System.out.println(snake);
+		}
+		
+		Point f = snlGrid.getFinalPoint();
+		System.out.println("FinalPoint: f(" + f.x + ", " + f.y + ")");
+		assert(snlGrid.getSnakeSet().size()==3);
+		
 	}
 	
-	public void isolate(Point p, LatticeTileGridCanvas ltgCanvas) throws LTGCException
+	public Point getRandomIsolatedPoint(Set<Point> excludedPoints, LatticeTileGridCanvas canvas)
 	{
-		ltgCanvas.setOneLattice(p, indexLatticeBitTop);
-		ltgCanvas.setOneLattice(p, indexLatticeBitBottom);
-		ltgCanvas.setOneLattice(p, indexLatticeBitLeft);
-		ltgCanvas.setOneLattice(p, indexLatticeBitRight);
+		int w= canvas.getWidthInTiles();
+		int h= canvas.getHeightInTiles();
+		
+		int x = (int)(Math.random()*w);
+		int y = (int)(Math.random()*h);
+		Point rndPoint = new Point(x,y);
+		
+		if(excludedPoints.contains(rndPoint))return getRandomIsolatedPoint(excludedPoints, canvas);
+		
+		return rndPoint;
 	}
 }

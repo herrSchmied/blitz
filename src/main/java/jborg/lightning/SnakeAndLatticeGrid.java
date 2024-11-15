@@ -1,15 +1,15 @@
 package jborg.lightning;
 
 import java.awt.Point;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
+import consoleTools.BashSigns;
+import consoleTools.InputStreamSession;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.exceptions.SnakeException;
 
@@ -26,18 +26,17 @@ import jborg.lightning.exceptions.SnakeException;
 public class SnakeAndLatticeGrid
 {
 	
-	private Point lPos = new Point(-1, 0);
-	private Point rPos = new Point(+1, 0);
-	private Point tPos = new Point(0,+1);
-	private Point bPos = new Point(0,-1);
-	private Point ltPos = addPoints(lPos, tPos);
-	private Point lbPos = addPoints(lPos, bPos);
-	private Point rtPos = addPoints(rPos, tPos);
-	private Point rbPos = addPoints(rPos, bPos);
+	private Point leftPos = new Point(-1, 0);
+	private Point rightPos = new Point(+1, 0);
+	private Point topPos = new Point(0,+1);
+	private Point bottomPos = new Point(0,-1);
+	private Point leftTopPos = addPoints(leftPos, topPos);
+	private Point leftBottomPos = addPoints(leftPos, bottomPos);
+	private Point rightTopPos = addPoints(rightPos, topPos);
+	private Point rightBottomPos = addPoints(rightPos, bottomPos);
 	
-	private Set<Point> posPointSet = new HashSet<>(Arrays.asList(lPos,rPos,tPos,bPos,ltPos,lbPos,rtPos,rbPos));
+	private Set<Point> posSet = new HashSet<>(Arrays.asList(leftPos, rightPos, topPos, bottomPos, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos));
 
-	
 	/**
 	 * Starting Snake-Set which will be just one 
 	 * And May grow after executing certain Methods.
@@ -80,90 +79,113 @@ public class SnakeAndLatticeGrid
 	 * grow.
 	 * @throws LTGCException Shouldn't.
 	 * @throws SnakeException Shouldn't.
+	 * @throws InterruptedException 
+	 * @throws IOException 
 	 */
-	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException
+	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException, InterruptedException, IOException
     {
 
 		Point head = snake.getHead();
    		
 		List<Point> growthOptions = new ArrayList<>();
-   		int width = lg.getWidth();
-   		int height = lg.getHeight();
-   		    		
-   		boolean hasLeft = head.x>0;
-   		boolean hasRight = head.x<width-1;
-   		boolean hasTop = head.y<height-1;
-   		boolean hasBottom = head.y>0;
+   		
+		//hasLatticeOnTheXXXX treats frame borders like Lattices!!!
+   		boolean hasLeft = !lg.hasLatticeOnTheLeft(head);
+   		boolean hasRight = !lg.hasLatticeOnTheRight(head);
+   		boolean hasTop = !lg.hasLatticeOnTheTop(head);
+   		boolean hasBottom = !lg.hasLatticeOnTheBottom(head);
 
-   		boolean orthogonalBits[]=new boolean[4];
-   		Set<Point> pointToThePoint = new HashSet<>();
+   		Set<Point> rPoints = new HashSet<>();
     		
-   		if(hasLeft&&!lg.hasLatticeOnTheLeft(head))pointToThePoint.add(lPos);
-   		if(hasRight&&!lg.hasLatticeOnTheRight(head))pointToThePoint.add(rPos);
-   		if(hasTop&&!lg.hasLatticeOnTheTop(head))pointToThePoint.add(tPos);
-   		if(hasBottom&&!lg.hasLatticeOnTheBottom(head))pointToThePoint.add(bPos);
+   		if(hasLeft)rPoints.add(leftPos);
+   		if(hasRight)rPoints.add(rightPos);
+   		if(hasTop)rPoints.add(topPos);
+   		if(hasBottom)rPoints.add(bottomPos);
 
-   		boolean hasLeftTop = head.x>0&&head.y<height-1;
-   		boolean hasLeftBottom = head.x>0&&head.y>0;
-   		boolean hasRightTop = head.x<width-1&&head.y<height-1;
-   		boolean hasRightBottom = head.x<width-1&&head.y>0;
+		if(checkDiagonal(head, leftTopPos))rPoints.add(leftTopPos);
+   		if(checkDiagonal(head, leftBottomPos))rPoints.add(leftBottomPos);
+   		if(checkDiagonal(head, rightTopPos))rPoints.add(rightTopPos);
+   		if(checkDiagonal(head, rightBottomPos))rPoints.add(rightBottomPos);
 
-		if(hasLeftTop&&checkDiagonal(head, ltPos))pointToThePoint.add(ltPos);
-   		if(hasLeftBottom&&checkDiagonal(head, lbPos))pointToThePoint.add(lbPos);
-   		if(hasRightBottom&&checkDiagonal(head, rbPos))pointToThePoint.add(rbPos);
-   		if(hasRightTop&&checkDiagonal(head, rtPos))pointToThePoint.add(rtPos);
-    		
-   		for(Point posPoint: pointToThePoint)
+   		if(rPoints.contains(leftTopPos)||rPoints.contains(leftBottomPos)||rPoints.contains(rightTopPos)||rPoints.contains(rightBottomPos))
    		{
-   			Point newHead = addPoints(head, posPoint);
+   			System.out.println(BashSigns.boldGBCPX+"Treffer"+BashSigns.boldGBCSX);
+  		}
+  
+   		for(Point relativePoint: rPoints)
+   		{
+   			System.out.println(BashSigns.boldYBCPX+"P(" + relativePoint.x+", " + relativePoint.y + ")"+BashSigns.boldYBCSX);
+   			Point newHead = addPoints(head, relativePoint);
    			if(checkOption(snake, newHead))growthOptions.add(newHead);
    		}
-
+ 
+   		//TODO:Till here everything is fine. Then sometimes the final Point is not added!!!!
     	return growthOptions;
     }
 
 	private boolean checkDiagonal(Point p, Point relative) throws LTGCException
 	{
 
-		
-		Point dest = addPoints(p, relative);
+		if(!posSet.contains(relative))
+		{
+			System.out.println(BashSigns.rBCPX+"Warning: check Diagonal argument is not a relative Diagonal Point!"+BashSigns.rBCSX);
+			return false;
+		}
 
+		Point dest = addPoints(p, relative);
+		
+		//Catches the cases where p or dest already out of Bounds
+		boolean checkDest = checkPoint("dest", dest);
+		boolean checkP = checkPoint("p", p);
+		
+		if(!(checkDest&&checkP))return false;
+		
 		int cnt=0;
 
-		if(relative.x==-1&&relative.y==-1)
+		if(relative.equals(leftBottomPos))
 		{
 			if(lg.hasLatticeOnTheLeft(p))cnt++;
 			if(lg.hasLatticeOnTheRight(dest))cnt++;
 			if(lg.hasLatticeOnTheBottom(p))cnt++;
 			if(lg.hasLatticeOnTheTop(dest))cnt++;
+
+			return (cnt<2);
 		}
 
-		if(relative.x==-1&&relative.y==1)
+		if(relative.equals(leftTopPos))
 		{
 				
 			if(lg.hasLatticeOnTheLeft(p))cnt++;
 			if(lg.hasLatticeOnTheRight(dest))cnt++;
 			if(lg.hasLatticeOnTheTop(p))cnt++;
 			if(lg.hasLatticeOnTheBottom(dest))cnt++;
+
+			return (cnt<2);
 		}
 
-		if(relative.x==1&&relative.y==-1)
+		if(relative.equals(rightBottomPos))
 		{
 			if(lg.hasLatticeOnTheRight(p))cnt++;
 			if(lg.hasLatticeOnTheLeft(dest))cnt++;
 			if(lg.hasLatticeOnTheBottom(p))cnt++;
 			if(lg.hasLatticeOnTheTop(dest))cnt++;
+
+			return (cnt<2);
 		}
 
-		if(relative.x==1&&relative.y==1)
+		if(relative.equals(rightTopPos))
 		{	
 			if(lg.hasLatticeOnTheRight(p))cnt++;
 			if(lg.hasLatticeOnTheLeft(dest))cnt++;
 			if(lg.hasLatticeOnTheTop(p))cnt++;
 			if(lg.hasLatticeOnTheBottom(dest))cnt++;
+
+			return (cnt<2);
 		}
 
-		return (cnt>=2);
+		System.out.println("This is normaly impossible to be shown!!.");
+		
+		return false;
 	}
 
 	/**
@@ -233,8 +255,9 @@ public class SnakeAndLatticeGrid
      * probable.
      * @throws InterruptedException If something goes wrong with Thread.sleep().
      * Not probable.
+     * @throws IOException 
      */
-    public Set<Snake> theDivergence(Snake snake) throws InterruptedException, SnakeException, LTGCException
+    public Set<Snake> theDivergence(Snake snake) throws InterruptedException, SnakeException, LTGCException, IOException
     {
     	Set<Snake> snakeSet = new HashSet<>();
     	if(snake.getStatus().equals(Snake.deadStatus))
@@ -272,8 +295,9 @@ public class SnakeAndLatticeGrid
      * @throws LTGCException Shouldn't.
      * @throws SnakeException Shouldn't.
      * @throws InterruptedException Shouldn't.
+     * @throws IOException 
      */
-    public void setFinalSnakes() throws LTGCException, SnakeException, InterruptedException
+    public void setFinalSnakes() throws LTGCException, SnakeException, InterruptedException, IOException
     {
     	this.snakeSet = untilTheyAreAllDeadLoop(this.snakeSet);
     }
@@ -286,8 +310,9 @@ public class SnakeAndLatticeGrid
      * @throws LTGCException Shouldn't.
      * @throws SnakeException Shouldn't.
      * @throws InterruptedException Shouldn't.
+     * @throws IOException 
      */
-    public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException, InterruptedException
+    public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException, InterruptedException, IOException
     {
     	
     	Set<Snake> copy = new HashSet<>(snakeSet);
@@ -332,5 +357,37 @@ public class SnakeAndLatticeGrid
 		}
 
     	return successes;
+    }
+    
+    public LatticeGrid getLatticeGrid()
+    {
+    	return lg;
+    }
+    
+    public Point getFinalPoint()
+    {
+    	return finalPoint;
+    }
+    
+    public String pointAsString(String name, Point p)
+    {
+    	return name+"(" + p.x +  ", " + p.y + ")";
+    }
+    
+    public boolean checkPoint(String name, Point p)
+    {
+    	
+		try
+		{
+			lg.throwsExceptionIfOutOfBounds(p.x, p.y);
+		}
+		catch(LTGCException ltgcException)
+		{
+
+			System.out.println(pointAsString(name, p) + "is out of Bounds!");
+			return false;
+		}
+
+    	return true;
     }
 }

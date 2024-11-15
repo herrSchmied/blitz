@@ -3,7 +3,7 @@ package jborg.lightning;
 
 //*********************************************
 import java.awt.Point;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -113,7 +113,6 @@ public class BlitzThing extends Application
 			}
 	        catch(CollectionException | LTGCException | InterruptedException e)
 	        {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -271,7 +270,7 @@ public class BlitzThing extends Application
 				Thread.sleep(250);
 				Platform.runLater(drawSnake);
 			}
-        	catch (LTGCException | SnakeException | CollectionException | InterruptedException e)
+        	catch (LTGCException | SnakeException | CollectionException | InterruptedException | IOException e)
         	{
 				e.printStackTrace();
 			}
@@ -354,8 +353,9 @@ public class BlitzThing extends Application
      * @throws SnakeException Shouldn't.
      * @throws CollectionException Shouldn't.
      * @throws InterruptedException Shouldn't.
+     * @throws IOException 
      */
-    public void showCanvasStage(int width, int height, int latticeNr) throws LTGCException, SnakeException, CollectionException, InterruptedException
+    public void showCanvasStage(int width, int height, int latticeNr) throws LTGCException, SnakeException, CollectionException, InterruptedException, IOException
     {
 
     	Group root = new Group();
