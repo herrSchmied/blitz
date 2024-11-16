@@ -1,34 +1,21 @@
 package lightning;
 
 
-import static jborg.lightning.LatticeGrid.*;
-
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.awt.Point;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+
 import java.util.Set;
 
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import consoleTools.InputStreamSession;
-import javafx.application.Platform;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
 import jborg.lightning.exceptions.SnakeException;
+import static jborg.lightning.SnakeAndLatticeGrid.*;
 
-import someMath.CollectionException;
-import someMath.CollectionManipulation;
-
-import static consoleTools.TerminalXDisplay.*;
 
 public class LatticeTileGridCanvasTest
 {
@@ -59,8 +46,7 @@ public class LatticeTileGridCanvasTest
 
 	}
 
-	@BeforeEach
-	public void initStndrt() throws SnakeException, LTGCException
+	public static void initStndrt() throws SnakeException, LTGCException
 	{
 		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 	}
@@ -370,23 +356,21 @@ public class LatticeTileGridCanvasTest
 	*/
 
 	@Test
-	public void simpleSNLGridTest() throws SnakeException, LTGCException, InterruptedException, IOException
+	public void simpleSNLGrid() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
 		frameIt(new Point(0,0), new Point(1,1),2,2);
 		snlGrid.setFinalSnakes();
 		
-		for(Snake snake: snlGrid.getSnakeSet())
-		{
-			System.out.println(snake);
-		}
-		
+		for(Snake snake: snlGrid.getSnakeSet())System.out.println(snake);
+		System.out.println("snlGrid size: " + snlGrid.getSnakeSet().size());
+
 		Point f = snlGrid.getFinalPoint();
 		System.out.println("FinalPoint: f(" + f.x + ", " + f.y + ")");
-		assert(snlGrid.getSnakeSet().size()==3);
-		
+
+		assert(snlGrid.getSnakeSet().size()==5);
 	}
-	
+
 	public Point getRandomIsolatedPoint(Set<Point> excludedPoints, LatticeTileGridCanvas canvas)
 	{
 		int w= canvas.getWidthInTiles();

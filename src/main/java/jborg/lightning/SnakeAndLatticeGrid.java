@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import consoleTools.BashSigns;
-import consoleTools.InputStreamSession;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.exceptions.SnakeException;
 
@@ -282,7 +281,7 @@ public class SnakeAndLatticeGrid
     	for(Point p: options)
     	{
     		
-    		Snake spawn = snake.growSnake(p.x, p.y, Snake.readyStatus);
+    		Snake spawn = snake.growSnake(p, snake.getStatus());
     		snakeSet.add(spawn);
     	}
     	
@@ -333,11 +332,11 @@ public class SnakeAndLatticeGrid
     		Set<Snake> spawns = theDivergence(s);
     		newSnakes.addAll(spawns);
     	}
-    	
+
     	if(deadCount==copy.size())return copy;
     	return untilTheyAreAllDeadLoop(newSnakes);
     }
-    
+
     /**
      * Filters the Snake-Set for successes. Makes most sense
      * when called after setFinalSnakes Method. A Successful
@@ -369,7 +368,7 @@ public class SnakeAndLatticeGrid
     	return finalPoint;
     }
     
-    public String pointAsString(String name, Point p)
+    public static String pointAsString(String name, Point p)
     {
     	return name+"(" + p.x +  ", " + p.y + ")";
     }
