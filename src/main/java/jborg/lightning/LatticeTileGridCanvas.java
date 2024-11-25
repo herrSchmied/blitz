@@ -11,7 +11,6 @@ import static jborg.lightning.LatticeGrid.*;
 
 import java.awt.Point;
 
-import java.util.function.Consumer;
 
 
 /**
@@ -163,29 +162,28 @@ public class LatticeTileGridCanvas extends Canvas
 		this.initialSnake = snake;
 		snlGrid = new SnakeAndLatticeGrid(initialSnake, lg, finalPoint);
 		
-		initGrid();
+		
 	}
 	
 	/**
 	 * Sets a Plain and clear Canvas and Lattic-Grid.
 	 */
-	public void initGrid()
+	public void colorAllTilesGrey()
 	{
-		walkThruTiles((p)->
+		lg.walkThruTiles((p)->
 		{
 			
 			try
 			{
 				setColorOnTile(Color.GRAY, p);
-				lg.setLatticesOnTile(p, 0);
 			}
-			catch (LTGCException e)
+			catch(LTGCException e)
 			{
 				e.printStackTrace();
 			}
 		});
 	}
-	
+
 	/**
 	 * Sets one Lattice on a Tile Border.
 	 * @param p Tile Coordinates.
@@ -239,7 +237,7 @@ public class LatticeTileGridCanvas extends Canvas
 		
 		setColorOnTile(Color.GREEN, startPoint);
 		setColorOnTile(Color.RED, finalPoint);
-		walkThruTiles((p)->
+		lg.walkThruTiles((p)->
 		{
 			try
 			{
@@ -261,21 +259,6 @@ public class LatticeTileGridCanvas extends Canvas
 		});
 	}
 	
-	/**
-	 * Applies a given Consumer to every Tile.
-	 * @param consumer What should happen at a given Point?
-	 */
-	public void walkThruTiles(Consumer<Point> consumer)
-	{
-	
-		for(int x=0;x<widthInTiles;x++)
-		{
-			for(int y=0;y<heightInTiles;y++)
-			{
-				consumer.accept(new Point(x,y));
-			}
-		}
-	}
 
 	/**
 	 * Changes Color of a Tile. Also the Color Data.

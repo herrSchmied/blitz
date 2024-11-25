@@ -1,6 +1,7 @@
 package jborg.lightning;
 
 import java.awt.Point;
+import java.util.function.Consumer;
 
 import jborg.lightning.exceptions.LTGCException;
 
@@ -33,7 +34,12 @@ public class LatticeGrid
 	 * on the Bottom. This fact is handled. 
 	 */
 	private final int [][] latticeCodes;
-	
+	/**
+	 *
+	 * Every Tile has a LatticeCode. Which encodes
+	 * which Lattices surround that Tile. This
+	 * Code can't be less than Zero. Or more Than 15.
+	 */
 	private final static int minLatticeCode=0;
 	private final static int maxLatticeCode=15;
 
@@ -80,6 +86,8 @@ public class LatticeGrid
 		this.height = height;
 		
 		latticeCodes = new int[width][height];
+		
+		initGrid();
 	}
 	
 	/**
@@ -90,7 +98,8 @@ public class LatticeGrid
 	 * bit 0: left.
 	 * bit 1: bottom.
 	 * bit 2: right.
-	 * bit 3: top. 
+	 * bit 3: top.
+	 * Careful you can't remove frame Borders!.
 	 * @throws LTGCException if p is out of Bounds. If p is null or 
 	 * there is something wrong with the latticeBits.
 	 */
@@ -120,7 +129,6 @@ public class LatticeGrid
 		
 		throwsExceptionIfArrayIsNotValid(latticeBits);
 		throwsExceptionIfOutOfBounds(x, y);
-		if(latticeBits.length<nrOfLatticeBits)throw new LTGCException("Not enough Lattice Bits!");
 
 		int latticeCode = translateLatticeBitsToLatticeCode(latticeBits);		
 		
@@ -196,7 +204,8 @@ public class LatticeGrid
 	 * This is the workhorse. The cashCow. The chosen one.
 	 * It handles the fact that: one Tiles right lattice is
 	 * another Tiles left Lattice. All setLattic(es)blabla
-	 * Methods rely on this one Method.
+	 * Methods rely on this one Method. You can't change
+	 * Border Lattices!!
 	 * @param x x-Coordinate of the Tile in question.
 	 * @param y y-Coordinate of the Tile in question.
 	 * @param latticeCode determines which Lattices are set or
@@ -210,7 +219,11 @@ public class LatticeGrid
 		throwsExceptionIfLatticeCodeAintValide(latticeCode);
 
 		boolean[]latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
-		
+		if(x==0)latticeBits[indexLatticeBitLeft]=true;
+		if(x==width-1)latticeBits[indexLatticeBitRight]=true;
+		if(y==0)latticeBits[indexLatticeBitBottom]=true;
+		if(y==height-1)latticeBits[indexLatticeBitTop]= true;
+
 		for(int n=0;n<nrOfLatticeBits;n++)
 			if(latticeBits[n])latticeCodes[x][y]= getLatticeCode(n, x, y);
 
@@ -573,6 +586,41 @@ public class LatticeGrid
 		return height;
 	}
 	
+	public void initGrid()
+	{
+		walkThruTiles((p)->
+		{
+			try
+			{
+				this.setLatticesOnTile(p, 0);
+				if(p.x==0)this.setOneLatticeOnTile(p, indexLatticeBitLeft);
+				if(p.x==width-1)this.setOneLatticeOnTile(p, indexLatticeBitRight);
+				if(p.y==0)this.setOneLatticeOnTile(p, indexLatticeBitBottom);
+				if(p.y==height-1)this.setOneLatticeOnTile(p, indexLatticeBitTop);
+			}
+			catch (LTGCException e)
+			{
+				e.printStackTrace();
+			}
+		});
+	}
+	
+	/**
+	 * Applies a given Consumer to every Tile.
+	 * @param consumer What should happen at a given Point?
+	 */
+	public void walkThruTiles(Consumer<Point> consumer)
+	{
+		
+		for(int x=0;x<width;x++)
+		{
+			for(int y=0;y<height;y++)
+			{
+				consumer.accept(new Point(x,y));
+			}
+		}
+	}
+
 	/**
 	 * Throws LTGCException if x and/or y are out of Bounds.
 	 * And thats its only purpose.
@@ -631,7 +679,7 @@ public class LatticeGrid
 	{
 
 		if(latticeBits==null)throw new LTGCException("Array can't be null!");
-		if(latticeBits.length<4)throw new LTGCException("Not enough bits in that Array!");
+		if(latticeBits.length<nrOfLatticeBits)throw new LTGCException("Not enough bits in that Array!");
 		
 		for(Boolean b: latticeBits)
 		{

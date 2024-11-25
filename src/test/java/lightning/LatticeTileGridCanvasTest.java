@@ -10,6 +10,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import jborg.lightning.exceptions.LTGCException;
+import jborg.lightning.LatticeGrid;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
@@ -369,6 +370,54 @@ public class LatticeTileGridCanvasTest
 		System.out.println("FinalPoint: f(" + f.x + ", " + f.y + ")");
 
 		assert(snlGrid.getSnakeSet().size()==5);
+		
+		Set<Snake> successSnakes = snlGrid.filterSuccesses();
+		
+		assert(successSnakes.size()==5);
+	}
+	
+	@Test
+	public void oneLatticeSmallGridTest() throws SnakeException, LTGCException, InterruptedException, IOException
+	{
+
+		frameIt(new Point(0,0), new Point(1,1),2,2);
+		
+		snlGrid.getLatticeGrid().setOneLatticeOnTile(0, 0, LatticeGrid.indexLatticeBitRight);
+		snlGrid.setFinalSnakes();
+		
+		for(Snake snake: snlGrid.getSnakeSet())System.out.println(snake);
+		System.out.println("snlGrid size: " + snlGrid.getSnakeSet().size());
+
+		Point f = snlGrid.getFinalPoint();
+		System.out.println("FinalPoint: f(" + f.x + ", " + f.y + ")");
+
+		assert(snlGrid.getSnakeSet().size()==3);
+
+		Set<Snake> successSnakes = snlGrid.filterSuccesses();
+		
+		assert(successSnakes.size()==3);
+	}
+
+	@Test
+	public void oneLatticeSmallGridTest_Again() throws SnakeException, LTGCException, InterruptedException, IOException
+	{
+
+		frameIt(new Point(0,0), new Point(1,1),2,2);
+		
+		snlGrid.getLatticeGrid().setOneLatticeOnTile(1, 0, LatticeGrid.indexLatticeBitTop);
+		snlGrid.setFinalSnakes();
+		
+		for(Snake snake: snlGrid.getSnakeSet())System.out.println(snake);
+		System.out.println("snlGrid size: " + snlGrid.getSnakeSet().size());
+
+		Point f = snlGrid.getFinalPoint();
+		System.out.println("FinalPoint: f(" + f.x + ", " + f.y + ")");
+
+		assert(snlGrid.getSnakeSet().size()==4);
+
+		Set<Snake> successSnakes = snlGrid.filterSuccesses();
+		
+		assert(successSnakes.size()==3);
 	}
 
 	public Point getRandomIsolatedPoint(Set<Point> excludedPoints, LatticeTileGridCanvas canvas)
