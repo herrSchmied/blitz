@@ -356,7 +356,7 @@ public class LatticeTileGridCanvasTest
 	*/
 
 	@Test
-	public void simpleSNLGrid() throws SnakeException, LTGCException, InterruptedException, IOException
+	public void simpleSNLGridTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
 		frameIt(new Point(0,0), new Point(1,1),2,2);

@@ -253,8 +253,15 @@ public class SnakeTests
 		snake = snake.growSnake(2, 0, Snake.readyStatus);
 		
 		assert(snake.getLength()==3);
+		
+		snake = new Snake(new Point(0,0));
+		snake = snake.growSnake(0, 1, Snake.readyStatus);
+		snake = snake.growSnake(1, 0, Snake.readyStatus);
+		snake = snake.growSnake(1, 1, Snake.readyStatus);
+		
+		System.out.println(snake);
 	}
-	
+
 	@Test
 	public void testImmutabilityUnderGrowth() throws SnakeException
 	{

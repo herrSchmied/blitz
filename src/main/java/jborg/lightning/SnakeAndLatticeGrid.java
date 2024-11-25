@@ -275,6 +275,7 @@ public class SnakeAndLatticeGrid
     	{
     		snake = snake.changeStatus(Snake.deadStatus);
     		snakeSet.add(snake);
+    		
     		return snakeSet;
     	}
     	
@@ -334,6 +335,7 @@ public class SnakeAndLatticeGrid
     	}
 
     	if(deadCount==copy.size())return copy;
+    	
     	return untilTheyAreAllDeadLoop(newSnakes);
     }
 

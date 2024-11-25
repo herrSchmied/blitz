@@ -76,7 +76,7 @@ public class LatticeGridTest
 		}
 		
 		System.out.println("AffectedTiles: " + affectedTilesCounter);
-		assert(affectedTilesCounter==8);
+		assert(affectedTilesCounter==44);//Because Frameborders are considered to have/be Lattices!
 	}
 
 }

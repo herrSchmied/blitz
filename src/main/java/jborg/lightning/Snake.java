@@ -242,7 +242,13 @@ public class Snake implements Cloneable, Serializable
 		
 
 		List<Point> consecutiveParts_ii = new ArrayList<>();
-		consecutiveParts_ii.addAll(this.consecutiveParts);
+		
+		for(int n=0;n<consecutiveParts.size();n++)
+		{
+			Point p = consecutiveParts.get(n);
+			consecutiveParts_ii.add(p);
+		}
+		
 		consecutiveParts_ii.add(successorPoint);
 		
 		return new Snake(consecutiveParts_ii, status);
@@ -469,15 +475,17 @@ public class Snake implements Cloneable, Serializable
 		if(uniqueness.size()<parts.size())throw new SnakeException(constructorExcepMsgDoublePoint);
 		
 		
+		List<Point> notIncludingLaterParts = new ArrayList<>();
 		for(int n=0;n<parts.size();n++)
 		{
 			Point p2 = parts.get(n);
+			notIncludingLaterParts.add(p2);
 			Point p1 = null;
 			if(n>0)
 			{
 				p1 = parts.get(n-1);
 				if(!isNearBy(p1, p2))throw new SnakeException(constructorExcepMsgDistanceGap);			
-				if(isSelfCrossing(p1, p2, parts))throw new SnakeException(constructorExcepMsgSelfCrossing);
+				if(isSelfCrossing(p1, p2, notIncludingLaterParts))throw new SnakeException(constructorExcepMsgSelfCrossing);
 			}
 		}
 	}
