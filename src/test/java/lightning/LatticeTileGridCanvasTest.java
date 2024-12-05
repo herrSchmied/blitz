@@ -4,18 +4,27 @@ package lightning;
 import java.awt.Point;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import consoleTools.InputStreamSession;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.LatticeGrid;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
 import jborg.lightning.exceptions.SnakeException;
+import someMath.CollectionException;
+import someMath.CollectionManipulation;
+
+import static jborg.lightning.LatticeGrid.*;
 import static jborg.lightning.SnakeAndLatticeGrid.*;
+import static org.junit.Assert.fail;
 
 
 public class LatticeTileGridCanvasTest
@@ -51,8 +60,7 @@ public class LatticeTileGridCanvasTest
 	{
 		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 	}
-	
-	/*
+
 	@Test
 	public void optionsTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
@@ -66,14 +74,14 @@ public class LatticeTileGridCanvasTest
 		List<Point> options = snlGrid.getOptions(snake);
 
 		String s = "";
-		for(int n=0;n<options.size();n++)s=s + pointToString("P", options.get(n)) + "\n";
+		for(int n=0;n<options.size();n++)s=s + pointAsString("P", options.get(n)) + "\n";
 		System.out.println(s);  
 		
 		assert(options.contains(new Point(1,1)));
 		assert(options.contains(new Point(1,0)));
 		assert(options.size()==2);
 	}
-	
+
 	@Test
 	public void anotherOptionsTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
@@ -88,7 +96,7 @@ public class LatticeTileGridCanvasTest
 		List<Point> options = snlGrid.getOptions(snake);
 
 		String s = "";
-		for(int n=0;n<options.size();n++)s=s + pointToString("P", options.get(n)) + "\n";
+		for(int n=0;n<options.size();n++)s=s + pointAsString("P", options.get(n)) + "\n";
 		System.out.println(s);  
 		
 		assert(options.contains(new Point(1,1)));
@@ -108,7 +116,7 @@ public class LatticeTileGridCanvasTest
 		List<Point> options = snlGrid.getOptions(snake);
 
 		String s = "";
-		for(int n=0;n<options.size();n++)s=s + pointToString("P", options.get(n)) + "\n";
+		for(int n=0;n<options.size();n++)s=s + pointAsString("P", options.get(n)) + "\n";
 		System.out.println(s);  
 		
 		assert(options.contains(new Point(1,1)));
@@ -199,6 +207,7 @@ public class LatticeTileGridCanvasTest
 		}
 	}
 
+	//TODO:???What am i testing?
 	@Test
 	public void untilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
@@ -223,6 +232,7 @@ public class LatticeTileGridCanvasTest
 		System.out.println("Successful Snakes: " + successes.size());
 	}
 	
+	//TODO:???What am i testing?
 	@Test
 	public void swappedUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
@@ -235,7 +245,7 @@ public class LatticeTileGridCanvasTest
 		ankerPoints.add(startPoint);
 		ankerPoints.add(finalPoint);
 		
-		Point isolatedPoint = getRandomIsolatedPoint(ankerPoints, canvas);
+		Point isolatedPoint = getRandomPoint(ankerPoints, canvas);
 
 		//isolation
 		snlGrid.getLatticeGrid().setAllLatticesOnTile(isolatedPoint);
@@ -251,31 +261,31 @@ public class LatticeTileGridCanvasTest
 		System.out.println("Successful Snakes: " + successes.size());
 	}
 
-
 	@Test
 	public void anotherUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
+
+		Point pointA = new Point(0, 1);
+		Point pointB = new Point(1, 1);
+		Point pointC = new Point(2, 1);
+		Point pointD = new Point(3, 1);
+
+		frameIt(pointA, pointD, 4, 4);
 		
-		frameIt(new Point(0, 0), new Point(3,3), 4, 4);
 		System.out.println("\nAnother until they Dead Test!");
 
 		
-		Snake snake = new Snake(startPoint, Snake.readyStatus);
+		Snake snake = new Snake(pointA, Snake.readyStatus);
 		
-		Point pointA = new Point(0,0);
-		Point pointB = new Point(1,0);
-		Point pointC = new Point(2,0);
-		Point pointD = new Point(2,1);
-		Point pointE = new Point(2, 2);
-		Point pointF = new Point(2, 3);
 
 		canvas.setOneLattice(pointA, indexLatticeBitTop);
+		canvas.setOneLattice(pointA, indexLatticeBitBottom);
 		canvas.setOneLattice(pointB, indexLatticeBitTop);
+		canvas.setOneLattice(pointB, indexLatticeBitBottom);
 		canvas.setOneLattice(pointC, indexLatticeBitTop);
-		canvas.setOneLattice(pointD, indexLatticeBitRight);
-		canvas.setOneLattice(pointE, indexLatticeBitRight);
-		canvas.setOneLattice(pointF, indexLatticeBitBottom);
-		canvas.setOneLattice(pointF, indexLatticeBitLeft);
+		canvas.setOneLattice(pointC, indexLatticeBitBottom);
+		canvas.setOneLattice(pointD, indexLatticeBitTop);
+		canvas.setOneLattice(pointD, indexLatticeBitBottom);
 		
 		snlGrid.setFinalSnakes();
 		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
@@ -297,8 +307,8 @@ public class LatticeTileGridCanvasTest
 
 		System.out.println("Final Snakes: " + finalSnakes.size());
 
-		assert(successes.size()==4);
-		assert(finalSnakes.size()==5);
+		assert(successes.size()==1);
+		assert(finalSnakes.size()==1);
 	}
 
 	@Test
@@ -353,8 +363,7 @@ public class LatticeTileGridCanvasTest
 		assert(longSuccess.getLength()==9);
 		
 		System.out.println("Final Snakes: " + finalSnakes.size() + "\n");
-	}	
-	*/
+	}
 
 	@Test
 	public void simpleSNLGridTest() throws SnakeException, LTGCException, InterruptedException, IOException
@@ -420,7 +429,7 @@ public class LatticeTileGridCanvasTest
 		assert(successSnakes.size()==3);
 	}
 
-	public Point getRandomIsolatedPoint(Set<Point> excludedPoints, LatticeTileGridCanvas canvas)
+	public Point getRandomPoint(Set<Point> excludedPoints, LatticeTileGridCanvas canvas)
 	{
 		int w= canvas.getWidthInTiles();
 		int h= canvas.getHeightInTiles();
@@ -429,7 +438,7 @@ public class LatticeTileGridCanvasTest
 		int y = (int)(Math.random()*h);
 		Point rndPoint = new Point(x,y);
 		
-		if(excludedPoints.contains(rndPoint))return getRandomIsolatedPoint(excludedPoints, canvas);
+		if(excludedPoints.contains(rndPoint))return getRandomPoint(excludedPoints, canvas);
 		
 		return rndPoint;
 	}
