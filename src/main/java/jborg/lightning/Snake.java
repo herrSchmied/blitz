@@ -252,10 +252,8 @@ public class Snake implements Cloneable, Serializable
 		consecutiveParts_ii.add(successorPoint);
 		
 		return new Snake(consecutiveParts_ii, status);
-
 	}
-	
-	
+
 	/**
 	 * checks if u self-cross diagonally if successorPoint follows p given
 	 * a list of Points as Snake-parts. Theoretically u could inject 

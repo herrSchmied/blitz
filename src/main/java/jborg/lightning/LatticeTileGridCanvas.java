@@ -204,7 +204,7 @@ public class LatticeTileGridCanvas extends Canvas
 	 */
 	public void setOneLattice(int x, int y, int bitNr) throws LTGCException
 	{
-		lg.setOneLatticeOnTile(x, y, bitNr);
+		lg.setOneLatticeOnTile(new Point(x, y), bitNr);
 	}
 	
 	/**
@@ -215,7 +215,7 @@ public class LatticeTileGridCanvas extends Canvas
 	 */
 	public void setAllLatticesOnTile(int x, int y) throws LTGCException
 	{
-		lg.setAllLatticesOnTile(x,y);
+		lg.setAllLatticesOnTile(new Point(x,y));
 	}
 	
 	/**
@@ -244,10 +244,9 @@ public class LatticeTileGridCanvas extends Canvas
 					
 				Color colorOfTile = getColorOfTile(p);
 				setColorOnTile(colorOfTile, p);
-				boolean[] latticeBits = lg.translateLatticeCodeToLatticeBits(lg.getLatticeCode(p));
 				
-				if(latticeBits[indexLatticeBitLeft])drawLattice(p, indexLatticeBitLeft);
-				if(latticeBits[indexLatticeBitTop])drawLattice(p, indexLatticeBitTop);
+				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
+				if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
 				
 				Thread.sleep(750);
 			}
@@ -444,35 +443,6 @@ public class LatticeTileGridCanvas extends Canvas
 	public int getTileSize()
 	{
 		return tileSize;
-	}
-	
-	/**
-	 * Which lattices are on the border of a Tile at
-	 * Position p.
-	 * @param p Tile Coordinates.
-	 * @return latticeCode.
-	 * @throws LTGCException Shouldn't.
-	 */
-	public int getLatticeCode(Point p) throws LTGCException
-	{
-		
-		return getLatticeCode(p.x, p.y);
-	}
-	
-	/**
-	 * Which lattices are on Tile at Position(x,y)?
-	 * @param x x-Coordinate of Tile.
-	 * @param y y-Coordinate of Tile.
-	 * @return LatticeCode.
-	 * @throws LTGCException Shouldn't.
-	 */
-	public int getLatticeCode(int x, int y) throws LTGCException
-	{
-		
-		if(x<0||x>=widthInTiles) throw new LTGCException("Can't get Lattice Code. x is out of Bounds.");
-		if(y<0||y>=heightInTiles) throw new LTGCException("Can't get Lattice Code. y is out of Bounds.");
-		
-		return lg.getLatticeCode(x, y);
 	}
 	
 	/**

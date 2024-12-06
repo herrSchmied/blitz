@@ -1,7 +1,18 @@
 package jborg.lightning;
 
+/**
+ * Info
+ */
 public class SystemInfo
 {
+	
+	/**
+	 * Empty Constructor
+	 */
+	public SystemInfo()
+	{
+		
+	}
 
 	/**
 	 * Self Explanatory.

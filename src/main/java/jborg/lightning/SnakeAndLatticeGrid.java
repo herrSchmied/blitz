@@ -1,7 +1,7 @@
 package jborg.lightning;
 
 import java.awt.Point;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -78,10 +78,8 @@ public class SnakeAndLatticeGrid
 	 * grow.
 	 * @throws LTGCException Shouldn't.
 	 * @throws SnakeException Shouldn't.
-	 * @throws InterruptedException 
-	 * @throws IOException 
 	 */
-	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException, InterruptedException, IOException
+	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException
     {
 
 		Point head = snake.getHead();
@@ -105,23 +103,25 @@ public class SnakeAndLatticeGrid
    		if(checkDiagonal(head, leftBottomPos))rPoints.add(leftBottomPos);
    		if(checkDiagonal(head, rightTopPos))rPoints.add(rightTopPos);
    		if(checkDiagonal(head, rightBottomPos))rPoints.add(rightBottomPos);
-
-   		if(rPoints.contains(leftTopPos)||rPoints.contains(leftBottomPos)||rPoints.contains(rightTopPos)||rPoints.contains(rightBottomPos))
-   		{
-   			System.out.println(BashSigns.boldGBCPX+"Treffer"+BashSigns.boldGBCSX);
-  		}
   
    		for(Point relativePoint: rPoints)
    		{
-   			System.out.println(BashSigns.boldYBCPX+"P(" + relativePoint.x+", " + relativePoint.y + ")"+BashSigns.boldYBCSX);
    			Point newHead = addPoints(head, relativePoint);
    			if(checkOption(snake, newHead))growthOptions.add(newHead);
    		}
- 
-   		//TODO:Till here everything is fine. Then sometimes the final Point is not added!!!!
     	return growthOptions;
     }
 
+	/**
+	 * Relative point is a the substraction of a diagonal Neighbour of p
+	 * and p. If not then a Exception is thrown. Further if the Diagonal
+	 * Destination specified by the relative Point is directly accessible
+	 * meaning not blocked by Lattices then it returns true.
+	 * @param p
+	 * @param relative
+	 * @return 
+	 * @throws LTGCException
+	 */
 	private boolean checkDiagonal(Point p, Point relative) throws LTGCException
 	{
 
@@ -252,18 +252,14 @@ public class SnakeAndLatticeGrid
      * @throws SnakeException If something goes wrong with the Options Method.
      * Or the Snake can't grow or can't change status. It is in this API not
      * probable.
-     * @throws InterruptedException If something goes wrong with Thread.sleep().
-     * Not probable.
-     * @throws IOException 
      */
-    public Set<Snake> theDivergence(Snake snake) throws InterruptedException, SnakeException, LTGCException, IOException
+    public Set<Snake> theDivergence(Snake snake) throws SnakeException, LTGCException
     {
     	Set<Snake> snakeSet = new HashSet<>();
     	if(snake.getStatus().equals(Snake.deadStatus))
     	{
     		
     		System.out.println("U gave me a dead Snake.");
-    		Thread.sleep(1000);
     		return snakeSet;
     	}
     
@@ -294,10 +290,8 @@ public class SnakeAndLatticeGrid
      * in the final Version.
      * @throws LTGCException Shouldn't.
      * @throws SnakeException Shouldn't.
-     * @throws InterruptedException Shouldn't.
-     * @throws IOException 
      */
-    public void setFinalSnakes() throws LTGCException, SnakeException, InterruptedException, IOException
+    public void setFinalSnakes() throws LTGCException, SnakeException
     {
     	this.snakeSet = untilTheyAreAllDeadLoop(this.snakeSet);
     }
@@ -309,10 +303,8 @@ public class SnakeAndLatticeGrid
      * @return Set of 'Dead' Snakes.
      * @throws LTGCException Shouldn't.
      * @throws SnakeException Shouldn't.
-     * @throws InterruptedException Shouldn't.
-     * @throws IOException 
      */
-    public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException, InterruptedException, IOException
+    public Set<Snake> untilTheyAreAllDeadLoop(Set<Snake> snakeSet) throws LTGCException, SnakeException
     {
     	
     	Set<Snake> copy = new HashSet<>(snakeSet);
@@ -360,21 +352,42 @@ public class SnakeAndLatticeGrid
     	return successes;
     }
     
+    /**
+     * If u want it u can have it.
+     * @return LatticeGrid.
+     */
     public LatticeGrid getLatticeGrid()
     {
     	return lg;
     }
     
+    /**
+     * Self explanatory.
+     * @return final Point.
+     */
     public Point getFinalPoint()
     {
     	return finalPoint;
     }
     
+    /**
+     * Convenience.
+     * 
+     * @param name "Name".
+     * @param p Point in question.
+     * @return Nice String.
+     */
     public static String pointAsString(String name, Point p)
     {
     	return name+"(" + p.x +  ", " + p.y + ")";
     }
     
+    /**
+     * Checks if Point p is out of Bounds.
+     * @param name "Name" of the Point.
+     * @param p Tile/Point Coordinates
+     * @return is p out of Bounds?
+     */
     public boolean checkPoint(String name, Point p)
     {
     	

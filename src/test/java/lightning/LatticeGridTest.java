@@ -3,6 +3,8 @@ package lightning;
 
 import static jborg.lightning.LatticeGrid.*;
 
+import java.awt.Point;
+
 import org.junit.jupiter.api.Test;
 
 import jborg.lightning.exceptions.LTGCException;
@@ -20,6 +22,9 @@ public class LatticeGridTest
 		int heightInTiles = 10;
 
 		LatticeGrid lg = new LatticeGrid(widthInTiles, heightInTiles);
+		Point pointA = new Point(2, 2);
+		Point pointB = new Point(7, 7);
+		Point pointC = new Point(5, 5);
 		
 		boolean [] latticeBits = new boolean[4];
 		latticeBits[indexLatticeBitBottom] = true;
@@ -27,56 +32,28 @@ public class LatticeGridTest
 		latticeBits[indexLatticeBitRight] = false;
 		latticeBits[indexLatticeBitTop] = true;
 		
-		lg.setLatticesOnTile(2, 2, latticeBits);
+		lg.setLatticesOnTile(pointA, latticeBits);
 		
 		latticeBits[indexLatticeBitBottom] = false;
 		latticeBits[indexLatticeBitLeft] = true;
 		latticeBits[indexLatticeBitRight] = true;
 		latticeBits[indexLatticeBitTop] = false;
 		
-		lg.setLatticesOnTile(7, 7, latticeBits);
+		lg.setLatticesOnTile(pointB, latticeBits);
 		
-		lg.setOneLatticeOnTile(5, 5, indexLatticeBitLeft);
+		lg.setOneLatticeOnTile(pointC, indexLatticeBitLeft);
 		
-		int affectedTilesCounter =0;
+		int affectedTiles =0;
 		for(int n=0;n<widthInTiles;n++)
 		{
 			for(int m=0;m<heightInTiles;m++)
 			{
-				boolean bottom = lg.hasLatticeOnTheBottom(n, m);
-				boolean top = lg.hasLatticeOnTheTop(n, m);
-				boolean right = lg.hasLatticeOnTheRight(n, m);
-				boolean left = lg.hasLatticeOnTheLeft(n, m);
-				
-				if((left||right||top||bottom))
-				{
-					if(bottom)
-					{
-						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
-						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Bottom: " + bottom);
-					}
-					if(top)
-					{
-						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
-						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Top: " + top);
-					}
-					if(right)
-					{
-						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
-						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Right: " + right);
-					}
-					if(left)
-					{
-						System.out.println("LatticeCode: " + lg.getLatticeCode(n, m));
-						System.out.println("Tile(" + n + ", " + m + ") has Lattice on Left: " + left);
-					}
-					affectedTilesCounter++;
-				}
+				if(lg.hasLatticeSomeWhere(new Point(n,m)))affectedTiles++;
 			}
 		}
 		
-		System.out.println("AffectedTiles: " + affectedTilesCounter);
-		assert(affectedTilesCounter==44);//Because Frameborders are considered to have/be Lattices!
+		System.out.println("AffectedTiles: " + affectedTiles);
+		assert(affectedTiles==44);//Because Frameborders are considered to have/be Lattices!
 	}
 
 }

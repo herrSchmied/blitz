@@ -353,7 +353,7 @@ public class BlitzThing extends Application
      * @throws SnakeException Shouldn't.
      * @throws CollectionException Shouldn't.
      * @throws InterruptedException Shouldn't.
-     * @throws IOException 
+     * @throws IOException Shouldn't
      */
     public void showCanvasStage(int width, int height, int latticeNr) throws LTGCException, SnakeException, CollectionException, InterruptedException, IOException
     {
