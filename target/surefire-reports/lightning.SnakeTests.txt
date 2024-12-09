@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: lightning.SnakeTests
--------------------------------------------------------------------------------
-Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.141 s -- in lightning.SnakeTests
