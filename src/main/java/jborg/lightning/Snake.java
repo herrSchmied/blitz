@@ -511,6 +511,26 @@ public class Snake implements Cloneable, Serializable
 		if(p==null)throw new SnakeException("Point is null!");
 	}
 
+	public int indexOfP(Point p)
+	{
+
+		for(int n=0;n<consecutiveParts.size();n++)
+		{
+			if(consecutiveParts.get(n).equals(p))return n;
+		}
+
+		return -1;
+	}
+	
+	public Point getPartAt(int n) throws SnakeException
+	{
+		if(n<0||n>=getLength())throw new SnakeException("There is no Position like that.");
+		
+		Point p = consecutiveParts.get(n);
+		
+		return new Point(p.x, p.y);
+	}
+
 	public int hashCode()
 	{
 	       int result = 17;
@@ -524,7 +544,7 @@ public class Snake implements Cloneable, Serializable
 
 	       return result;
 	}
-	
+
 	public boolean equals(Object obj)
 	{
 		
