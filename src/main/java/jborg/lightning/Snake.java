@@ -528,6 +528,8 @@ public class Snake implements Cloneable, Serializable
 	public boolean equals(Object obj)
 	{
 		
+		if(obj==null)return false;
+		
 		if (obj == this) return true;
 		
 	    if (!(obj instanceof Snake)) return false;
