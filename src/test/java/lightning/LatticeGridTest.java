@@ -53,7 +53,10 @@ public class LatticeGridTest
 		}
 		
 		System.out.println("AffectedTiles: " + affectedTiles);
-		assert(affectedTiles==44);//Because Frameborders are considered to have/be Lattices!
+		int borderLattices = 2*widthInTiles+2*heightInTiles-4;
+		
+		assert(borderLattices==36);//The Lattices on Point A to C are not near those.
+		assert(affectedTiles==44);//Because Frameborders are considered to have 36 Lattices!
 	}
 
 }

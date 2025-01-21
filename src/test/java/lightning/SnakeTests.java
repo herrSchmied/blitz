@@ -6,10 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.awt.Point;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import jborg.lightning.AnalysisToolSnake;
 import jborg.lightning.Snake;
 import jborg.lightning.exceptions.SnakeException;
 
@@ -224,6 +226,7 @@ public class SnakeTests
 		
 		Snake snake = new Snake(points, Snake.readyStatus);
 		assert(snake.getLength()==3);
+		assert(AnalysisToolSnake.containingThisSequenz(points, snake));
 	}
 	
 	@Test
@@ -245,21 +248,29 @@ public class SnakeTests
 	@Test
 	public void testSnakeGrowth() throws SnakeException, InterruptedException
 	{
-		Snake snake = new Snake(0, 0, Snake.readyStatus);
-		snake = snake.growSnake(1, 0, Snake.readyStatus);
+		
+		int startX = 0;
+		int startY = 0;
+		Point startP = new Point(startX, startY);
+
+		int nextX =1;
+		int nextY =0;
+		Point nextP = new Point(nextX, nextY);
+	
+		Snake snake = new Snake(startX, startY, Snake.readyStatus);
+		snake = snake.growSnake(nextX, nextY, Snake.readyStatus);
 		
 		assert(snake.getLength()==2);
+		List<Point> sequenz = new ArrayList<>();
+		sequenz.add(startP);
+		sequenz.add(nextP);
+		
+		assert(AnalysisToolSnake.containingThisSequenz(sequenz, snake));
 		
 		snake = snake.growSnake(2, 0, Snake.readyStatus);
 		
 		assert(snake.getLength()==3);
 		
-		snake = new Snake(new Point(0,0));
-		snake = snake.growSnake(0, 1, Snake.readyStatus);
-		snake = snake.growSnake(1, 0, Snake.readyStatus);
-		snake = snake.growSnake(1, 1, Snake.readyStatus);
-		
-		System.out.println(snake);
 	}
 
 	@Test

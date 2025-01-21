@@ -32,13 +32,14 @@ public class AnalysisToolSnake
 	{
 		
 		if(sequenz.size()>snake.getLength())return false;
+		if(sequenz.size()==0)return true;
 
 		Point p = sequenz.get(0);
-		int indexOfP = snake.indexOfP(p);
-		if(indexOfP==-1)return false;
-		if(sequenz.size()==1)return true;
+		Point q = snake.getPartAt(n);
+		if(!p.equals(q))return false;
 		
-		List<Point> cutOff = sequenz.subList(1, sequenz.size()-1);
+		
+		List<Point> cutOff = sequenz.subList(1, sequenz.size());
 		
 		return containingThisSequenzAtPosition(cutOff, snake, n+1);
 	}	
