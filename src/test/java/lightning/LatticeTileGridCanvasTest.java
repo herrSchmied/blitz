@@ -21,7 +21,7 @@ import jborg.lightning.Snake;
 import jborg.lightning.SnakeAndLatticeGrid;
 import jborg.lightning.exceptions.SnakeException;
 
-import someMath.CollectionException;
+import someMath.exceptions.CollectionException;
 import someMath.CollectionManipulation;
 
 import static jborg.lightning.LatticeGrid.*;

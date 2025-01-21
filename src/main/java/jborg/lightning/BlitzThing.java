@@ -29,7 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.exceptions.SnakeException;
-import someMath.CollectionException;
+import someMath.exceptions.CollectionException;
 
 import someMath.CollectionManipulation;
 
