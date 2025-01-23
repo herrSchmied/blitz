@@ -439,7 +439,7 @@ public class LatticeTileGridCanvasTest
 		Point startPoint = new Point(0, 0);
 		Point destPoint = new Point(2, 2);
 		Point centerPoint = new Point(1, 1);
-		Point leftUp = new Point(0, 1);
+		Point leftCenter = new Point(0, 1);
 
 		frameIt(startPoint, destPoint, 3, 3);
 		
@@ -453,7 +453,7 @@ public class LatticeTileGridCanvasTest
 		snlGrid.setFinalSnakes();
 		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
 		List<Point> sequenz = new ArrayList<>(Arrays.asList(startPoint, centerPoint));
-		List<Point> sequenzII = new ArrayList<>(Arrays.asList(leftUp, centerPoint));
+		List<Point> sequenzII = new ArrayList<>(Arrays.asList(leftCenter, centerPoint));
 		
 		for(Snake snake: finalSnakes)
 		{
@@ -463,9 +463,38 @@ public class LatticeTileGridCanvasTest
 			assert(!AnalysisToolSnake.containingThisSequenz(sequenzII, snake));
 		}
 
-		Set<Snake> successes = snlGrid.filterSuccesses();
-		Snake success;
+		System.out.println("Final Snakes: " + finalSnakes.size());
+
+	}
+
+	@Test
+	public void latticesWorkCorrectAsBarrier_II_Test() throws SnakeException, LTGCException
+	{
+		Point startPoint = new Point(0, 0);
+		Point destPoint = new Point(2, 2);
+		Point centerPoint = new Point(1, 1);
+		Point rightCenter = new Point(2, 1);
+
+		frameIt(startPoint, destPoint, 3, 3);
 		
+		printlnGreen("\nLattices as Barrier Test I!");
+
+		canvas.setOneLattice(centerPoint, indexLatticeBitRight);
+		canvas.setOneLattice(centerPoint, indexLatticeBitTop);
+		
+		snlGrid.setFinalSnakes();
+		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
+		List<Point> sequenz = new ArrayList<>(Arrays.asList(centerPoint, destPoint));
+		List<Point> sequenzII = new ArrayList<>(Arrays.asList(centerPoint, rightCenter));;
+		List<Point> sequenzIII = new ArrayList<>(Arrays.asList(rightCenter, centerPoint));
+		
+		for(Snake snake: finalSnakes)
+		{
+			assert(!AnalysisToolSnake.containingThisSequenz(sequenz, snake));
+			assert(!AnalysisToolSnake.containingThisSequenz(sequenzII, snake));
+			assert(!AnalysisToolSnake.containingThisSequenz(sequenzIII, snake));
+			assert(snake.containsPart(startPoint));
+		}
 
 		System.out.println("Final Snakes: " + finalSnakes.size());
 
