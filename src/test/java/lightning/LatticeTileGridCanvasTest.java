@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import consoleTools.BashSigns;
 import jborg.lightning.exceptions.LTGCException;
+import jborg.lightning.AnalysisToolSnake;
 import jborg.lightning.LatticeGrid;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
@@ -429,6 +431,44 @@ public class LatticeTileGridCanvasTest
 		Set<Snake> successSnakes = snlGrid.filterSuccesses();
 		
 		assert(successSnakes.size()==3);
+	}
+	
+	@Test
+	public void latticesWorkCorrectAsBarrier_I_Test() throws SnakeException, LTGCException
+	{
+		Point startPoint = new Point(0, 0);
+		Point destPoint = new Point(2, 2);
+		Point centerPoint = new Point(1, 1);
+		Point leftUp = new Point(0, 1);
+
+		frameIt(startPoint, destPoint, 3, 3);
+		
+		printlnGreen("\nLattices as Barrier Test I!");
+
+		//Snake snake = new Snake(pointA, Snake.readyStatus);
+		
+		canvas.setAllLatticesOnTile(centerPoint);
+		
+		
+		snlGrid.setFinalSnakes();
+		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
+		List<Point> sequenz = new ArrayList<>(Arrays.asList(startPoint, centerPoint));
+		List<Point> sequenzII = new ArrayList<>(Arrays.asList(leftUp, centerPoint));
+		
+		for(Snake snake: finalSnakes)
+		{
+			
+			assert(!snake.containsPart(centerPoint));
+			assert(!AnalysisToolSnake.containingThisSequenz(sequenz, snake));
+			assert(!AnalysisToolSnake.containingThisSequenz(sequenzII, snake));
+		}
+
+		Set<Snake> successes = snlGrid.filterSuccesses();
+		Snake success;
+		
+
+		System.out.println("Final Snakes: " + finalSnakes.size());
+
 	}
 
 	public Point getRandomPoint(Set<Point> excludedPoints, LatticeTileGridCanvas canvas)
