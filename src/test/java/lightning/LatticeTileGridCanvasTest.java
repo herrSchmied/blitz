@@ -477,7 +477,7 @@ public class LatticeTileGridCanvasTest
 
 		frameIt(startPoint, destPoint, 3, 3);
 		
-		printlnGreen("\nLattices as Barrier Test I!");
+		printlnGreen("\nLattices as Barrier Test II!");
 
 		canvas.setOneLattice(centerPoint, indexLatticeBitRight);
 		canvas.setOneLattice(centerPoint, indexLatticeBitTop);
@@ -514,7 +514,7 @@ public class LatticeTileGridCanvasTest
 		return rndPoint;
 	}
 	
-	public void printlnGreen(String s)
+	public static void printlnGreen(String s)
 	{
 		System.out.println(BashSigns.gBCPX+s+BashSigns.gBCSX);
 	}
