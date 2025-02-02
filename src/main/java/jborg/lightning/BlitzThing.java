@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static consoleTools.TerminalXDisplay.*;
+
 import static guiTools.Input.*;
 import static guiTools.Output.*;
 
@@ -47,29 +49,6 @@ import static jborg.lightning.LatticeGrid.*;
 public class BlitzThing extends Application
 {
 
-	AtomicBoolean canvasDone = new AtomicBoolean(false);
-	
-	LatticeTileGridCanvas canvas;
-
-	Thread dhCanvasThrd = new Thread(()->
-	{
-		
-		Thread thread = new Thread(()->
-		{
-			try
-			{
-				canvas.drawWholeCanvas();
-				canvasDone.set(true);
-			}
-			catch(LTGCException e)
-			{
-				e.printStackTrace();
-			}
-		});
-		
-		thread.start();
-	});
-
 	int tileSize = 20;
 	int widthInTiles = 3;
 	int heightInTiles = 3;
@@ -80,47 +59,9 @@ public class BlitzThing extends Application
 	Point end = new Point(widthInTiles-1, heightInTiles-1);
 	
 	Set<Snake> snakeSet = new HashSet<>();
+	
+	LatticeTileGridCanvas canvas;
 
-	Thread drawSnake = new Thread(()->
-	{
-
-		
-		Thread thread = new Thread(()->
-		{
-
-	        SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
-	        Set<Snake> successSnakes = snlGrid.filterSuccesses();
-	        
-	        try
-	        {
-				while(!canvasDone.get())
-				{
-						Thread.sleep(1200);
-						System.out.println("Waiting for other Canvas Thread!");
-				}
-
-				Snake snake = CollectionManipulation.catchRandomElementOfSet(successSnakes);
-				
-				int length = snake.getLength();
-				List<Point> parts = snake.getParts();
-
-				for(int n=0;n<length;n++)
-				{
-					Point p = parts.get(n);
-					canvas.setColorOnTile(Color.BLUE, p);
-					Thread.sleep(750);
-				}
-			}
-	        catch(CollectionException | LTGCException | InterruptedException e)
-	        {
-				e.printStackTrace();
-			}
-
-		});
-		
-		dhCanvasThrd.start();
-		thread.start();
-	});
 
     VBox questionBox = new VBox();
 
@@ -267,8 +208,7 @@ public class BlitzThing extends Application
         	{
 				showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
 
-				Thread.sleep(250);
-				Platform.runLater(drawSnake);
+				Thread.sleep(250);				
 			}
         	catch (LTGCException | SnakeException | CollectionException | InterruptedException | IOException e)
         	{
@@ -280,16 +220,16 @@ public class BlitzThing extends Application
         stage.show();
         
     }    
-
+    
     private void chooseWhereToDrawLattice(int width, int height, int latticeNr) throws LTGCException, CollectionException
     {
 
     	int nrOfInternPossibleLattices = 2*width*height-width-height;
     	if(latticeNr>=nrOfInternPossibleLattices)throw new IllegalArgumentException("Much to many Lattices!");
 
-    	System.out.println("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices);
-    	System.out.println("Nr. of Factual Intern Lattices: " + nrOfLattices);
-    	System.out.println("Percentage: " + ((double)(latticeNr)/(nrOfInternPossibleLattices)));
+    	printBoldAndBlue("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices);
+    	printBoldAndBlue("Nr. of Factual Intern Lattices: " + nrOfLattices);
+    	printBoldAndBlue("Percentage: " + ((double)(latticeNr)/(nrOfInternPossibleLattices)));
 
     	List<Integer> possibleLatticeNrs = new ArrayList<>();
     	for(int n=0;n<nrOfInternPossibleLattices;n++)possibleLatticeNrs.add(n);
@@ -303,14 +243,12 @@ public class BlitzThing extends Application
     		actualLatticeNrs.add(k);
     	}
 
-    	System.out.println("ActualLattices: "+ actualLatticeNrs.size());
+    	printBoldAndBlue("ActualLattices: "+ actualLatticeNrs.size());
     	for(int n=0;n<actualLatticeNrs.size();n++)System.out.print(", " + actualLatticeNrs.get(n));
     	System.out.println("");
     	
     	int nrOfTopLattices = width*(height-1);
-    	System.out.println("Nr. of Tops: " + nrOfTopLattices);
     	int nrOfRightLattices = (width-1)*height;
-    	System.out.println("Nr. of Rights: " + nrOfRightLattices);
     	
     	int cnt = 0;
     	for(int n: actualLatticeNrs)
@@ -323,7 +261,6 @@ public class BlitzThing extends Application
     			int y = n % (width-1)+1;
     			
 				canvas.setOneLattice(x, y, indexLatticeBitTop);
-	    		System.out.println("Top(" + x + ", " + y +")");
 
     		}
     		else
@@ -334,12 +271,12 @@ public class BlitzThing extends Application
     			int y = (int)Math.floor(m/height);
 
     			canvas.setOneLattice(x, y, indexLatticeBitRight);
-    			System.out.println("Right(" + x + ", " + y +")");
+   
     		}
     		cnt++;
     	}
 	
-    	System.out.println("Cnt: " + cnt);
+    	printBoldAndBlue("Count: " + cnt);
     }
 
 
@@ -386,6 +323,8 @@ public class BlitzThing extends Application
         Stage stage = new Stage();
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
         stage.setScene(scene);
+
+        canvas.drawWholeCanvas();
 
         stage.show();
     }

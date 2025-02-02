@@ -37,8 +37,11 @@ public class AnalyseToolSnakeTest
 		for(int n=0;n<sequenz.size();n++)
 		{
 			
-			List<Point> subSequenz = sequenz.subList(n, sequenz.size());
-			assert(AnalysisToolSnake.containingThisSequenz(subSequenz, snake));
+			for(int k=sequenz.size();k>=n;k--)
+			{
+				List<Point> subSequenz = sequenz.subList(n, k);
+				assert(AnalysisToolSnake.containingThisSequenz(subSequenz, snake));
+			}
 		}
 	}
 }

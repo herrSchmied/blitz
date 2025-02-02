@@ -286,7 +286,12 @@ public class LatticeTileGridCanvas extends Canvas
 		if(yPos>heightInTiles-1||yPos<0)throw new LTGCException("Y-Position out of Bounds.");
 
 		gc2D.setFill(c);
-		gc2D.fillRect(xPos*tileSize, yPos*tileSize, tileSize, tileSize);
+		int startX = xPos*tileSize+1;
+		int startY = yPos*tileSize+1;
+		int xSpan = tileSize-1;
+		int ySpan = xSpan;
+		
+		gc2D.fillRect(startX, startY, xSpan, ySpan);
 	
 		colorOfTile[xPos][yPos] = c;
 	}
