@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 
 import static consoleTools.TerminalXDisplay.*;
 
@@ -17,7 +17,6 @@ import static guiTools.Output.*;
 
 
 import javafx.application.Application;
-import javafx.application.Platform;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -248,7 +247,7 @@ public class BlitzThing extends Application
     	System.out.println("");
     	
     	int nrOfTopLattices = width*(height-1);
-    	int nrOfRightLattices = (width-1)*height;
+    	//int nrOfRightLattices = (width-1)*height;
     	
     	int cnt = 0;
     	for(int n: actualLatticeNrs)

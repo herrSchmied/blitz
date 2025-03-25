@@ -15,8 +15,8 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import consoleTools.BashSigns;
+
 import jborg.lightning.exceptions.LTGCException;
-import jborg.lightning.AnalysisToolSnake;
 import jborg.lightning.LatticeGrid;
 import jborg.lightning.LatticeTileGridCanvas;
 import jborg.lightning.Snake;
@@ -25,6 +25,7 @@ import jborg.lightning.exceptions.SnakeException;
 
 import someMath.exceptions.CollectionException;
 import someMath.CollectionManipulation;
+import someMath.SequenzInListSearch;
 
 import static jborg.lightning.LatticeGrid.*;
 import static jborg.lightning.SnakeAndLatticeGrid.*;
@@ -65,7 +66,7 @@ public class LatticeTileGridCanvasTest
 	{
 		frameIt(stndrtStartPoint, stndrtEndPoint, stndrtWidth, stndrtHeight);
 	}
-
+ 
 	@Test
 	public void optionsTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
@@ -454,13 +455,14 @@ public class LatticeTileGridCanvasTest
 		Set<Snake> finalSnakes = snlGrid.getSnakeSet();
 		List<Point> sequenz = new ArrayList<>(Arrays.asList(startPoint, centerPoint));
 		List<Point> sequenzII = new ArrayList<>(Arrays.asList(leftCenter, centerPoint));
+		List<Point> sequenzSearchedFor = snake.getParts();
 		
 		for(Snake snake: finalSnakes)
 		{
 			
 			assert(!snake.containsPart(centerPoint));
-			assert(!AnalysisToolSnake.containingThisSequenz(sequenz, snake));
-			assert(!AnalysisToolSnake.containingThisSequenz(sequenzII, snake));
+			assert(!SequenzInListSearch.containingThisSequenz(sequenz, sequenzSearchedFor));
+			assert(!SequenzInListSearch.containingThisSequenz(sequenzII, sequenzSearchedFor));
 		}
 
 		System.out.println("Final Snakes: " + finalSnakes.size());
@@ -487,12 +489,13 @@ public class LatticeTileGridCanvasTest
 		List<Point> sequenz = new ArrayList<>(Arrays.asList(centerPoint, destPoint));
 		List<Point> sequenzII = new ArrayList<>(Arrays.asList(centerPoint, rightCenter));;
 		List<Point> sequenzIII = new ArrayList<>(Arrays.asList(rightCenter, centerPoint));
+		List<Point> sequenzSearchedFor = snake.getParts();
 		
 		for(Snake snake: finalSnakes)
 		{
-			assert(!AnalysisToolSnake.containingThisSequenz(sequenz, snake));
-			assert(!AnalysisToolSnake.containingThisSequenz(sequenzII, snake));
-			assert(!AnalysisToolSnake.containingThisSequenz(sequenzIII, snake));
+			assert(!SequenzInListSearch.containingThisSequenz(sequenz, sequenzSearchedFor));
+			assert(!SequenzInListSearch.containingThisSequenz(sequenzII, sequenzSearchedFor));
+			assert(!SequenzInListSearch.containingThisSequenz(sequenzIII, sequenzSearchedFor));
 			assert(snake.containsPart(startPoint));
 		}
 

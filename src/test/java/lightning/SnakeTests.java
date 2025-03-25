@@ -6,14 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.awt.Point;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-
-import jborg.lightning.AnalysisToolSnake;
 import jborg.lightning.Snake;
 import jborg.lightning.exceptions.SnakeException;
+import someMath.SequenzInListSearch;
 
 
 public class SnakeTests
@@ -226,7 +224,10 @@ public class SnakeTests
 		
 		Snake snake = new Snake(points, Snake.readyStatus);
 		assert(snake.getLength()==3);
-		assert(AnalysisToolSnake.containingThisSequenz(points, snake));
+		List<Point> sequenzSearchedIn = snake.getParts();
+		assert(points.equals(sequenzSearchedIn));
+		
+		//assert(SequenzInListSearch.containingThisSequenz(points, sequenzSearchedIn));
 	}
 	
 	@Test
@@ -264,8 +265,10 @@ public class SnakeTests
 		List<Point> sequenz = new ArrayList<>();
 		sequenz.add(startP);
 		sequenz.add(nextP);
+		List<Point> sequenzSearchedFor = snake.getParts();
 		
-		assert(AnalysisToolSnake.containingThisSequenz(sequenz, snake));
+		assert(sequenzSearchedFor.equals(sequenz));
+		//assert(SequenzInListSearch.containingThisSequenz(sequenz, sequenzSearchedFor));
 		
 		snake = snake.growSnake(2, 0, Snake.readyStatus);
 		
