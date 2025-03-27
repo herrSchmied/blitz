@@ -235,15 +235,13 @@ public class LatticeTileGridCanvas extends Canvas
 	public void drawWholeCanvas() throws LTGCException
 	{
 		
-		setColorOnTile(Color.GREEN, startPoint);
-		setColorOnTile(Color.RED, finalPoint);
 		lg.walkThruTiles((p)->
 		{
 			try
 			{
 					
-				Color colorOfTile = getColorOfTile(p);
-				setColorOnTile(colorOfTile, p);
+				Color c= Color.BLUE;
+				setColorOnTile(c, p);
 				
 				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
 				if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
@@ -256,6 +254,9 @@ public class LatticeTileGridCanvas extends Canvas
 			}
 
 		});
+
+		setColorOnTile(Color.GREEN, startPoint);
+		setColorOnTile(Color.RED, finalPoint);
 	}
 	
 
