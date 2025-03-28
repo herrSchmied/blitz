@@ -240,7 +240,7 @@ public class LatticeTileGridCanvas extends Canvas
 			try
 			{
 					
-				Color c= Color.BLUE;
+				Color c= Color.GREY;
 				setColorOnTile(c, p);
 				
 				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);

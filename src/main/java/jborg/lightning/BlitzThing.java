@@ -16,7 +16,7 @@ import static guiTools.Output.*;
 
 
 import javafx.application.Application;
-
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -222,17 +222,23 @@ public class BlitzThing extends Application
        			errorAlert("Nr. of Lattices can't be below Zero");
         		return;
         	}
-        	
-        	try
-        	{
-				showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
 
-				Thread.sleep(250);				
-			}
-        	catch (LTGCException | SnakeException | CollectionException | InterruptedException | IOException e)
-        	{
-				e.printStackTrace();
-			}
+			Platform.runLater(()->
+			{
+				
+				try
+				{
+					showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
+				}
+				catch(LTGCException | SnakeException | CollectionException | InterruptedException
+							| IOException e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			});
+
         });
 
     	//questionBox = root/
@@ -332,16 +338,31 @@ public class BlitzThing extends Application
     	
     	LatticeTileGridCanvas canvas = new LatticeTileGridCanvas(width, height, end, snake);
         root.getChildren().add(canvas);
+        
+//      Platform.runLater(()->
+//      {
+        
         Stage stage = new Stage();
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
         stage.setScene(scene);
 
-        canvas.drawWholeCanvas();
-
-        stage.show();
+        
+//		try
+//		{
+        	
+        	canvas.drawWholeCanvas();
+        	
+//        	}
+//        	catch(LTGCException e)
+//        	{
+//        		e.printStackTrace();
+//        	}
+       	
+        	stage.show();
+        //});
     }
 
-    public void hmmm(int width, int height, int latticeNr, LatticeTileGridCanvas canvas) throws LTGCException, CollectionException, SnakeException
+    public void setupTheSnakes(int width, int height, int latticeNr, LatticeTileGridCanvas canvas) throws LTGCException, CollectionException, SnakeException
     {
     	
         setupLattices(width, height, latticeNr, canvas);
