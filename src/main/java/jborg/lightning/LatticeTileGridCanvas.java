@@ -243,8 +243,9 @@ public class LatticeTileGridCanvas extends Canvas
 				Color c= Color.GREY;
 				setColorOnTile(c, p);
 				
-				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
-				if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
+				//TODO: Something goes wrong here!!!
+				//if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
+				//if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
 				
 				Thread.sleep(750);
 			}
