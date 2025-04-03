@@ -370,7 +370,7 @@ public class LatticeGrid
 	private boolean hasLatticeOnTheBottom(int x, int y) throws LTGCException
 	{
 		throwsExceptionIfOutOfBounds(x, y);
-		if(y==0)return true;
+		if(y==height-1)return true;
 
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
@@ -392,7 +392,7 @@ public class LatticeGrid
 	{
 		
 		throwsExceptionIfOutOfBounds(x, y);
-		if(y==height-1)return true;
+		if(y==0)return true;
 		
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);

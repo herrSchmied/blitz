@@ -244,9 +244,10 @@ public class LatticeTileGridCanvas extends Canvas
 				setColorOnTile(c, p);
 				
 				//TODO: Something goes wrong here!!!
-				//if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
-				//if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
-				
+				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
+				if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
+				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheBottom(p))drawLattice(p, indexLatticeBitBottom);
+				if(lg.hasLatticeOnTheBottom(p))drawLattice(p, indexLatticeBitBottom);
 				Thread.sleep(750);
 			}
 			catch (LTGCException | InterruptedException e)
