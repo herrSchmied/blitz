@@ -247,6 +247,8 @@ public class LatticeTileGridCanvas extends Canvas
 				
 				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
 				if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
+				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);
+				if(lg.hasLatticeOnTheBottom(p))drawLattice(p, indexLatticeBitBottom);
 				
 				Thread.sleep(750);
 			}
@@ -286,7 +288,7 @@ public class LatticeTileGridCanvas extends Canvas
 		if(yPos>heightInTiles-1||yPos<0)throw new LTGCException("Y-Position out of Bounds.");
 
 		gc2D.setFill(c);
-		gc2D.fillRect(xPos*tileSize, yPos*tileSize, tileSize, tileSize);
+		gc2D.fillRect(xPos*tileSize+1, yPos*tileSize+1, tileSize-1, tileSize-1);
 	
 		colorOfTile[xPos][yPos] = c;
 	}
@@ -333,7 +335,7 @@ public class LatticeTileGridCanvas extends Canvas
 		{
 			xStart= (double)(xPosTile*tileSize);
 			xEnd = xStart + tileSize;
-			yStart = (double)(yPosTile+1)*tileSize;
+			yStart = (double)(yPosTile)*tileSize;
 			yEnd = yStart;
 		}
 		
@@ -349,7 +351,7 @@ public class LatticeTileGridCanvas extends Canvas
 		{
 			xStart= (double)(xPosTile*tileSize);
 			xEnd = xStart + tileSize;
-			yStart = (double)(yPosTile*tileSize);
+			yStart = (double)(yPosTile+1)*tileSize;
 			yEnd = yStart;
 		}
 		
