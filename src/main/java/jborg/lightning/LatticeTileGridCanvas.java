@@ -168,22 +168,7 @@ public class LatticeTileGridCanvas extends Canvas
 	/**
 	 * Sets a Plain and clear Canvas and Lattic-Grid.
 	 */
-	public void colorAllTilesGrey()
-	{
-		lg.walkThruTiles((p)->
-		{
-			
-			try
-			{
-				setColorOnTile(Color.GRAY, p);
-			}
-			catch(LTGCException e)
-			{
-				e.printStackTrace();
-			}
-		});
-	}
-
+	
 	/**
 	 * Sets one Lattice on a Tile Border.
 	 * @param p Tile Coordinates.
@@ -234,30 +219,34 @@ public class LatticeTileGridCanvas extends Canvas
 	 */
 	public void drawWholeCanvas() throws LTGCException
 	{
-		
-		setColorOnTile(Color.GREEN, startPoint);
-		setColorOnTile(Color.RED, finalPoint);
 		lg.walkThruTiles((p)->
 		{
+		
 			try
 			{
-					
-				Color colorOfTile = getColorOfTile(p);
-				setColorOnTile(colorOfTile, p);
+
+				setColorOnTile(Color.WHITE, p);
 				
 				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
 				if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
 				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);
 				if(lg.hasLatticeOnTheBottom(p))drawLattice(p, indexLatticeBitBottom);
-				
-				Thread.sleep(750);
 			}
-			catch (LTGCException | InterruptedException e)
+			catch (LTGCException e)
 			{
 				e.printStackTrace();
 			}
-
 		});
+			
+		try
+		{
+			setColorOnTile(Color.GREEN, startPoint);
+			setColorOnTile(Color.RED, finalPoint);
+		}
+		catch (LTGCException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 

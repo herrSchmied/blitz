@@ -51,24 +51,11 @@ public class BlitzThing extends Application
 	
 	LatticeTileGridCanvas canvas;
 
-	Thread dhCanvasThrd = new Thread(()->
+	public void drawCanvas() throws LTGCException
 	{
-		
-		Thread thread = new Thread(()->
-		{
-			try
-			{
-				canvas.drawWholeCanvas();
-				canvasDone.set(true);
-			}
-			catch(LTGCException e)
-			{
-				e.printStackTrace();
-			}
-		});
-		
-		thread.start();
-	});
+		canvas.drawWholeCanvas();
+		canvasDone.set(true);
+	}
 
 	int tileSize = 20;
 	int widthInTiles = 3;
@@ -81,46 +68,38 @@ public class BlitzThing extends Application
 	
 	Set<Snake> snakeSet = new HashSet<>();
 
-	Thread drawSnake = new Thread(()->
+	public void drawSnake()
 	{
 
+		SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
+		Set<Snake> successSnakes = snlGrid.filterSuccesses();
 		
-		Thread thread = new Thread(()->
-		{
+		try
+	    {
+			while(!canvasDone.get())
+			{
+				Thread.sleep(1200);
+				System.out.println("Waiting for other Canvas Thread!");
+			}
 
-	        SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
-	        Set<Snake> successSnakes = snlGrid.filterSuccesses();
-	        
-	        try
-	        {
-				while(!canvasDone.get())
-				{
-						Thread.sleep(1200);
-						System.out.println("Waiting for other Canvas Thread!");
-				}
-
-				Snake snake = CollectionManipulation.catchRandomElementOfSet(successSnakes);
+			Snake snake = CollectionManipulation.catchRandomElementOfSet(successSnakes);
 				
-				int length = snake.getLength();
-				List<Point> parts = snake.getParts();
+			int length = snake.getLength();
+			List<Point> parts = snake.getParts();
 
-				for(int n=0;n<length;n++)
-				{
-					Point p = parts.get(n);
-					canvas.setColorOnTile(Color.BLUE, p);
-					Thread.sleep(750);
-				}
+			for(int n=1;n<length;n++)
+			{
+				Point p = parts.get(n);
+				canvas.setColorOnTile(Color.BLUE, p);		
+				
+				Thread.sleep(550);
 			}
-	        catch(CollectionException | LTGCException | InterruptedException e)
-	        {
-				e.printStackTrace();
-			}
-
-		});
-		
-		dhCanvasThrd.start();
-		thread.start();
-	});
+		}
+        catch(CollectionException | InterruptedException | LTGCException e)
+		{
+        	e.printStackTrace();
+		}
+	}
 
     VBox questionBox = new VBox();
 
@@ -263,17 +242,20 @@ public class BlitzThing extends Application
         		return;
         	}
         	
-        	try
-        	{
-				showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
-
-				Thread.sleep(250);
-				Platform.runLater(drawSnake);
-			}
-        	catch (LTGCException | SnakeException | CollectionException | InterruptedException | IOException e)
-        	{
-				e.printStackTrace();
-			}
+ 			Platform.runLater(()->
+			{
+				try
+				{
+					showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
+					drawCanvas();
+					drawSnake();
+					canvasDone.set(true);
+				}
+				catch(LTGCException | SnakeException | CollectionException | InterruptedException | IOException  e)
+				{
+					e.printStackTrace();
+				}
+			});
         });
 
         stage.setScene(scene);
