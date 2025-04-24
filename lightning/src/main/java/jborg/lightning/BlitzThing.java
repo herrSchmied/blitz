@@ -350,7 +350,7 @@ public class BlitzThing extends Application
 //		try
 //		{
         	
-        	canvas.drawWholeCanvas();
+        	canvas.drawEverythingExeceptAnySnake();
         	
 //        	}
 //        	catch(LTGCException e)

@@ -172,14 +172,14 @@ public class LTGCS extends Canvas
 	/**
 	 * Sets a Plain and clear Canvas and Lattic-Grid.
 	 */
-	public void colorAllTilesGrey()
+	public void colorAllTilesWhite()
 	{
 		lg.walkThruTiles((p)->
 		{
 			
 			try
 			{
-				setColorOnTile(Color.GRAY, p);
+				setColorOnTile(Color.WHITE, p);
 			}
 			catch(LTGCException e)
 			{
@@ -232,13 +232,20 @@ public class LTGCS extends Canvas
 		lg.setAllLatticesOnTile(p);
 	}
 	
+	
+	public void drawEverythingExeceptAnySnake() throws LTGCException
+	{
+		colorAllTilesWhite();
+		drawStartAndEndTile();
+		drawLattices();
+	}
 	/**
-	 * draws whole Canvas except the Snakes.
+	 * draws Lattices except the Snakes.
 	 * @throws LTGCException Shouldn't
 	 */
-	public void drawWholeCanvas() throws LTGCException
+	public void drawLattices() throws LTGCException
 	{
-		
+	    	
 		lg.walkThruTiles((p)->
 		{
 			try
@@ -247,7 +254,6 @@ public class LTGCS extends Canvas
 				Color c= Color.GREY;
 				setColorOnTile(c, p);
 				
-				//TODO: Something goes wrong here!!!
 				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
 				if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
 				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheBottom(p))drawLattice(p, indexLatticeBitBottom);
@@ -258,13 +264,15 @@ public class LTGCS extends Canvas
 			{
 				e.printStackTrace();
 			}
-
 		});
+	}
 
+	public void drawStartAndEndTile() throws LTGCException
+	{
 		setColorOnTile(Color.GREEN, startPoint);
 		setColorOnTile(Color.RED, finalPoint);
+
 	}
-	
 
 	/**
 	 * Changes Color of a Tile. Also the Color Data.
