@@ -27,8 +27,8 @@ public class SnakeAndLatticeGrid
 	
 	private Point leftPos = new Point(-1, 0);
 	private Point rightPos = new Point(+1, 0);
-	private Point topPos = new Point(0,+1);
-	private Point bottomPos = new Point(0,-1);
+	private Point topPos = new Point(0,-1);
+	private Point bottomPos = new Point(0,+1);
 	private Point leftTopPos = addPoints(leftPos, topPos);
 	private Point leftBottomPos = addPoints(leftPos, bottomPos);
 	private Point rightTopPos = addPoints(rightPos, topPos);
@@ -85,7 +85,7 @@ public class SnakeAndLatticeGrid
 		Point head = snake.getHead();
    		
 		List<Point> growthOptions = new ArrayList<>();
-   		
+   		 
 		//hasLatticeOnTheXXXX treats frame borders like Lattices!!!
    		boolean hasLeft = !lg.hasLatticeOnTheLeft(head);
    		boolean hasRight = !lg.hasLatticeOnTheRight(head);

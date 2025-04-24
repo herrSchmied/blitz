@@ -258,7 +258,7 @@ public class BlitzThing extends Application
 
     }
 
-    private void setupLattices(int width, int height, int latticeNr, LatticeTileGridCanvas canvas) throws LTGCException, CollectionException
+    private void setupLattices(int width, int height, int latticeNr, LTGCS canvas) throws LTGCException, CollectionException
     {
 
     	int nrOfInternPossibleLattices = 2*width*height-width-height;
@@ -336,7 +336,7 @@ public class BlitzThing extends Application
 
 		Snake snake = new Snake(start, Snake.readyStatus);
     	
-    	LatticeTileGridCanvas canvas = new LatticeTileGridCanvas(width, height, end, snake);
+    	LTGCS canvas = new LTGCS(width, height, end, snake);
         root.getChildren().add(canvas);
         
 //      Platform.runLater(()->
@@ -362,14 +362,13 @@ public class BlitzThing extends Application
         //});
     }
 
-    public void setupTheSnakes(int width, int height, int latticeNr, LatticeTileGridCanvas canvas) throws LTGCException, CollectionException, SnakeException
+    public void setupTheSnakes(int width, int height, int latticeNr, LTGCS canvas) throws LTGCException, CollectionException, SnakeException
     {
     	
         setupLattices(width, height, latticeNr, canvas);
 
-        SnakeAndLatticeGrid snlGrid = canvas.getSNLGrid();
-        snlGrid.setFinalSnakes();
-        Set<Snake> successSnakes = snlGrid.filterSuccesses();
+        canvas.setFinalSnakes();
+        Set<Snake> successSnakes = canvas.filterSuccesses();
 
         Snake sSnake = null;
 

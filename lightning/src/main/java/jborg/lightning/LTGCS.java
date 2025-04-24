@@ -6,10 +6,13 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import jborg.lightning.exceptions.LTGCException;
+import jborg.lightning.exceptions.SnakeException;
 
 import static jborg.lightning.LatticeGrid.*;
 
 import java.awt.Point;
+import java.util.List;
+import java.util.Set;
 
 
 
@@ -19,8 +22,9 @@ import java.awt.Point;
  * creates a Lattice-Grid. From that a SnakeAndLatticeGrid.
  * The Stage where this Canvas is displayed is in BlitzThing.
  * If visuals happen than thru this class.
+ * Lattice Tile Grid Canvas Snake. L. T. G. C. S.
  */
-public class LatticeTileGridCanvas extends Canvas
+public class LTGCS extends Canvas
 {
 
 	/**
@@ -115,7 +119,7 @@ public class LatticeTileGridCanvas extends Canvas
 	 * @param snake initial Snake.
 	 * @throws LTGCException If Given Snake is not of length 1.
 	 */
-	public LatticeTileGridCanvas(int width, int height, Point finalPoint, Snake snake) throws LTGCException
+	public LTGCS(int width, int height, Point finalPoint, Snake snake) throws LTGCException
 	{
 		this(width, height, standartTileWidth, finalPoint, snake, standartStrokeWidth);
 	}
@@ -132,7 +136,7 @@ public class LatticeTileGridCanvas extends Canvas
 	 * @param strokeWidthLattice custom stroke for lattices in Pixel.
 	 * @throws LTGCException If the given Snake has more parts then just one.
 	 */
-	public LatticeTileGridCanvas(int xTileWidth, int yTileHeight, int tileSize, Point finalPoint, Snake snake, double strokeWidthLattice) throws LTGCException
+	public LTGCS(int xTileWidth, int yTileHeight, int tileSize, Point finalPoint, Snake snake, double strokeWidthLattice) throws LTGCException
 	{
 
 		super(xTileWidth*tileSize, yTileHeight*tileSize);
@@ -453,12 +457,81 @@ public class LatticeTileGridCanvas extends Canvas
 		return tileSize;
 	}
 	
+	public void setFinalSnakes() throws LTGCException, SnakeException
+	{
+		snlGrid.setFinalSnakes();
+	}
+
+	public Set<Snake> filterSuccesses()
+	{
+		return snlGrid.filterSuccesses();
+	}
+	
+	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException
+	{
+		return snlGrid.getOptions(snake);
+	}
+	
+	public Set<Snake> getSnakeSet()
+	{
+		return snlGrid.getSnakeSet();
+	}
+	
+	public Set<Snake> theDivergence(Snake snake) throws SnakeException, LTGCException
+	{
+		return snlGrid.theDivergence(snake);
+	}
+	
+	public Point getFinalPoint()
+	{
+		return snlGrid.getFinalPoint();
+	}
+	
+	public void setOneLatticeOnTile(Point p, int bitNr) throws LTGCException
+	{
+		lg.setOneLatticeOnTile(p, bitNr);
+	}
+
 	/**
 	 * Positions, Lattices and more. All in SNL-Grid.
 	 * @return Data.
 	 */
-	public SnakeAndLatticeGrid getSNLGrid()
+	/*
+	 * public SnakeAndLatticeGrid getSNLGrid() { return snlGrid; }
+	 */	
+
+	public boolean hasLatticeOnTheLeft(int x, int y) throws LTGCException
 	{
-		return snlGrid;
+		return lg.hasLatticeOnTheLeft(new Point(x,y));
+	}
+
+	public boolean hasLatticeOnTheRight(int x, int y) throws LTGCException
+	{
+		return lg.hasLatticeOnTheRight(new Point(x,y));
+	}
+
+	public boolean hasLatticeOnTheTop(int x, int y) throws LTGCException
+	{
+		return lg.hasLatticeOnTheTop(new Point(x,y));
+	}
+
+	public boolean hasLatticeOnTheBottom(int x, int y) throws LTGCException
+	{
+		return lg.hasLatticeOnTheBottom(new Point(x,y));
+	}
+
+	public boolean isSurounded(int x, int y) throws LTGCException
+	{
+		return lg.isSurounded(x, y);
+	}
+	
+	public int howManyLatticesHasTile(int x, int y) throws LTGCException
+	{
+		return lg.howManyLatticesHasTile(new Point(x, y));
+	}
+	
+	public boolean hasLatticeSomeWhere(int x, int y) throws LTGCException
+	{
+		return lg.hasLatticeSomeWhere(new Point(x, y));
 	}
 }

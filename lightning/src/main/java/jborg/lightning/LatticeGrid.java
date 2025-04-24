@@ -347,7 +347,7 @@ public class LatticeGrid
 	 */
 	private boolean hasLatticeOnTheLeft(int x, int y) throws LTGCException
 	{
-		
+		 
 		throwsExceptionIfOutOfBounds(x, y);
 		if(x==0)return true;
 
@@ -570,6 +570,11 @@ public class LatticeGrid
 		return height;
 	}
 	
+	public boolean isSurounded(int x, int y) throws LTGCException
+	{
+		return (hasLatticeOnTheLeft(x, y)&&hasLatticeOnTheRight(x, y)&&hasLatticeOnTheTop(x, y)&&hasLatticeOnTheBottom(x, y));
+	}
+
 	/**
 	 * Applies a given Consumer to every Tile.
 	 * @param consumer What should happen at a given Point?
