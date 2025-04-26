@@ -202,11 +202,7 @@ public class LatticeGrid
 		throwsExceptionIfBitNrAintValide(bitNr);
 		throwsExceptionIfOutOfBounds(x, y);
 		
-		boolean[]latticeBits = translateLatticeCodeToLatticeBits(latticeCodes[x][y]);
-		latticeBits[bitNr]= true;
-		
-		setLatticesOnTile(x, y, latticeBits);
-
+		setLatticeCodeBitTrue(bitNr, x, y);
 	}
 	
 	/**
@@ -247,7 +243,7 @@ public class LatticeGrid
 		boolean[]latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
 
 		for(int n=0;n<nrOfLatticeBits;n++)
-			if(latticeBits[n])latticeCodes[x][y]= getLatticeCodeIfBitNrTrue(n, x, y);
+			if(latticeBits[n])setLatticeCodeBitTrue(n, x, y);
 
 		boolean thereIsATileOnTheRight = x < width - 1;
 		boolean thereIsATileOnTheLeft = x > 0;
@@ -256,22 +252,22 @@ public class LatticeGrid
 
 		if(latticeBits[indexLatticeBitRight]&&thereIsATileOnTheRight)
 		{
-			latticeCodes[x+1][y] = getLatticeCodeIfBitNrTrue(indexLatticeBitLeft, x+1, y);
+			setLatticeCodeBitTrue(indexLatticeBitLeft, x+1, y);
 		}
 
 		if(latticeBits[indexLatticeBitLeft]&&thereIsATileOnTheLeft)
 		{
-			latticeCodes[x-1][y] = getLatticeCodeIfBitNrTrue(indexLatticeBitRight, x-1, y);
+			setLatticeCodeBitTrue(indexLatticeBitRight, x-1, y);
 		}
 
 		if(latticeBits[indexLatticeBitTop]&&thereIsATileOnTheTop)
 		{
-			latticeCodes[x][y+1] = getLatticeCodeIfBitNrTrue(indexLatticeBitBottom, x, y+1);
+			setLatticeCodeBitTrue(indexLatticeBitBottom, x, y+1);
 		}
 
 		if(latticeBits[indexLatticeBitBottom]&&thereIsATileOnTheBottom)
 		{
-			latticeCodes[x][y-1] = getLatticeCodeIfBitNrTrue(indexLatticeBitTop, x, y-1);
+			setLatticeCodeBitTrue(indexLatticeBitTop, x, y-1);
 		}
 	}
 
@@ -557,7 +553,7 @@ public class LatticeGrid
 	 * @return What if latticeCode.
 	 * @throws LTGCException
 	 */
-	private int getLatticeCodeIfBitNrTrue(int bitNr, int x, int y) throws LTGCException
+	private void setLatticeCodeBitTrue(int bitNr, int x, int y) throws LTGCException
 	{
 		
 		throwsExceptionIfBitNrAintValide(bitNr);
@@ -567,7 +563,7 @@ public class LatticeGrid
 		latticeBits[bitNr]= true;
 		int newLatticeCode = translateLatticeBitsToLatticeCode(latticeBits);
 		
-		return newLatticeCode;
+		latticeCodes[x][y] = newLatticeCode;
 	}
 
 	/**

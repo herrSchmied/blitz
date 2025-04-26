@@ -76,9 +76,10 @@ public class BlitzThing extends Application
     @Override
     public void start(Stage stage) throws LTGCException, SnakeException
     {
-               
-    	Integer widthInTiles = 3;
-    	Integer heightInTiles = 3;
+        
+    	//For Tests.
+    	Integer widthInTiles = 5;
+    	Integer heightInTiles = 5;
     	Integer nrOfLattices = 2;
     	
         HBox heightBox = new HBox();
@@ -228,6 +229,8 @@ public class BlitzThing extends Application
 				
 				try
 				{
+					
+					//For Tests.
 					showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
 				}
 				catch(LTGCException | SnakeException | CollectionException | InterruptedException
