@@ -2,6 +2,7 @@ package jborg.lightning;
 
 import java.awt.Point;
 import java.util.function.Consumer;
+import static consoleTools.TerminalXDisplay.*;
 
 import jborg.lightning.exceptions.LTGCException;
 
@@ -15,11 +16,11 @@ public class LatticeGrid
 	/**
 	 * Holds the max X-Coordinate for Lattices.
 	 */
-	private final int width;
+	private int width;
 	/**
 	 * Holds the max Y-Coordinate for Lattices.
 	 */
-	private final int height;
+	private int height;
 	/**
 	 * The value of latticeCodes of a Tile
 	 * describes on which sides are Lattices
@@ -70,6 +71,31 @@ public class LatticeGrid
 	public static final int indexLatticeBitTop = 3; //Top means down!!!!!!!!!!
 
 	/**
+	 * 
+	 */
+	private final Consumer<Point> setBorders = (p)->
+	{
+		
+		System.out.println(formatBashStringBlue("Setting Borders"));
+		
+		try
+		{
+			boolean isFarLeft = p.x==0;
+			boolean isFarRight = p.x==width-1;
+			boolean isTop = p.y==0;
+			boolean isBottom = p.y==height-1;
+			if(isFarLeft)setOneLatticeOnTile(p, indexLatticeBitLeft);
+			if(isFarRight)setOneLatticeOnTile(p, indexLatticeBitRight);
+			if(isTop)setOneLatticeOnTile(p, indexLatticeBitTop);
+			if(isBottom)setOneLatticeOnTile(p, indexLatticeBitBottom);
+		}
+		catch(LTGCException e)
+		{
+			e.printStackTrace();
+		}
+	};
+	
+	/**
 	 * Constructor
 	 * 
 	 * @param width is the max. of how far x-Coordinate of a Lattice goes. 
@@ -86,7 +112,8 @@ public class LatticeGrid
 		this.height = height;
 		
 		latticeCodes = new int[width][height];
-
+		
+		walkThruTiles(setBorders);
 	}
 	
 	/**
@@ -218,10 +245,6 @@ public class LatticeGrid
 		throwsExceptionIfLatticeCodeAintValide(latticeCode);
 
 		boolean[]latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
-		if(x==0)latticeBits[indexLatticeBitLeft]=true;
-		if(x==width-1)latticeBits[indexLatticeBitRight]=true;
-		if(y==0)latticeBits[indexLatticeBitBottom]=true;
-		if(y==height-1)latticeBits[indexLatticeBitTop]= true;
 
 		for(int n=0;n<nrOfLatticeBits;n++)
 			if(latticeBits[n])latticeCodes[x][y]= getLatticeCodeIfBitNrTrue(n, x, y);
@@ -327,7 +350,6 @@ public class LatticeGrid
 	private boolean hasLatticeOnTheRight(int x, int y) throws LTGCException
 	{
 		throwsExceptionIfOutOfBounds(x, y);
-		if(x==width-1)return true;
 		
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
@@ -349,7 +371,6 @@ public class LatticeGrid
 	{
 		 
 		throwsExceptionIfOutOfBounds(x, y);
-		if(x==0)return true;
 
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
@@ -370,7 +391,6 @@ public class LatticeGrid
 	private boolean hasLatticeOnTheBottom(int x, int y) throws LTGCException
 	{
 		throwsExceptionIfOutOfBounds(x, y);
-		if(y==height-1)return true;
 
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
@@ -392,34 +412,13 @@ public class LatticeGrid
 	{
 		
 		throwsExceptionIfOutOfBounds(x, y);
-		if(y==0)return true;
-		
+
 		int latticeCode = latticeCodes[x][y];
 		boolean []latticeBits = translateLatticeCodeToLatticeBits(latticeCode);
 		
 		return latticeBits[indexLatticeBitTop];
 	}
 
-	/**
-	 * Has Tile at Position(x,y) a Lattice on The anywhere?
-	 * Framborders are considered to have a Lattice!!!!
-	 * 
-	 * @param x x-Coordinate of Tile in question.
-	 * @param y y-Coordinate of Tile in question.
-	 * @return Does the Tile in Question have a Lattice
-	 * anywhere?
-	 * @throws LTGCException if x or/and y is out of Bounds.
-	 */
-	private boolean hasLatticeSomeWhere(int x, int y)throws LTGCException
-	{
-
-		boolean l = hasLatticeOnTheLeft(x,y);
-		boolean r = hasLatticeOnTheRight(x,y);
-		boolean b = hasLatticeOnTheBottom(x,y);
-		boolean t = hasLatticeOnTheTop(x,y);
-		
-		return(l||r||b||t);		
-	}
 
 	/**
 	 * How many Lattices has the Tile at Position(x, y)?
@@ -527,6 +526,27 @@ public class LatticeGrid
 	}
 	
 	/**
+	 * Has Tile at Position(x,y) a Lattice on The anywhere?
+	 * Framborders are considered to have a Lattice!!!!
+	 * 
+	 * @param x x-Coordinate of Tile in question.
+	 * @param y y-Coordinate of Tile in question.
+	 * @return Does the Tile in Question have a Lattice
+	 * anywhere?
+	 * @throws LTGCException if x or/and y is out of Bounds.
+	 */
+	private boolean hasLatticeSomeWhere(int x, int y)throws LTGCException
+	{
+
+		boolean l = hasLatticeOnTheLeft(x,y);
+		boolean r = hasLatticeOnTheRight(x,y);
+		boolean b = hasLatticeOnTheBottom(x,y);
+		boolean t = hasLatticeOnTheTop(x,y);
+		
+		return(l||r||b||t);		
+	}
+
+	/**
 	 * If Tile on the given position (x, y) has latticeBit(bitNr)
 	 * changed to true. What would be the latticeCode of that Tile
 	 * be?
@@ -570,9 +590,14 @@ public class LatticeGrid
 		return height;
 	}
 	
-	public boolean isSurounded(int x, int y) throws LTGCException
+	public boolean isSurrounded(int x, int y) throws LTGCException
 	{
 		return (hasLatticeOnTheLeft(x, y)&&hasLatticeOnTheRight(x, y)&&hasLatticeOnTheTop(x, y)&&hasLatticeOnTheBottom(x, y));
+	}
+
+	public boolean isSurrounded(Point p) throws LTGCException
+	{
+		return isSurrounded(p.x, p.y);
 	}
 
 	/**
@@ -590,7 +615,6 @@ public class LatticeGrid
 			}
 		}
 	}
-
 	/**
 	 * Throws LTGCException if x and/or y are out of Bounds.
 	 * And thats its only purpose.

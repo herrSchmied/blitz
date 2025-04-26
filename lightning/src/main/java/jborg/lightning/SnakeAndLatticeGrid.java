@@ -85,7 +85,9 @@ public class SnakeAndLatticeGrid
 		Point head = snake.getHead();
    		
 		List<Point> growthOptions = new ArrayList<>();
-   		 
+   		
+		//if(lg.isSurrounded(head))return growthOptions;
+		
 		//hasLatticeOnTheXXXX treats frame borders like Lattices!!!
    		boolean hasLeft = !lg.hasLatticeOnTheLeft(head);
    		boolean hasRight = !lg.hasLatticeOnTheRight(head);
@@ -132,7 +134,7 @@ public class SnakeAndLatticeGrid
 		}
 
 		Point dest = addPoints(p, relative);
-		
+
 		//Catches the cases where p or dest already out of Bounds
 		boolean checkDest = checkPoint("dest", dest);
 		boolean checkP = checkPoint("p", p);

@@ -264,9 +264,9 @@ public class BlitzThing extends Application
     	int nrOfInternPossibleLattices = 2*width*height-width-height;
     	if(latticeNr>=nrOfInternPossibleLattices)throw new IllegalArgumentException("Much to many Lattices!");
 
-    	printBoldAndBlue("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices);
-    	printBoldAndBlue("Nr. of Factual Intern Lattices: " + latticeNr);
-    	printBoldAndBlue("Percentage: " + ((double)(latticeNr)/(nrOfInternPossibleLattices)));
+    	System.out.println(formatBashStringBoldAndBlue("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices));
+    	System.out.println(formatBashStringBoldAndBlue("Nr. of Factual Intern Lattices: " + latticeNr));
+    	System.out.println(formatBashStringBoldAndBlue("Percentage: " + ((double)(latticeNr)/(nrOfInternPossibleLattices))));
 
     	List<Integer> possibleLatticeNrs = new ArrayList<>();
     	for(int n=0;n<nrOfInternPossibleLattices;n++)possibleLatticeNrs.add(n);
@@ -280,7 +280,7 @@ public class BlitzThing extends Application
     		actualLatticeNrs.add(k);
     	}
 
-    	printBoldAndBlue("ActualLattices: "+ actualLatticeNrs.size());
+    	System.out.println(formatBashStringBoldAndBlue("ActualLattices: "+ actualLatticeNrs.size()));
     	for(int n=0;n<actualLatticeNrs.size();n++)System.out.print(", " + actualLatticeNrs.get(n));
     	System.out.println("");
     	
@@ -313,7 +313,7 @@ public class BlitzThing extends Application
     		cnt++;
     	}
 	
-    	printBoldAndBlue("Count: " + cnt);
+    	System.out.println(formatBashStringBoldAndBlue("Count: " + cnt));
     }
 
 
@@ -346,20 +346,8 @@ public class BlitzThing extends Application
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
         stage.setScene(scene);
 
-        
-//		try
-//		{
-        	
-        	canvas.drawEverythingExeceptAnySnake();
-        	
-//        	}
-//        	catch(LTGCException e)
-//        	{
-//        		e.printStackTrace();
-//        	}
-       	
-        	stage.show();
-        //});
+       	canvas.drawEverythingExeceptAnySnake();
+       	stage.show();
     }
 
     public void setupTheSnakes(int width, int height, int latticeNr, LTGCS canvas) throws LTGCException, CollectionException, SnakeException
@@ -369,21 +357,6 @@ public class BlitzThing extends Application
 
         canvas.setFinalSnakes();
         Set<Snake> successSnakes = canvas.filterSuccesses();
-
-        Snake sSnake = null;
-
-        try
-        {
-			sSnake = CollectionManipulation.catchRandomElementOfSet(successSnakes);
-		}
-        catch(CollectionException e)
-        {
-			System.out.println(e.getMessage());
-		}
-
-        if(sSnake!=null)System.out.println("one of them:\n" + sSnake);
-
-        System.out.println("Successes: " + successSnakes.size());
     }
 
     /**

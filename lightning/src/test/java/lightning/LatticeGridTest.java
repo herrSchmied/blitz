@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import org.junit.jupiter.api.Test;
 
+import static consoleTools.TerminalXDisplay.*;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.LatticeGrid;
 
@@ -14,49 +15,59 @@ import jborg.lightning.LatticeGrid;
 public class LatticeGridTest 
 {
 
+	Integer[] affectedTiles;
+
 	@Test
 	public void testLatticeGrid() throws LTGCException, InterruptedException
 	{
 		
-		int widthInTiles = 10;
-		int heightInTiles = 10;
+		affectedTiles = new Integer[1];
+		affectedTiles[0] = 0;
+		
+		int widthInTiles = 2;
+		int heightInTiles = 2;
 
 		LatticeGrid lg = new LatticeGrid(widthInTiles, heightInTiles);
-		Point pointA = new Point(2, 2);
-		Point pointB = new Point(7, 7);
-		Point pointC = new Point(5, 5);
+		Point pointA = new Point(1, 1);
 		
-		boolean [] latticeBits = new boolean[4];
-		latticeBits[indexLatticeBitBottom] = true;
-		latticeBits[indexLatticeBitLeft] = false;
-		latticeBits[indexLatticeBitRight] = false;
-		latticeBits[indexLatticeBitTop] = true;
+		lg.setAllLatticesOnTile(pointA);
 		
-		lg.setLatticesOnTile(pointA, latticeBits);
-		
-		latticeBits[indexLatticeBitBottom] = false;
-		latticeBits[indexLatticeBitLeft] = true;
-		latticeBits[indexLatticeBitRight] = true;
-		latticeBits[indexLatticeBitTop] = false;
-		
-		lg.setLatticesOnTile(pointB, latticeBits);
-		
-		lg.setOneLatticeOnTile(pointC, indexLatticeBitLeft);
-		
-		int affectedTiles =0;
-		for(int n=0;n<widthInTiles;n++)
+		lg.walkThruTiles((p)->
 		{
-			for(int m=0;m<heightInTiles;m++)
+			
+			try
 			{
-				if(lg.hasLatticeSomeWhere(new Point(n,m)))affectedTiles++;
+				if(lg.hasLatticeSomeWhere(p))
+				{
+					if(lg.hasLatticeOnTheBottom(p))System.out.println("Has Lattice On The Bottom");
+					if(lg.hasLatticeOnTheTop(p))System.out.println("Has Lattice On The Top");
+					if(lg.hasLatticeOnTheLeft(p))System.out.println("Has Lattice On The Left");
+					if(lg.hasLatticeOnTheRight(p))System.out.println("Has Lattice On The Right");
+	
+					System.out.println(pointToString("P", p));
+					System.out.println("\n");
+
+					plusPlus();
+				}
 			}
-		}
+			catch(LTGCException e)
+			{
+				e.printStackTrace();
+			}
+		});
+	
+			
 		
 		System.out.println("AffectedTiles: " + affectedTiles);
 		int borderLattices = 2*widthInTiles+2*heightInTiles-4;
 		
-		assert(borderLattices==36);//The Lattices on Point A to C are not near those.
-		assert(affectedTiles==44);//Because Frameborders are considered to have 36 Lattices!
+		assert(borderLattices==4);//The Lattices on Point A to C are not near those.
+		assert(affectedTiles[0]==4);//Because Frameborders are considered to have 36 Lattices!
 	}
+	
+	private void plusPlus()
+	{
+		affectedTiles[0] = affectedTiles[0]+1;
 
+	}
 }

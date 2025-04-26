@@ -26,6 +26,8 @@ import jborg.lightning.exceptions.SnakeException;
 import someMath.exceptions.CollectionException;
 import someMath.CollectionManipulation;
 import someMath.SequenzInListSearch;
+import consoleTools.TerminalTableDisplay;
+import static consoleTools.TerminalXDisplay.*;
 
 import static jborg.lightning.LatticeGrid.*;
 import static jborg.lightning.SnakeAndLatticeGrid.*;
@@ -68,7 +70,7 @@ public class LatticeTileGridCanvasTest
 	public void optionsTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 		
-		printlnGreen("\nOptions Test.");
+		System.out.println(formatBashStringGreen("\nOptions Test."));
 		
 		initStndrt();
 
@@ -90,7 +92,7 @@ public class LatticeTileGridCanvasTest
 	{
 
 		
-		printlnGreen("\nAnother Options Test.");
+		System.out.println(formatBashStringGreen("\nAnother Options Test."));
 
 		initStndrt();
 
@@ -111,7 +113,7 @@ public class LatticeTileGridCanvasTest
 	public void againOptionsTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
-		printlnGreen("\nAgain Options Test.");
+		System.out.println(formatBashStringGreen("\nAgain Options Test."));
 		
 		initStndrt();
 
@@ -132,7 +134,7 @@ public class LatticeTileGridCanvasTest
 	public void divergenceTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 	
-		printlnGreen("\nDivergence Test.");
+		System.out.println(formatBashStringGreen("\nDivergence Test."));
 		
 		initStndrt();
 
@@ -172,7 +174,7 @@ public class LatticeTileGridCanvasTest
 	public void anotherDivergenceTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 	
-		printlnGreen("\nAnother Divergence Test.");
+		System.out.println(formatBashStringGreen("\nAnother Divergence Test."));
 		
 		initStndrt();
 
@@ -196,7 +198,9 @@ public class LatticeTileGridCanvasTest
 		Set<Snake> evenNewer = new HashSet<>();
 		for(Snake s: theNewGrownOnes)
 		{
-			evenNewer.addAll(canvas.theDivergence(s));
+			
+			Set<Snake> newOnes = canvas.theDivergence(s);
+			evenNewer.addAll(newOnes);
 		}
 		
 		assert(evenNewer.size()==2);
@@ -214,7 +218,7 @@ public class LatticeTileGridCanvasTest
 	public void untilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
-		printlnGreen("\nUntil they Dead Test!");
+		System.out.println(formatBashStringGreen("\nUntil they Dead Test!"));
 
 		initStndrt();
 
@@ -243,7 +247,7 @@ public class LatticeTileGridCanvasTest
 	public void swappedUntilTheyDeadTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
     
-		printlnGreen("Until they Dead Test! Swap start/end");
+		System.out.println(formatBashStringGreen("Until they Dead Test! Swap start/end"));
 		
 		initStndrt();
 
@@ -251,10 +255,11 @@ public class LatticeTileGridCanvasTest
 		ankerPoints.add(startPoint);
 		ankerPoints.add(finalPoint);
 		
-		Point isolatedPoint = getRandomPoint(ankerPoints, canvas);
+		Point isolatedPoint = new Point(1, 0);
 
 		//isolation
-		canvas .setAllLatticesOnTile(isolatedPoint);
+		canvas.setAllLatticesOnTile(isolatedPoint);
+		assert(canvas.isSurounded(isolatedPoint.x, isolatedPoint.y));
 
 		canvas.setFinalSnakes();
 		Set<Snake> finalSnakes = canvas.getSnakeSet();
@@ -278,7 +283,7 @@ public class LatticeTileGridCanvasTest
 
 		frameIt(pointA, pointD, 4, 4);
 		
-		printlnGreen("\nAnother until they Dead Test!");
+		System.out.println(formatBashStringGreen("\nAnother until they Dead Test!"));
 
 		//Snake snake = new Snake(pointA, Snake.readyStatus);
 		
@@ -320,7 +325,7 @@ public class LatticeTileGridCanvasTest
 	public void justNoLatticesTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 		
-		printlnGreen("\nJust no Lattices Test!");
+		System.out.println(formatBashStringGreen("\nJust no Lattices Test!"));
 
 		initStndrt();
 		
@@ -362,7 +367,7 @@ public class LatticeTileGridCanvasTest
 	public void simpleSNLGridTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
-		printlnGreen("\nSimple canvas Test.");
+		System.out.println(formatBashStringGreen("\nSimple canvas Test."));
 
 		frameIt(new Point(0,0), new Point(1,1),2,2);
 		canvas.setFinalSnakes();
@@ -384,16 +389,18 @@ public class LatticeTileGridCanvasTest
 	public void oneLatticeSmallGridTest() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
-		printlnGreen("\nOne Lattice Small Grid Test.");
+		System.out.println(formatBashStringGreen("\nOne Lattice Small Grid Test."));
 
-		Point zeroPoint = new Point(0, 0);
-		frameIt(zeroPoint, new Point(1,1),2,2);
+		Point startPoint = new Point(0, 0);
+		Point endPoint = new Point(1, 1);
+		frameIt(startPoint, endPoint, 2, 2);
 		
-		canvas.setOneLatticeOnTile(zeroPoint, LatticeGrid.indexLatticeBitRight);
+		canvas.setOneLatticeOnTile(startPoint, LatticeGrid.indexLatticeBitRight);
+		assert(canvas.hasLatticeOnTheRight(startPoint));
 		canvas.setFinalSnakes();
 		
 		for(Snake snake: canvas.getSnakeSet())System.out.println(snake);
-		System.out.println("canvas size: " + canvas.getSnakeSet().size());
+		System.out.println("Snake Set Size: " + canvas.getSnakeSet().size());
 
 		Point f = canvas.getFinalPoint();
 		System.out.println("FinalPoint: f(" + f.x + ", " + f.y + ")");
@@ -409,7 +416,7 @@ public class LatticeTileGridCanvasTest
 	public void oneLatticeSmallGridTest_Again() throws SnakeException, LTGCException, InterruptedException, IOException
 	{
 
-		printlnGreen("\nLattice small Grid Test Again.");
+		System.out.println(formatBashStringGreen("\nLattice small Grid Test Again."));
 		Point zero = new Point(0, 0);
 		Point aHalfTimesSquareRootOf2AwayPoint = new Point(1, 1);
 		Point rightFromZero = new Point(1, 0);
@@ -442,7 +449,7 @@ public class LatticeTileGridCanvasTest
 
 		frameIt(startPoint, destPoint, 3, 3);
 		
-		printlnGreen("\nLattices as Barrier Test I!");
+		System.out.println(formatBashStringGreen("\nLattices as Barrier Test I!"));
 
 		//Snake snake = new Snake(pointA, Snake.readyStatus);
 		
@@ -477,7 +484,7 @@ public class LatticeTileGridCanvasTest
 
 		initStndrt();
 		
-		printlnGreen("\nLattices as Barrier Test II!");
+		System.out.println(formatBashStringGreen("\nLattices as Barrier Test II!"));
 
 		canvas.setOneLattice(centerPoint, indexLatticeBitRight);
 		canvas.setOneLattice(centerPoint, indexLatticeBitTop);
@@ -515,8 +522,4 @@ public class LatticeTileGridCanvasTest
 		return rndPoint;
 	}
 	
-	public static void printlnGreen(String s)
-	{
-		System.out.println(BashSigns.gBCPX+s+BashSigns.gBCSX);
-	}
 }

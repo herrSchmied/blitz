@@ -165,8 +165,6 @@ public class LTGCS extends Canvas
 		
 		this.initialSnake = snake;
 		snlGrid = new SnakeAndLatticeGrid(initialSnake, lg, finalPoint);
-		
-		
 	}
 	
 	/**
@@ -250,17 +248,13 @@ public class LTGCS extends Canvas
 		{
 			try
 			{
-					
-				Color c= Color.GREY;
-				setColorOnTile(c, p);
 				
 				if(lg.hasLatticeOnTheLeft(p))drawLattice(p, indexLatticeBitLeft);
 				if(lg.hasLatticeOnTheTop(p))drawLattice(p, indexLatticeBitTop);
-				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);				if(lg.hasLatticeOnTheBottom(p))drawLattice(p, indexLatticeBitBottom);
+				if(lg.hasLatticeOnTheRight(p))drawLattice(p, indexLatticeBitRight);
 				if(lg.hasLatticeOnTheBottom(p))drawLattice(p, indexLatticeBitBottom);
-				Thread.sleep(750);
 			}
-			catch (LTGCException | InterruptedException e)
+			catch (LTGCException e)
 			{
 				e.printStackTrace();
 			}
@@ -341,35 +335,40 @@ public class LTGCS extends Canvas
 		Double yStart = 0d;
 		Double yEnd = 0d;
 		
+		Point leftTop = new Point(xPosTile, yPosTile);
+		Point rightTop = new Point(xPosTile+1, yPosTile);
+		Point leftBottom = new Point(xPosTile, yPosTile+1);
+		Point rightBottom = new Point(xPosTile+1, yPosTile+1);
+		
 		if(bitNr==indexLatticeBitLeft)//Left of Tile
 		{
-			xStart= (double)(xPosTile*tileSize);
+			xStart= (double)(leftTop.x*tileSize);
 			xEnd = xStart;
-			yStart = (double)(yPosTile*tileSize);
+			yStart = (double)(rightTop.y*tileSize);
 			yEnd = yStart + tileSize;
 		}
 		
 		if(bitNr==indexLatticeBitBottom)//downOfTile
 		{
-			xStart= (double)(xPosTile*tileSize);
+			xStart= (double)(leftBottom.x*tileSize);
 			xEnd = xStart + tileSize;
-			yStart = (double)(yPosTile+1)*tileSize;
+			yStart = (double)(rightBottom.y*tileSize);
 			yEnd = yStart;
 		}
 		
 		if(bitNr==indexLatticeBitRight)//rightOfTile
 		{
-			xStart= (double)(xPosTile+1)*tileSize;
+			xStart= (double)(rightTop.x)*tileSize;
 			xEnd = xStart;
-			yStart = (double)(yPosTile*tileSize);
+			yStart = (double)(rightTop.y*tileSize);
 			yEnd = yStart + tileSize;
 		}
 		
 		if(bitNr==indexLatticeBitTop)//TopOfTile
 		{
-			xStart= (double)(xPosTile*tileSize);
+			xStart= (double)(leftTop.x*tileSize);
 			xEnd = xStart + tileSize;
-			yStart = (double)(yPosTile*tileSize);
+			yStart = (double)(leftTop.y*tileSize);
 			yEnd = yStart;
 		}
 		
@@ -528,9 +527,29 @@ public class LTGCS extends Canvas
 		return lg.hasLatticeOnTheBottom(new Point(x,y));
 	}
 
+	public boolean hasLatticeOnTheLeft(Point p) throws LTGCException
+	{
+		return lg.hasLatticeOnTheLeft(p);
+	}
+
+	public boolean hasLatticeOnTheRight(Point p) throws LTGCException
+	{
+		return lg.hasLatticeOnTheRight(p);
+	}
+
+	public boolean hasLatticeOnTheTop(Point p) throws LTGCException
+	{
+		return lg.hasLatticeOnTheTop(p);
+	}
+
+	public boolean hasLatticeOnTheBottom(Point p) throws LTGCException
+	{
+		return lg.hasLatticeOnTheBottom(p);
+	}
+
 	public boolean isSurounded(int x, int y) throws LTGCException
 	{
-		return lg.isSurounded(x, y);
+		return lg.isSurrounded(x, y);
 	}
 	
 	public int howManyLatticesHasTile(int x, int y) throws LTGCException
