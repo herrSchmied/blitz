@@ -432,11 +432,11 @@ public class LatticeTileGridCanvasTest
 		Point f = canvas.getFinalPoint();
 		System.out.println("FinalPoint: f(" + f.x + ", " + f.y + ")");
 
-		assert(canvas.getSnakeSet().size()==4);
+		assert(canvas.getSnakeSet().size()==5);
 
 		Set<Snake> successSnakes = canvas.filterSuccesses();
 		
-		assert(successSnakes.size()==3);
+		assert(successSnakes.size()==5);
 	}
 	
 	@Test
