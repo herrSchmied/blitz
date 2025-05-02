@@ -76,14 +76,13 @@ public class LatticeGrid
 	private final Consumer<Point> setBorders = (p)->
 	{
 
-		System.out.println(formatBashStringBlue("Setting Borders"));
 
 		try
 		{
 			boolean isFarLeft = p.x==0;
 			boolean isFarRight = p.x==width-1;
-			boolean isTop = p.y==0;
-			boolean isBottom = p.y==height-1;
+			boolean isTop = p.y==height-1;
+			boolean isBottom = p.y==0;
 			if(isFarLeft)setOneLatticeOnTile(p, indexLatticeBitLeft);
 			if(isFarRight)setOneLatticeOnTile(p, indexLatticeBitRight);
 			if(isTop)setOneLatticeOnTile(p, indexLatticeBitTop);
@@ -113,6 +112,7 @@ public class LatticeGrid
 		
 		latticeCodes = new int[width][height];
 		
+		System.out.println(formatBashStringBlue("Setting Borders"));
 		walkThruTiles(setBorders);
 	}
 	
