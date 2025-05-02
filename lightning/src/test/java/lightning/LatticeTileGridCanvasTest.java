@@ -74,7 +74,7 @@ public class LatticeTileGridCanvasTest
 		
 		initStndrt();
 
-		canvas.setOneLattice(0, 0, indexLatticeBitTop);
+		canvas.setOneLattice(0, 0, indexLatticeBitRight);
 		
 		List<Point> options = canvas.getOptions(snake);
 
@@ -83,7 +83,7 @@ public class LatticeTileGridCanvasTest
 		System.out.println(s);  
 		
 		assert(options.contains(new Point(1,1)));
-		assert(options.contains(new Point(1,0)));
+		assert(options.contains(new Point(0,1)));
 		assert(options.size()==2);
 	}
 

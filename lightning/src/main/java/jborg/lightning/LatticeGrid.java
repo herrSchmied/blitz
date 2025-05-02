@@ -75,9 +75,9 @@ public class LatticeGrid
 	 */
 	private final Consumer<Point> setBorders = (p)->
 	{
-		
+
 		System.out.println(formatBashStringBlue("Setting Borders"));
-		
+
 		try
 		{
 			boolean isFarLeft = p.x==0;
