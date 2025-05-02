@@ -423,7 +423,6 @@ public class LatticeTileGridCanvasTest
 		
 		frameIt(zero, aHalfTimesSquareRootOf2AwayPoint,2,2);
 		
-		
 		canvas.setOneLatticeOnTile(rightFromZero, LatticeGrid.indexLatticeBitTop);
 		canvas.setFinalSnakes();
 		
