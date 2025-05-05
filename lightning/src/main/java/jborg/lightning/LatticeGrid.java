@@ -79,10 +79,10 @@ public class LatticeGrid
 
 		try
 		{
-			boolean isFarLeft = p.x==0;
-			boolean isFarRight = p.x==width-1;
-			boolean isTop = p.y==height-1;
-			boolean isBottom = p.y==0;
+			boolean isFarLeft = (p.x==0);
+			boolean isFarRight = (p.x==width-1);
+			boolean isTop = (p.y==height-1);
+			boolean isBottom = (p.y==0);
 			if(isFarLeft)setOneLatticeOnTile(p, indexLatticeBitLeft);
 			if(isFarRight)setOneLatticeOnTile(p, indexLatticeBitRight);
 			if(isTop)setOneLatticeOnTile(p, indexLatticeBitTop);
@@ -597,7 +597,7 @@ public class LatticeGrid
 	}
 
 	/**
-	 * Applies a given Consumer to every Tile.
+	 * Applies a given Consumer to every Coordinate(not Tile).
 	 * @param consumer What should happen at a given Point?
 	 */
 	public void walkThruTiles(Consumer<Point> consumer)
@@ -611,6 +611,7 @@ public class LatticeGrid
 			}
 		}
 	}
+
 	/**
 	 * Throws LTGCException if x and/or y are out of Bounds.
 	 * And thats its only purpose.

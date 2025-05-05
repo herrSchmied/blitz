@@ -335,16 +335,16 @@ public class LTGCS extends Canvas
 		Double yStart = 0d;
 		Double yEnd = 0d;
 		
-		Point leftTop = new Point(xPosTile, yPosTile);
-		Point rightTop = new Point(xPosTile+1, yPosTile);
-		Point leftBottom = new Point(xPosTile, yPosTile+1);
-		Point rightBottom = new Point(xPosTile+1, yPosTile+1);
+		Point leftTop = new Point(xPosTile, yPosTile+1);
+		Point rightTop = new Point(xPosTile+1, yPosTile+1);
+		Point leftBottom = new Point(xPosTile, yPosTile);
+		Point rightBottom = new Point(xPosTile+1, yPosTile);
 		
 		if(bitNr==indexLatticeBitLeft)//Left of Tile
 		{
-			xStart= (double)(leftTop.x*tileSize);
+			xStart= (double)(leftBottom.x*tileSize);
 			xEnd = xStart;
-			yStart = (double)(rightTop.y*tileSize);
+			yStart = (double)(leftBottom.y*tileSize);
 			yEnd = yStart + tileSize;
 		}
 		
@@ -352,15 +352,15 @@ public class LTGCS extends Canvas
 		{
 			xStart= (double)(leftBottom.x*tileSize);
 			xEnd = xStart + tileSize;
-			yStart = (double)(rightBottom.y*tileSize);
+			yStart = (double)(leftBottom.y*tileSize);
 			yEnd = yStart;
 		}
 		
 		if(bitNr==indexLatticeBitRight)//rightOfTile
 		{
-			xStart= (double)(rightTop.x)*tileSize;
+			xStart= (double)(rightBottom.x)*tileSize;
 			xEnd = xStart;
-			yStart = (double)(rightTop.y*tileSize);
+			yStart = (double)(rightBottom.y*tileSize);
 			yEnd = yStart + tileSize;
 		}
 		
