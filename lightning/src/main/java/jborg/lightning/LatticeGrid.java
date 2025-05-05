@@ -250,22 +250,51 @@ public class LatticeGrid
 		boolean thereIsATileOnTheTop = y < height-1;
 		boolean thereIsATileOnTheBottom = y > 0;
 
-		if(latticeBits[indexLatticeBitRight]&&thereIsATileOnTheRight)
+		boolean rightLatticeBitSet  = latticeBits[indexLatticeBitRight];
+		boolean leftLatticeBitSet   = latticeBits[indexLatticeBitLeft];
+		boolean topLatticeBitSet    = latticeBits[indexLatticeBitTop];
+		boolean bottomLatticeBitSet = latticeBits[indexLatticeBitBottom];
+		
+		/* If there is a right at this Position(x,y) 
+		 * (meaning (x+1, y) is not out of Borders)
+		 * and the this Position(x,y) has a Lattice
+		 * at the right then: set the LEFT Lattice of the
+		 * Position(x+1,y) of that tile also.
+		*/
+		if(rightLatticeBitSet&&thereIsATileOnTheRight)
 		{
 			setLatticeCodeBitTrue(indexLatticeBitLeft, x+1, y);
 		}
 
-		if(latticeBits[indexLatticeBitLeft]&&thereIsATileOnTheLeft)
+		/* If there is a left at this Position(x,y) 
+		 * (meaning (x-1, y) is not out of Borders)
+		 * and the this Position(x,y) has a Lattice
+		 * at the Left then: set the RIGHT Lattice
+		 * of the Position(x-1,y) of that tile also.
+		*/
+		if(leftLatticeBitSet&&thereIsATileOnTheLeft)
 		{
 			setLatticeCodeBitTrue(indexLatticeBitRight, x-1, y);
 		}
 
-		if(latticeBits[indexLatticeBitTop]&&thereIsATileOnTheTop)
+		/* If there is a top at this Position(x,y) 
+		 * (meaning (x, y+1) is not out of Borders)
+		 * and the this Position(x,y) has a lattice 
+		 * at the Top then: set the BOTTOM Lattice 
+		 * of the Position(x, y+1) of that tile also.
+		*/
+		if(topLatticeBitSet&&thereIsATileOnTheTop)
 		{
 			setLatticeCodeBitTrue(indexLatticeBitBottom, x, y+1);
 		}
 
-		if(latticeBits[indexLatticeBitBottom]&&thereIsATileOnTheBottom)
+		/* If there is a bottom at this Position(x,y) 
+		 * (meaning (x, y-1) is not out of Borders)
+		 * and the this Position(x,y) has a lattice 
+		 * at the Bottom then: set the TOP Lattice 
+		 * of the Position(x, y-1) of that tile also.
+		*/
+		if(bottomLatticeBitSet&&thereIsATileOnTheBottom)
 		{
 			setLatticeCodeBitTrue(indexLatticeBitTop, x, y-1);
 		}
