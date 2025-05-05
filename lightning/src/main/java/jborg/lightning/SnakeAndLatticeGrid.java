@@ -177,15 +177,6 @@ public class SnakeAndLatticeGrid
 		if(relative.equals(rightTopPos))
 		{	
 			if(lg.hasLatticeOnTheRight(p))cnt++;
-
-			System.out.println("Dest has Left Lattice: " + lg.hasLatticeOnTheLeft(dest));
-			
-			Point leftOfDest = new Point(dest.x-1, dest.y);
-			if(checkPoint("Left of Dest", leftOfDest))
-			{
-				System.out.println("Left of Dest has Lattice: " + lg.hasLatticeOnTheRight(leftOfDest));
-			}
-
 			if(lg.hasLatticeOnTheLeft(dest))cnt++;
 			if(lg.hasLatticeOnTheTop(p))cnt++;
 			if(lg.hasLatticeOnTheBottom(dest))cnt++;
