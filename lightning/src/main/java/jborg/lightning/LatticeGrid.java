@@ -203,6 +203,8 @@ public class LatticeGrid
 		throwsExceptionIfOutOfBounds(x, y);
 		
 		setLatticeCodeBitTrue(bitNr, x, y);
+		int latticeCode = latticeCodes[x][y];
+		setLatticesOnTile(x, y, latticeCode);
 	}
 	
 	/**

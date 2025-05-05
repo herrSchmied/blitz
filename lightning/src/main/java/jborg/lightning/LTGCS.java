@@ -206,7 +206,8 @@ public class LTGCS extends Canvas
 	 */
 	public void setOneLattice(int x, int y, int bitNr) throws LTGCException
 	{
-		lg.setOneLatticeOnTile(new Point(x, y), bitNr);
+		Point p = new Point(x,y);
+		lg.setOneLatticeOnTile(p, bitNr);
 	}
 	
 	/**
