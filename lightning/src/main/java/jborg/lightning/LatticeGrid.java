@@ -202,9 +202,7 @@ public class LatticeGrid
 		throwsExceptionIfBitNrAintValide(bitNr);
 		throwsExceptionIfOutOfBounds(x, y);
 		
-		setLatticeCodeBitTrue(bitNr, x, y);
-		int latticeCode = latticeCodes[x][y];
-		setLatticesOnTile(x, y, latticeCode);
+		setLatticesOnTileThruBitNr(x, y, bitNr);
 	}
 	
 	/**
@@ -303,6 +301,24 @@ public class LatticeGrid
 	}
 
 	/**
+	 * This is the workhorse thru BitNr
+	 * @param x x-Coordinate of the Tile in question.
+	 * @param y y-Coordinate of the Tile in question.
+	 * @param latticeCode determines which Lattices are set or
+	 * un-set.
+	 * @throws LTGCException if x and/or y are out of Bounds.(max./min.)(width/height).
+	 */
+	private void setLatticesOnTileThruBitNr(int x, int y, int bitNr) throws LTGCException
+	{
+
+		throwsExceptionIfOutOfBounds(x, y);
+		
+		setLatticeCodeBitTrue(bitNr, x, y);
+		int latticeCode = latticeCodes[x][y];
+		setLatticesOnTile(x, y, latticeCode);
+	}
+
+	/**
 	 * Sets all four Lattices on a Tile.
 	 * @param p x and y Coordinates of the Tile in question.
 	 * @throws LTGCException if p is out of Bounds.
@@ -330,6 +346,7 @@ public class LatticeGrid
 
 		return latticeCode;
 	}
+	
 	
 	/**
 	 * If u for some reason have a valid latticeCode and
