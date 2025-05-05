@@ -65,6 +65,36 @@ public class LatticeGridTest
 		assert(affectedTiles[0]==4);//Because Frameborders are considered to have 36 Lattices!
 	}
 	
+	@Test
+	public void borderTest() throws LTGCException
+	{
+
+		int widthInTiles = 5;
+		int heightInTiles = 5;
+
+		LatticeGrid lg = new LatticeGrid(widthInTiles, heightInTiles);
+	
+		lg.walkThruTiles((p)->
+		{
+			
+				try
+				{
+					if(p.x==0)assert(lg.hasLatticeOnTheLeft(p));
+					if(p.x==widthInTiles-1)assert(lg.hasLatticeOnTheRight(p));
+					if(p.y==0)assert(lg.hasLatticeOnTheBottom(p));
+					if(p.y==heightInTiles-1)assert(lg.hasLatticeOnTheTop(p));
+			
+					if(!((p.x==0)||(p.x==widthInTiles-1)||(p.y==0)||(p.y==heightInTiles-1)))
+						assert(!lg.hasLatticeSomeWhere(p));
+				}
+				catch(LTGCException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		});
+	}
+
 	private void plusPlus()
 	{
 		affectedTiles[0] = affectedTiles[0]+1;
