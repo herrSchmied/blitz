@@ -87,7 +87,7 @@ public class LTGCS extends Canvas
 	/**
 	 * LatticeGrid.
 	 */
-	LatticeGrid lg;
+	private LatticeGrid lg;
 	
 	/**
 	 * Snake and Lattice-Grid.
@@ -465,6 +465,11 @@ public class LTGCS extends Canvas
 		return tileSize;
 	}
 	
+	public LatticeGrid getLatticeGrid()
+	{
+		return lg;
+	}
+
 	public void setFinalSnakes() throws LTGCException, SnakeException
 	{
 		snlGrid.setFinalSnakes();

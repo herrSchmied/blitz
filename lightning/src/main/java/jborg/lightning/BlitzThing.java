@@ -5,6 +5,7 @@ package jborg.lightning;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import jborg.lightning.exceptions.LTGCException;
 import jborg.lightning.exceptions.SnakeException;
 import someMath.exceptions.CollectionException;
@@ -287,39 +289,71 @@ public class BlitzThing extends Application
     	for(int n=0;n<actualLatticeNrs.size();n++)System.out.print(", " + actualLatticeNrs.get(n));
     	System.out.println("");
     	
-    	int nrOfTopLattices = width*(height-1);
-    	//int nrOfRightLattices = (width-1)*height;
     	
-    	int cnt = 0;
-    	for(int n: actualLatticeNrs)
+    	Set<Pair<Point, Integer>> allPositions = poolOfPossibleLatticePositions(canvas.getLatticeGrid());
+    	
+    	Set<Pair<Point, Integer>> chosenPositions = new HashSet<>();
+    	
+    	while(chosenPositions.size()<latticeNr)
     	{
-
-    		if(n<nrOfTopLattices)
-    		{
-    			
-    			int x = (int)Math.floor(n/width);
-    			int y = n % (width-1)+1;
-    			
-				canvas.setOneLattice(x, y, indexLatticeBitTop);
-
-    		}
-    		else
-    		{
-    			int m = n-nrOfTopLattices;
-    			
-    			int x = m % (height-1);
-    			int y = (int)Math.floor(m/height);
-
-    			canvas.setOneLattice(x, y, indexLatticeBitRight);
-   
-    		}
-    		cnt++;
+    		Pair<Point, Integer> position = CollectionManipulation.catchRandomElementOfCollection(allPositions);
+    		chosenPositions.add(position);
     	}
+    	
+    	for(Pair<Point, Integer> position: chosenPositions)
+    	{
+    		Point p = position.getKey();
+    		int bitNr= position.getValue();
+    		
+    		canvas.setOneLattice(p, bitNr);
+    	}
+
+    	int cnt = 0;
+    	
 	
     	System.out.println(formatBashStringBoldAndBlue("Count: " + cnt));
     }
 
 
+    public Set<Pair<Point, Integer>> poolOfPossibleLatticePositions(LatticeGrid lg)
+    {
+    	
+    	Set<Pair<Point, Integer>> pool = new HashSet<>();
+    	int leftBitNr = 0;
+    	int rightBitNr = 2;
+    	int bottomBitNr = 1;
+    	int topBitNr = 3;
+    	lg.walkThruTiles((p)->
+    	{
+    		
+    		Pair<Point, Integer> position;
+    		if(p.x>0)
+    		{
+   				position = new Pair(p, leftBitNr);
+   				pool.add(position);
+   			}
+    		
+    		if(p.x<lg.getWidth()-1)
+    		{
+   				position = new Pair(p, rightBitNr);
+   				pool.add(position);
+   			}
+    				
+    		if(p.y>0)
+    		{
+   				position = new Pair(p, bottomBitNr);
+   				pool.add(position);
+   			}
+    		
+    		if(p.y<lg.getHeight()-1)
+    		{
+   				position = new Pair(p, topBitNr);
+   				pool.add(position);
+   			}
+    	});
+
+    	return pool;
+    }
     /**
      * Graphic and LTGC Setup.
      * 
@@ -341,10 +375,8 @@ public class BlitzThing extends Application
     	
     	LTGCS canvas = new LTGCS(width, height, end, snake);
         root.getChildren().add(canvas);
-        
-//      Platform.runLater(()->
-//      {
-        
+        setupLattices(width, height, latticeNr, canvas);
+       
         Stage stage = new Stage();
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
         stage.setScene(scene);
