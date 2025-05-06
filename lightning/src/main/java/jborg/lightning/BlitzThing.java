@@ -320,9 +320,7 @@ public class BlitzThing extends Application
     	
     	Set<Pair<Point, Integer>> pool = new HashSet<>();
     	int leftBitNr = 0;
-    	int rightBitNr = 2;
     	int bottomBitNr = 1;
-    	int topBitNr = 3;
     	lg.walkThruTiles((p)->
     	{
     		
@@ -332,22 +330,10 @@ public class BlitzThing extends Application
    				position = new Pair(p, leftBitNr);
    				pool.add(position);
    			}
-    		
-    		if(p.x<lg.getWidth()-1)
-    		{
-   				position = new Pair(p, rightBitNr);
-   				pool.add(position);
-   			}
-    				
+      				
     		if(p.y>0)
     		{
    				position = new Pair(p, bottomBitNr);
-   				pool.add(position);
-   			}
-    		
-    		if(p.y<lg.getHeight()-1)
-    		{
-   				position = new Pair(p, topBitNr);
    				pool.add(position);
    			}
     	});
