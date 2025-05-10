@@ -225,22 +225,17 @@ public class BlitzThing extends Application
         		return;
         	}
 
-			Platform.runLater(()->
+       		try
 			{
-				
-				try
-				{
-					setInput(widthTxtField, heightTxtField, latticeTxtField);
-					showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
-				}
-				catch(LTGCException | SnakeException | CollectionException | InterruptedException
-							| IOException e1)
-				{
-			
-					e1.printStackTrace();
-				}
+				setInput(widthTxtField, heightTxtField, latticeTxtField);
+				showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
+			}
+			catch(LTGCException | SnakeException | CollectionException | InterruptedException
+						| IOException e1)
+			{
+				e1.printStackTrace();
+			}
 
-			});
 
         });
 
