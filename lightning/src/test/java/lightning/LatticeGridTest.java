@@ -95,6 +95,43 @@ public class LatticeGridTest
 		});
 	}
 
+	@Test
+	public void LatticesAreExactlyTwoTest() throws LTGCException
+	{
+
+		int widthInTiles = 3;
+		int heightInTiles = 3;
+		
+		Point setPoint = new Point(1, 1);
+		LatticeGrid lg = new LatticeGrid(widthInTiles, heightInTiles);
+		lg.setOneLatticeOnTile(setPoint, 0);//Left lattice is set
+		lg.setOneLatticeOnTile(setPoint, 2);//Right lattice is set;
+		
+		lg.walkThruTiles((p)->
+		{
+			
+			if(p.equals(setPoint))
+			{	
+				
+				Point leftPoint = new Point(p.x-1, p.y);
+				Point rightPoint = new Point(p.x+1, p.y);
+				
+				try
+				{
+				    assert(lg.hasLatticeOnTheLeft(p));
+					assert(lg.hasLatticeOnTheRight(p));
+					assert(lg.hasLatticeOnTheRight(leftPoint));
+					assert(lg.hasLatticeOnTheLeft(rightPoint));
+				}
+				catch(LTGCException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	private void plusPlus()
 	{
 		affectedTiles[0] = affectedTiles[0]+1;

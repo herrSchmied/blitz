@@ -407,8 +407,6 @@ public class BlitzThing extends Application
     	});
     	
     	animationThread.start();
-    	
-    	System.out.println("Name of current Thread: " + Thread.currentThread().getName());
     }
     
     /**
