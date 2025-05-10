@@ -72,18 +72,17 @@ public class BlitzThing extends Application
 		super();
 	}
 
+	Integer widthInTiles = 3;
+	Integer heightInTiles = 3;
+	Integer nrOfLattices = 2;
+
 	/**
 	 * Responsible for setting up The primary-Stage.
 	 */
     @Override
     public void start(Stage stage) throws LTGCException, SnakeException
     {
-        
-    	//For Tests.
-    	Integer widthInTiles = 5;
-    	Integer heightInTiles = 5;
-    	Integer nrOfLattices = 2;
-    	
+            	
         HBox heightBox = new HBox();
         Label heightLbl = new Label("Height");
         TextField heightTxtField = new TextField("" + heightInTiles + "");
@@ -127,7 +126,7 @@ public class BlitzThing extends Application
         {
         	try
         	{
-        		setupInput(widthInTiles, heightInTiles, nrOfLattices, widthTxtField, heightTxtField, latticeTxtField);
+        		setInput(widthTxtField, heightTxtField, latticeTxtField);
          	}
         	catch(NumberFormatException nfe)
         	{
@@ -158,7 +157,7 @@ public class BlitzThing extends Application
         {
         	try
         	{
-        		setupInput(widthInTiles, heightInTiles, nrOfLattices, widthTxtField, heightTxtField, latticeTxtField);
+        		setInput(widthTxtField, heightTxtField, latticeTxtField);
                 end = new Point(widthInTiles-1, heightInTiles-1);
         	}
         	catch(NumberFormatException nfe)
@@ -204,7 +203,7 @@ public class BlitzThing extends Application
         	
         	try
         	{
-        		setupInput(widthInTiles, heightInTiles, nrOfLattices, widthTxtField, heightTxtField, latticeTxtField);
+        		setInput(widthTxtField, heightTxtField, latticeTxtField);
         	}
         	catch(NumberFormatException e)
         	{
@@ -231,14 +230,13 @@ public class BlitzThing extends Application
 				
 				try
 				{
-					
-					//For Tests.
+					setInput(widthTxtField, heightTxtField, latticeTxtField);
 					showCanvasStage(widthInTiles, heightInTiles, nrOfLattices);
 				}
 				catch(LTGCException | SnakeException | CollectionException | InterruptedException
 							| IOException e1)
 				{
-					// TODO Auto-generated catch block
+			
 					e1.printStackTrace();
 				}
 
@@ -254,13 +252,11 @@ public class BlitzThing extends Application
         
     }    
     
-    private void setupInput(Integer widthInTiles, Integer heightInTiles, Integer nrOfLattices, 
-    		TextField widthTxtField, TextField heightTxtField, TextField latticeTxtField)
+    private void setInput(TextField widthTxtField, TextField heightTxtField, TextField latticeTxtField)
     {
    			widthInTiles = Integer.parseInt(widthTxtField.getText());
 			heightInTiles = Integer.parseInt(heightTxtField.getText());
 			nrOfLattices = Integer.parseInt(latticeTxtField.getText());
-
     }
 
     private void setupLattices(int width, int height, int latticeNr, LTGCS canvas) throws LTGCException, CollectionException
@@ -369,17 +365,25 @@ public class BlitzThing extends Application
 
        	canvas.drawEverythingExeceptAnySnake();
        	stage.show();
-    }
-
-    public void setupTheSnakes(int width, int height, int latticeNr, LTGCS canvas) throws LTGCException, CollectionException, SnakeException
-    {
-    	
-        setupLattices(width, height, latticeNr, canvas);
-
+       	
         canvas.setFinalSnakes();
-        Set<Snake> successSnakes = canvas.filterSuccesses();
+        Set<Snake> snakes = canvas.filterSuccesses();
+        
+        Snake winner = CollectionManipulation.catchRandomElementOfSet(snakes);
+        animateSnake(winner, canvas);
     }
 
+    private void animateSnake(Snake snake, LTGCS canvas) throws LTGCException, SnakeException, InterruptedException
+    {
+
+    	for(int n=1;n<snake.getLength();n++)
+    	{
+    		Point p = snake.getPartAt(n);
+    		canvas.setColorOnTile(Color.BLUE, p);
+    		Thread.sleep(200);
+    	}
+    }
+    
     /**
      * Entry Point. It starts here.
      * @param args Theoretical Input.

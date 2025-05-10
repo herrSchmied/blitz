@@ -238,6 +238,7 @@ public class LTGCS extends Canvas
 		drawStartAndEndTile();
 		drawLattices();
 	}
+	
 	/**
 	 * draws Lattices except the Snakes.
 	 * @throws LTGCException Shouldn't
