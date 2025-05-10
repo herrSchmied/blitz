@@ -370,18 +370,50 @@ public class BlitzThing extends Application
         Set<Snake> snakes = canvas.filterSuccesses();
         
         Snake winner = CollectionManipulation.catchRandomElementOfSet(snakes);
-        animateSnake(winner, canvas);
+        if(!(winner==null))animateSnake(winner, canvas);
+        else System.out.println("No winner Snake!");
     }
 
     private void animateSnake(Snake snake, LTGCS canvas) throws LTGCException, SnakeException, InterruptedException
     {
 
-    	for(int n=1;n<snake.getLength();n++)
+    	Thread animationThread = new Thread(()->
     	{
-    		Point p = snake.getPartAt(n);
-    		canvas.setColorOnTile(Color.BLUE, p);
-    		Thread.sleep(200);
-    	}
+        	for(int n=1;n<snake.getLength();n++)
+        	{
+        		
+        		
+        		try
+        		{
+        			
+        			Point p = snake.getPartAt(n);
+        			
+        			Platform.runLater(()->
+        			{
+						try
+						{
+							
+							canvas.setColorOnTile(Color.BLUE, p);
+						}
+						catch (LTGCException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					});
+        			Thread.sleep(300);
+        		}
+        		catch(InterruptedException | SnakeException exce)
+        		{
+        			exce.printStackTrace();
+        		}
+        	}
+
+    	});
+    	
+    	animationThread.start();
+    	
+    	System.out.println("Name of current Thread: " + Thread.currentThread().getName());
     }
     
     /**
