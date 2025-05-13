@@ -36,7 +36,6 @@ import someMath.exceptions.CollectionException;
 import someMath.CollectionManipulation;
 
 
-import static jborg.lightning.LatticeGrid.*;
 //********************************************************
 
 
