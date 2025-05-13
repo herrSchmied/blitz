@@ -29,11 +29,13 @@ import javafx.scene.paint.Color;
 
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import jborg.lightning.exceptions.LTGCException;
-import jborg.lightning.exceptions.SnakeException;
+import someMath.exceptions.LTGCException;
+import someMath.exceptions.SnakeException;
 import someMath.exceptions.CollectionException;
 
 import someMath.CollectionManipulation;
+import someMath.LatticeGrid;
+import someMath.Snake;
 
 
 //********************************************************

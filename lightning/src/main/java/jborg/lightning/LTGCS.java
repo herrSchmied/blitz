@@ -5,10 +5,13 @@ package jborg.lightning;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import jborg.lightning.exceptions.LTGCException;
-import jborg.lightning.exceptions.SnakeException;
+import someMath.LatticeGrid;
+import someMath.Snake;
+import someMath.SnakeAndLatticeGrid;
+import someMath.exceptions.LTGCException;
+import someMath.exceptions.SnakeException;
 
-import static jborg.lightning.LatticeGrid.*;
+import static someMath.LatticeGrid.*;
 
 import java.awt.Point;
 import java.util.List;

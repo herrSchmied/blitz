@@ -16,21 +16,21 @@ import org.junit.jupiter.api.Test;
 
 import consoleTools.BashSigns;
 
-import jborg.lightning.exceptions.LTGCException;
-import jborg.lightning.LatticeGrid;
+import someMath.exceptions.LTGCException;
+import someMath.LatticeGrid;
 import jborg.lightning.LTGCS;
-import jborg.lightning.Snake;
-import jborg.lightning.SnakeAndLatticeGrid;
-import jborg.lightning.exceptions.SnakeException;
+import someMath.Snake;
+import someMath.SnakeAndLatticeGrid;
+import someMath.exceptions.SnakeException;
 
 import someMath.exceptions.CollectionException;
 import someMath.CollectionManipulation;
 import someMath.SequenzInListSearch;
-import consoleTools.TerminalTableDisplay;
+
 import static consoleTools.TerminalXDisplay.*;
 
-import static jborg.lightning.LatticeGrid.*;
-import static jborg.lightning.SnakeAndLatticeGrid.*;
+import static someMath.LatticeGrid.*;
+import static someMath.SnakeAndLatticeGrid.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
