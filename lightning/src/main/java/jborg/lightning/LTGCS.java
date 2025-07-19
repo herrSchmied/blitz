@@ -139,7 +139,8 @@ public class LTGCS extends Canvas
 	 * @param strokeWidthLattice custom stroke for lattices in Pixel.
 	 * @throws LTGCException If the given Snake has more parts then just one.
 	 */
-	public LTGCS(int xTileWidth, int yTileHeight, int tileSize, Point finalPoint, Snake snake, double strokeWidthLattice) throws LTGCException
+	public LTGCS(int xTileWidth, int yTileHeight, int tileSize, Point finalPoint, 
+			Snake snake, double strokeWidthLattice) throws LTGCException
 	{
 
 		super(xTileWidth*tileSize, yTileHeight*tileSize);

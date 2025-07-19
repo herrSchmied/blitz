@@ -63,6 +63,9 @@ public class BlitzThing extends Application
     int minYEnd = 1;
     int maxYEnd = 1;
   
+	Integer widthInTiles = 3;
+	Integer heightInTiles = 3;
+	Integer nrOfLattices = 2;
 
     /**
      * Constructor
@@ -73,9 +76,6 @@ public class BlitzThing extends Application
 		super();
 	}
 
-	Integer widthInTiles = 3;
-	Integer heightInTiles = 3;
-	Integer nrOfLattices = 2;
 
 	/**
 	 * Responsible for setting up The primary-Stage.
@@ -306,7 +306,6 @@ public class BlitzThing extends Application
     	System.out.println(formatBashStringBoldAndBlue("Count: " + cnt));
     }
 
-
     public Set<Pair<Point, Integer>> poolOfPossibleLatticePositions(LatticeGrid lg)
     {
     	
@@ -332,6 +331,7 @@ public class BlitzThing extends Application
 
     	return pool;
     }
+
     /**
      * Graphic and LTGC Setup.
      * 
