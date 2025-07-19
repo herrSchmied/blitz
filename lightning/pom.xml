@@ -52,7 +52,7 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.8</version>
 				<configuration>
-					<mainClass>jborg.lightning.BlitzThing</mainClass>
+					<mainClass>jborg.lightning.AnotherBlitz</mainClass>
 				</configuration>
 			</plugin>
 	
