@@ -43,26 +43,32 @@
                		<groupId>org.apache.maven.plugins</groupId>
                		<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.14.0</version>
-					<configuration>
-					  	<compilerArgs>
-          			  		<arg>-verbose</arg>
-            	 	  		<arg>-Xlint:unchecked</arg>
-          				</compilerArgs>
-          				<source>21</source> <!-- or your version -->
-    					<target>21</target>
-    					<debug>true</debug>
-    					<debuglevel>lines,vars,source</debuglevel>
-
-					</configuration>
 			</plugin>
             
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.8</version>
-				<configuration>
-					<mainClass>jborg.lightning.AnotherBlitz</mainClass>
-				</configuration>
+    			<executions>
+        			<execution>
+            <!-- Default configuration for running -->
+            			<id>default-cli</id>
+            			<configuration>
+                			<mainClass>jborg.lightning.AnotherBlitz</mainClass>
+            			</configuration>
+        			</execution>
+        			<execution>
+            <!-- Configuration for debugging -->
+            			<id>debug</id>
+            			<configuration>
+                			<options>
+                    			<option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8000</option>
+                			</options>
+                			<mainClass>jborg.lightning.AnotherBlitz</mainClass>
+            			</configuration>
+        			</execution>
+        
+    			</executions>
 			</plugin>
 	
 		</plugins>
