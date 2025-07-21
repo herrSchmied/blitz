@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-import static consoleTools.TerminalXDisplay.formatBashStringBoldAndBlue;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -15,13 +14,10 @@ import java.util.Set;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import jborg.lightning.exceptions.ActOnCanvasException;
-import someMath.CollectionManipulation;
-import someMath.LatticeGrid;
-import someMath.Snake;
-import someMath.SnakeAndLatticeGrid;
-import someMath.exceptions.CollectionException;
-import someMath.exceptions.LTGCException;
-import someMath.exceptions.SnakeException;
+
+import someMath.*;
+import someMath.exceptions.*;
+import static consoleTools.TerminalXDisplay.*;
 
 public class ActOnCanvas
 {

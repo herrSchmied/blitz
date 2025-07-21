@@ -13,17 +13,18 @@
     </properties>
     
     <dependencies>
-
+		
 		<dependency>
 			<groupId>jborg</groupId>
 			<artifactId>myToolBoxMavenOld</artifactId>
 			<version>0.0.2-Revisited</version>
 		</dependency>
-
+		
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21</version>
+            <classifier>linux</classifier>
         </dependency>
 
 		<dependency>
@@ -47,6 +48,11 @@
           			  		<arg>-verbose</arg>
             	 	  		<arg>-Xlint:unchecked</arg>
           				</compilerArgs>
+          				<source>21</source> <!-- or your version -->
+    					<target>21</target>
+    					<debug>true</debug>
+    					<debuglevel>lines,vars,source</debuglevel>
+
 					</configuration>
 			</plugin>
             
