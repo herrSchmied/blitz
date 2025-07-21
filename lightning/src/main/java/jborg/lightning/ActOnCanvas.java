@@ -63,7 +63,7 @@ public class ActOnCanvas
 		lg = new LatticeGrid((int)width, (int)height);
 		
 		snlGrid = new SnakeAndLatticeGrid(startSnake, lg, finalPoint);
-		setupLattices((int)(Math.sqrt(width*height)/2));
+		setupLattices((int)width,(int)height,(int)(Math.sqrt(width*height)/2));
         setFinalSnakes();
         Set<Snake> snakes = filterSuccesses();
         
@@ -145,10 +145,10 @@ public class ActOnCanvas
 	   	animationThread.start();
 	}
 	
-    private void setupLattices(int latticeNr) throws LTGCException, CollectionException
+    private void setupLattices(int width, int height, int latticeNr) throws LTGCException, CollectionException
     {
 
-    	int nrOfInternPossibleLattices = (int) (2*width*height-width-height);
+    	int nrOfInternPossibleLattices = 2*width*height-width-height;
     	if(latticeNr>=nrOfInternPossibleLattices)throw new IllegalArgumentException("Much to many Lattices!");
 
     	System.out.println(formatBashStringBoldAndBlue("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices));
@@ -214,13 +214,13 @@ public class ActOnCanvas
     		Pair<Point, Integer> position;
     		if(p.x>0)
     		{
-   				position = new Pair(p, leftBitNr);
+   				position = new Pair<>(p, leftBitNr);
    				pool.add(position);
    			}
       				
     		if(p.y>0)
     		{
-   				position = new Pair(p, bottomBitNr);
+   				position = new Pair<>(p, bottomBitNr);
    				pool.add(position);
    			}
     	});

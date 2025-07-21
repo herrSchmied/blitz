@@ -39,12 +39,15 @@
         <plugins>
         
 			<plugin>
-                		<groupId>org.apache.maven.plugins</groupId>
-                		<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.14.0</version>
-				<configuration>
-					<release>8</release>
-				</configuration>
+               		<groupId>org.apache.maven.plugins</groupId>
+               		<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.14.0</version>
+					<configuration>
+					  	<compilerArgs>
+          			  		<arg>-verbose</arg>
+            	 	  		<arg>-Xlint:unchecked</arg>
+          				</compilerArgs>
+					</configuration>
 			</plugin>
             
 			<plugin>

@@ -318,13 +318,13 @@ public class BlitzThing extends Application
     		Pair<Point, Integer> position;
     		if(p.x>0)
     		{
-   				position = new Pair(p, leftBitNr);
+   				position = new Pair<>(p, leftBitNr);
    				pool.add(position);
    			}
       				
     		if(p.y>0)
     		{
-   				position = new Pair(p, bottomBitNr);
+   				position = new Pair<>(p, bottomBitNr);
    				pool.add(position);
    			}
     	});
