@@ -14,13 +14,12 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import consoleTools.BashSigns;
-
+import consoleTools.InputArgumentException;
+import consoleTools.InputStreamSession;
 import someMath.exceptions.LTGCException;
-import someMath.LatticeGrid;
+import someMath.pathFinder.LatticeGrid;
 import jborg.lightning.LTGCS;
-import someMath.Snake;
-import someMath.SnakeAndLatticeGrid;
+import someMath.pathFinder.Snake;
 import someMath.exceptions.SnakeException;
 
 import someMath.exceptions.CollectionException;
@@ -29,8 +28,8 @@ import someMath.SequenzInListSearch;
 
 import static consoleTools.TerminalXDisplay.*;
 
-import static someMath.LatticeGrid.*;
-import static someMath.SnakeAndLatticeGrid.*;
+import static someMath.pathFinder.LatticeGrid.*;
+import static someMath.pathFinder.SnakeAndLatticeGrid.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -148,7 +147,7 @@ public class LatticeTileGridCanvasTest
 		for(Snake s: theNewGrownOnes)
 		{
 			Point head = s.getHead();
-			System.out.println("Head: " + "P(" + head.x + ", " +head.y + ")");
+			System.out.println("Head: " + pointAsString("Head", head));
 		}
 
 		Set<Snake> evenNewer = new HashSet<>();
@@ -164,7 +163,7 @@ public class LatticeTileGridCanvasTest
 		for(Snake s: evenNewer)
 		{
 			Point head = s.getHead();
-			System.out.println("Head of Snake(" + i + "): " + "P(" + head.x + ", " +head.y + ")");
+			System.out.println("Head of Snake(" + i + "): " + pointAsString("Head", head));
 			i++;
 			assert(s.getStart().equals(startPoint));
 		}
@@ -192,7 +191,7 @@ public class LatticeTileGridCanvasTest
 		for(Snake s: theNewGrownOnes)
 		{
 			Point head = s.getHead();
-			System.out.println("Head: " + "P(" + head.x + ", " +head.y + ")");
+			System.out.println("Head: " + pointAsString("Head", head));
 		}
 
 		Set<Snake> evenNewer = new HashSet<>();
@@ -209,7 +208,7 @@ public class LatticeTileGridCanvasTest
 		for(Snake s: evenNewer)
 		{
 			Point head = s.getHead();
-			System.out.println("Head(" + i + "):" + "P(" + head.x + ", " +head.y + ")");
+			System.out.println("Head(" + i + "):" + pointAsString("Head", head));
 			i++;
 		}
 	}
@@ -307,12 +306,22 @@ public class LatticeTileGridCanvasTest
 		{
 			success = CollectionManipulation.catchRandomElementOfSet(successes);
 			System.out.println("\nFound a way");
-			System.out.println(success);
-			System.out.println("Successful Snakes: " + successes.size());
+			
+			InputStreamSession is = new InputStreamSession(System.in);
+			boolean q = is.getYesOrNo("Print or Not");
+			
+			if(q)
+			{
+				System.out.println(success);
+				System.out.println("Successful Snakes: " + successes.size());
+			}
 		}
 		catch(CollectionException ce)
 		{
 			fail("Didn't find any Success.\n" + ce);
+		} catch (InputArgumentException e)
+		{
+			fail("I/O Error.");
 		}
 
 		System.out.println("Final Snakes: " + finalSnakes.size());
@@ -430,7 +439,7 @@ public class LatticeTileGridCanvasTest
 		System.out.println("canvas size: " + canvas.getSnakeSet().size());
 
 		Point f = canvas.getFinalPoint();
-		System.out.println("FinalPoint: f(" + f.x + ", " + f.y + ")");
+		System.out.println(pointAsString("finalPoint", f));
 
 		assert(canvas.getSnakeSet().size()==4);
 
@@ -508,6 +517,17 @@ public class LatticeTileGridCanvasTest
 
 	}
 
+	@Test
+	public void simpleMazeTest() throws SnakeException, LTGCException
+	{
+		frameIt(stndrtStartPoint, new Point(1,1), 2, 2);
+		
+		canvas.setFinalSnakes();
+		Set<Snake> snakeSet = canvas.filterSuccesses();
+		
+		assert(snakeSet.size()==5);
+	}
+	
 	public Point getRandomPoint(Set<Point> excludedPoints, LTGCS canvas)
 	{
 		int w= canvas.getWidthInTiles();

@@ -17,6 +17,10 @@ import jborg.lightning.exceptions.ActOnCanvasException;
 
 import someMath.*;
 import someMath.exceptions.*;
+import someMath.pathFinder.LatticeGrid;
+import someMath.pathFinder.Snake;
+import someMath.pathFinder.SnakeAndLatticeGrid;
+
 import static consoleTools.TerminalXDisplay.*;
 
 public class ActOnCanvas

@@ -34,8 +34,8 @@ import someMath.exceptions.SnakeException;
 import someMath.exceptions.CollectionException;
 
 import someMath.CollectionManipulation;
-import someMath.LatticeGrid;
-import someMath.Snake;
+import someMath.pathFinder.LatticeGrid;
+import someMath.pathFinder.Snake;
 
 
 //********************************************************
@@ -312,22 +312,27 @@ public class BlitzThing extends Application
     	Set<Pair<Point, Integer>> pool = new HashSet<>();
     	int leftBitNr = 0;
     	int bottomBitNr = 1;
-    	lg.walkThruTiles((p)->
+    	
+    	for(int x=0;x<widthInTiles-1;x++)
     	{
-    		
-    		Pair<Point, Integer> position;
-    		if(p.x>0)
-    		{
-   				position = new Pair<>(p, leftBitNr);
-   				pool.add(position);
-   			}
+    		for(int y=0;y<heightInTiles-1;y++)
+    		{	
+    			
+    			Point p = new Point(x,y);
+    			Pair<Point, Integer> position;
+    			if(p.x>0)
+    			{
+    				position = new Pair<>(p, leftBitNr);
+   					pool.add(position);
+   				}
       				
-    		if(p.y>0)
-    		{
-   				position = new Pair<>(p, bottomBitNr);
-   				pool.add(position);
-   			}
-    	});
+    			if(p.y>0)
+    			{
+   					position = new Pair<>(p, bottomBitNr);
+   					pool.add(position);
+   				}
+    		}
+    	}
 
     	return pool;
     }
