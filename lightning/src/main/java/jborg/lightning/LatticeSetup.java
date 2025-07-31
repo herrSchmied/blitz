@@ -61,7 +61,7 @@ public class LatticeSetup
 		return pool;
 	}
 
-	public void setupLattices(int width, int height, int latticeNr, LTGCS canvas) throws LTGCException, CollectionException
+	public void setupLattices(int width, int height, int latticeNr) throws LTGCException, CollectionException
 	{
 	
 		int nrOfInternPossibleLattices = 2*width*height-width-height;
@@ -88,7 +88,7 @@ public class LatticeSetup
 		System.out.println("");
 		
 		
-		Set<Pair<Point, Integer>> allPositions = poolOfPossibleLatticePositions(canvas.getLatticeGrid());
+		Set<Pair<Point, Integer>> allPositions = poolOfPossibleLatticePositions(lg);
 		
 		Set<Pair<Point, Integer>> chosenPositions = new HashSet<>();
 		
@@ -103,7 +103,7 @@ public class LatticeSetup
 			Point p = position.getKey();
 			int bitNr= position.getValue();
 			
-			canvas.setOneLattice(p, bitNr);
+			lg.setOneLatticeOnTile(p, bitNr);
 		}
 	
 		int cnt = 0;

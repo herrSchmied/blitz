@@ -21,7 +21,7 @@ public class AnotherBlitz extends Application
 	    int height = 100;
 
         Canvas canvas = new Canvas(width, height);
-        ActOnCanvas aoc;
+        ActOnCanvas aoc;//Remember: action is out comment at the end of this Method!
         
         HBox hBox = new HBox();
         hBox.getChildren().add(canvas);

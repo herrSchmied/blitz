@@ -64,7 +64,8 @@ public class ActOnCanvas
 		lg = new LatticeGrid((int)width, (int)height);
 		
 		snlGrid = new SnakeAndLatticeGrid(startSnake, lg, finalPoint);
-		setupLattices((int)width,(int)height,(int)(Math.sqrt(width*height)/2));
+		LatticeSetup ls = new LatticeSetup(lg);
+		ls.setupLattices((int)width,(int)height,(int)(Math.sqrt(width*height)/2));
         setFinalSnakes();
         Set<Snake> snakes = filterSuccesses();
         
@@ -145,87 +146,4 @@ public class ActOnCanvas
 	    	
 	   	animationThread.start();
 	}
-	
-    private void setupLattices(int width, int height, int latticeNr) throws LTGCException, CollectionException
-    {
-
-    	int nrOfInternPossibleLattices = 2*width*height-width-height;
-    	if(latticeNr>=nrOfInternPossibleLattices)throw new IllegalArgumentException("Much to many Lattices!");
-
-    	System.out.println(formatBashStringBoldAndBlue("Nr. of Possible Intern Lattices: " + nrOfInternPossibleLattices));
-    	System.out.println(formatBashStringBoldAndBlue("Nr. of Factual Intern Lattices: " + latticeNr));
-    	System.out.println(formatBashStringBoldAndBlue("Percentage: " + ((double)(latticeNr)/(nrOfInternPossibleLattices))));
-
-    	List<Integer> possibleLatticeNrs = new ArrayList<>();
-    	for(int n=0;n<nrOfInternPossibleLattices;n++)possibleLatticeNrs.add(n);
-
-    	List<Integer> actualLatticeNrs = new ArrayList<>();
-    	for(int n=0;n<latticeNr;n++)
-    	{
-    		int k = CollectionManipulation.catchRandomElementOfList(possibleLatticeNrs);
-    		int i = possibleLatticeNrs.indexOf(k);
-    		possibleLatticeNrs.remove(i);
-    		actualLatticeNrs.add(k);
-    	}
-
-    	System.out.println(formatBashStringBoldAndBlue("ActualLattices: "+ actualLatticeNrs.size()));
-    	for(int n=0;n<actualLatticeNrs.size();n++)System.out.print(", " + actualLatticeNrs.get(n));
-    	System.out.println("");
-    	
-    	
-    	Set<Pair<Point, Integer>> allPositions = poolOfPossibleLatticePositions(lg);
-    	
-    	Set<Pair<Point, Integer>> chosenPositions = new HashSet<>();
-    	
-    	while(chosenPositions.size()<latticeNr)
-    	{
-    		Pair<Point, Integer> position = CollectionManipulation.catchRandomElementOfCollection(allPositions);
-    		chosenPositions.add(position);
-    	}
-    	
-    	for(Pair<Point, Integer> position: chosenPositions)
-    	{
-    		Point p = position.getKey();
-    		int bitNr= position.getValue();
-    		
-    		setOneLattice(p, bitNr);
-    	}
-
-    	int cnt = 0;
-    	
-	
-    	System.out.println(formatBashStringBoldAndBlue("Count: " + cnt));
-    }
-    
-	public void setOneLattice(Point p, int bitNr) throws LTGCException
-	{
-		lg.setOneLatticeOnTile(p, bitNr);
-	}
-
-
-    public Set<Pair<Point, Integer>> poolOfPossibleLatticePositions(LatticeGrid lg)
-    {
-    	
-    	Set<Pair<Point, Integer>> pool = new HashSet<>();
-    	int leftBitNr = 0;
-    	int bottomBitNr = 1;
-    	lg.walkThruTiles((p)->
-    	{
-    		
-    		Pair<Point, Integer> position;
-    		if(p.x<width-1)
-    		{
-   				position = new Pair<>(p, leftBitNr);
-   				pool.add(position);
-   			}
-      				
-    		if(p.y<height-1)
-    		{
-   				position = new Pair<>(p, bottomBitNr);
-   				pool.add(position);
-   			}
-    	});
-
-    	return pool;
-    }
 }
