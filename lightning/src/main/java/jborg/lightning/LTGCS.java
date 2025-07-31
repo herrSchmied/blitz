@@ -99,6 +99,11 @@ public class LTGCS extends Canvas
 	private LatticeGrid lg;
 	
 	/**
+	 * Lattice Setup
+	 */
+	private LatticeSetup ls;
+	
+	/**
 	 * Snake and Lattice-Grid.
 	 * Calculation Basis for The Canvas.
 	 */

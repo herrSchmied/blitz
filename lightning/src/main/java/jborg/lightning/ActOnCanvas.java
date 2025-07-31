@@ -213,13 +213,13 @@ public class ActOnCanvas
     	{
     		
     		Pair<Point, Integer> position;
-    		if(p.x>0)
+    		if(p.x<width-1)
     		{
    				position = new Pair<>(p, leftBitNr);
    				pool.add(position);
    			}
       				
-    		if(p.y>0)
+    		if(p.y<height-1)
     		{
    				position = new Pair<>(p, bottomBitNr);
    				pool.add(position);
