@@ -14,6 +14,8 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import CollectionTools.CollectionManipulation;
+import CollectionTools.SequenzInListSearch;
 import consoleTools.InputArgumentException;
 import consoleTools.InputStreamSession;
 import someMath.exceptions.LTGCException;
@@ -23,8 +25,6 @@ import someMath.pathFinder.Snake;
 import someMath.exceptions.SnakeException;
 
 import someMath.exceptions.CollectionException;
-import someMath.CollectionManipulation;
-import someMath.SequenzInListSearch;
 
 import static consoleTools.TerminalXDisplay.*;
 
@@ -226,7 +226,7 @@ public class LatticeTileGridCanvasTest
 		//isolation
 		canvas.setAllLatticesOnTile(isolatedPoint);
 
-		canvas.setFinalSnakes();;
+		canvas.setFinalSnakes();
 		Set<Snake> finalSnakes = canvas.getSnakeSet();
 		
 		for(Snake s: finalSnakes)assert(!s.containsPart(isolatedPoint));
@@ -307,21 +307,17 @@ public class LatticeTileGridCanvasTest
 			success = CollectionManipulation.catchRandomElementOfSet(successes);
 			System.out.println("\nFound a way");
 			
-			InputStreamSession is = new InputStreamSession(System.in);
-			boolean q = is.getYesOrNo("Print or Not");
-			
-			if(q)
-			{
-				System.out.println(success);
-				System.out.println("Successful Snakes: " + successes.size());
-			}
+			/*
+			 * InputStreamSession is = new InputStreamSession(System.in); boolean q =
+			 * is.forcedYesOrNo("Print or Not");
+			 * 
+			 * if(q) { System.out.println(success); System.out.println("Successful Snakes: "
+			 * + successes.size()); }
+			 */
 		}
 		catch(CollectionException ce)
 		{
 			fail("Didn't find any Success.\n" + ce);
-		} catch (InputArgumentException e)
-		{
-			fail("I/O Error.");
 		}
 
 		System.out.println("Final Snakes: " + finalSnakes.size());
@@ -541,5 +537,4 @@ public class LatticeTileGridCanvasTest
 		
 		return rndPoint;
 	}
-	
 }

@@ -5,17 +5,23 @@ package jborg.lightning;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
+
 import someMath.pathFinder.LatticeGrid;
 import someMath.pathFinder.Snake;
 import someMath.pathFinder.SnakeAndLatticeGrid;
+import static someMath.pathFinder.LatticeGrid.*;
+
 import someMath.exceptions.LTGCException;
 import someMath.exceptions.SnakeException;
 
-import static someMath.pathFinder.LatticeGrid.*;
 
 import java.awt.Point;
+
+
 import java.util.List;
 import java.util.Set;
+
 
 
 

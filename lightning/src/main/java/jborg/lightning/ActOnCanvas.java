@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import CollectionTools.CollectionManipulation;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import jborg.lightning.exceptions.ActOnCanvasException;

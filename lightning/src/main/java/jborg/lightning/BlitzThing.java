@@ -33,7 +33,7 @@ import someMath.exceptions.LTGCException;
 import someMath.exceptions.SnakeException;
 import someMath.exceptions.CollectionException;
 
-import someMath.CollectionManipulation;
+import CollectionTools.CollectionManipulation;
 import someMath.pathFinder.LatticeGrid;
 import someMath.pathFinder.Snake;
 
