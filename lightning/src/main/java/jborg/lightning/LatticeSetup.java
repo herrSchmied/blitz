@@ -61,7 +61,7 @@ public class LatticeSetup
 		return pool;
 	}
 
-	public void setupLattices(int width, int height, int latticeNr) throws LTGCException, CollectionException
+	public void setRandomLattices(int width, int height, int latticeNr) throws LTGCException, CollectionException
 	{
 	
 		int nrOfInternPossibleLattices = 2*width*height-width-height;
