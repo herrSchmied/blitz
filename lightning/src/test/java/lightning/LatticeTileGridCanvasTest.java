@@ -16,8 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import CollectionTools.CollectionManipulation;
 import CollectionTools.SequenzInListSearch;
-import consoleTools.InputArgumentException;
-import consoleTools.InputStreamSession;
 import someMath.exceptions.LTGCException;
 import someMath.pathFinder.LatticeGrid;
 import jborg.lightning.LTGCS;

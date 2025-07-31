@@ -1,18 +1,21 @@
 package jborg.lightning;
 
 import static consoleTools.TerminalXDisplay.formatBashStringBoldAndBlue;
+import static consoleTools.TerminalXDisplay.pointToString;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import CollectionTools.CollectionManipulation;
 import javafx.util.Pair;
 import someMath.exceptions.CollectionException;
 import someMath.exceptions.LTGCException;
 import someMath.pathFinder.LatticeGrid;
+import static someMath.pathFinder.LatticeGrid.*;
 
 public class LatticeSetup
 {
@@ -111,4 +114,62 @@ public class LatticeSetup
 	
 		System.out.println(formatBashStringBoldAndBlue("Count: " + cnt));
 	}
+	
+	public void setVerticalLatticesLokStep()
+	{
+		int latticeNr = (width/2)*(height/2);
+		
+		Consumer<Point> wttConsumer = (p)->
+		{
+
+			int x = p.x;
+			int y = p.y;
+			
+			if((x<(width-1))&&(y%2==0))
+			{
+				
+				try
+				{
+					lg.setLatticesOnTile(p, indexLatticeBitLeft);
+				}
+				catch (LTGCException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+
+		lg.walkThruTiles(wttConsumer);
+	}
+	
+	public void setHorizontalLatticesLokStep()
+	{
+		int latticeNr = (width/2)*(height/2);
+		
+		Consumer<Point> wttConsumer = (p)->
+		{
+
+			int x = p.x;
+			int y = p.y;
+			
+			if((y>0)&&(x%2==0))
+			{
+				
+				try
+				{
+
+					if(lg.hasLatticeOnTheBottom(p))System.out.println("This Point already has a Lattice at the Bottom");
+					System.out.println("This point gets a lattice at the bottom: " + pointToString("P", p));
+					lg.setLatticesOnTile(p, indexLatticeBitBottom);
+				}
+				catch (LTGCException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+
+		lg.walkThruTiles(wttConsumer);
+	}
+
 }
