@@ -130,7 +130,7 @@ public class LatticeSetup
 				
 				try
 				{
-					lg.setLatticesOnTile(p, indexLatticeBitLeft);
+					lg.setOneLatticeOnTile(p, indexLatticeBitLeft);
 				}
 				catch (LTGCException e)
 				{
@@ -158,9 +158,18 @@ public class LatticeSetup
 				try
 				{
 
-					if(lg.hasLatticeOnTheBottom(p))System.out.println("This Point already has a Lattice at the Bottom");
-					System.out.println("This point gets a lattice at the bottom: " + pointToString("P", p));
-					lg.setLatticesOnTile(p, indexLatticeBitBottom);
+					boolean alreadyHas = lg.hasLatticeOnTheBottom(p);
+					if(alreadyHas)
+					{
+						System.out.println("This Point already has a Lattice at the Bottom");
+					}
+					else
+					{
+						System.out.println("This point gets a lattice at the bottom: " + pointToString("P", p));
+						lg.setOneLatticeOnTile(p, indexLatticeBitBottom);
+						boolean nowHas = lg.hasLatticeOnTheBottom(p);
+						System.out.println(nowHas);
+					}
 				}
 				catch (LTGCException e)
 				{
@@ -171,5 +180,4 @@ public class LatticeSetup
 
 		lg.walkThruTiles(wttConsumer);
 	}
-
 }
