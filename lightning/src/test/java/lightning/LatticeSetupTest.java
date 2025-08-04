@@ -17,7 +17,7 @@ public class LatticeSetupTest
 {
 
 	@Test
-	public void LatticeVerticalTest() throws LTGCException
+	public void LatticeHorizontalTest() throws LTGCException
 	{
 
 		LatticeGrid lg = new LatticeGrid(6, 6);

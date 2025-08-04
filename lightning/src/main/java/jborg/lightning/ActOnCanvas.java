@@ -65,7 +65,7 @@ public class ActOnCanvas
 		
 		snlGrid = new SnakeAndLatticeGrid(startSnake, lg, finalPoint);
 		LatticeSetup ls = new LatticeSetup(lg);
-		ls.setRandomLattices((int)width,(int)height,(int)(Math.sqrt(width*height)/2));
+		ls.setRandomLattices((int)(1.5*Math.sqrt(width*height)/2));
         setFinalSnakes();
         Set<Snake> snakes = filterSuccesses();
         

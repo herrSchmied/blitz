@@ -278,7 +278,7 @@ public class BlitzThing extends Application
     	LTGCS canvas = new LTGCS(width, height, end, snake);
     	LatticeSetup ls = new LatticeSetup(canvas.getLatticeGrid());
         root.getChildren().add(canvas);
-        ls.setRandomLattices(width, height, latticeNr);
+        ls.setRandomLattices(latticeNr);
        
         Stage stage = new Stage();
         Scene scene = new Scene(root, canvas.getAbsolutWidthInPixels(), canvas.getAbsolutHeightInPixels(), Color.GREY);
