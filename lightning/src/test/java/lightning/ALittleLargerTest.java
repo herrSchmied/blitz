@@ -20,7 +20,7 @@ public class ALittleLargerTest
 {
 
 
-	private int width = 4, height = 4;
+	private int width = 7, height = 7;
 	private SnakeAndLatticeGrid snl;
 	private LatticeGrid lg;
 	private LatticeSetup ls;
@@ -36,7 +36,7 @@ public class ALittleLargerTest
 		lg = new LatticeGrid(width, height);
 		snl = new SnakeAndLatticeGrid(snake, lg, finalPoint);
 		ls = new LatticeSetup(lg);
-		ls.setRandomLattices(latticeNr);
+		ls.setVerticalBarsWithOneHole();
 	}
 	
 	@Test

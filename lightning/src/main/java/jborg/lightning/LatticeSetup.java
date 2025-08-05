@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 
 import CollectionTools.CollectionManipulation;
 import javafx.util.Pair;
+import static someMath.SmallTools.*;
 import someMath.exceptions.CollectionException;
 import someMath.exceptions.LTGCException;
 import someMath.pathFinder.LatticeGrid;
@@ -24,6 +25,7 @@ public class LatticeSetup
 	
 	private final int width;
 	private final int height;
+	private int latticeNr = 0;
 	
 	public LatticeSetup(LatticeGrid lg)
 	{
@@ -31,6 +33,7 @@ public class LatticeSetup
 		this.lg = lg;
 		this.width = lg.getWidth();
 		this.height = lg.getHeight();
+		
 	}
 
 	private Set<Pair<Point, Integer>> poolOfPossibleLatticePositions(LatticeGrid lg)
@@ -84,6 +87,7 @@ public class LatticeSetup
 			int i = possibleLatticeNrs.indexOf(k);
 			possibleLatticeNrs.remove(i);
 			actualLatticeNrs.add(k);
+			latticeNr++;
 		}
 	
 		System.out.println(formatBashStringBoldAndBlue("ActualLattices: "+ actualLatticeNrs.size()));
@@ -117,7 +121,6 @@ public class LatticeSetup
 	
 	public void setVerticalLatticesLokStep()
 	{
-		int latticeNr = (width/2)*(height/2);
 		
 		Consumer<Point> wttConsumer = (p)->
 		{
@@ -125,7 +128,7 @@ public class LatticeSetup
 			int x = p.x;
 			int y = p.y;
 			
-			if((x<(width-1))&&(y%2==0))
+			if((x>0)&&(y%2==0))
 			{
 				
 				try
@@ -138,13 +141,14 @@ public class LatticeSetup
 				}
 			}
 		};
-
+		
 		lg.walkThruTiles(wttConsumer);
+		
+		latticeNr = (width-1)*(height/2);
 	}
 	
 	public void setHorizontalLatticesLokStep()
 	{
-		int latticeNr = (width/2)*(height/2);
 		
 		Consumer<Point> wttConsumer = (p)->
 		{
@@ -179,5 +183,65 @@ public class LatticeSetup
 		};
 
 		lg.walkThruTiles(wttConsumer);
+		
+		latticeNr = (width/2)*(height-1);
+	}
+	
+	
+	public void setVerticalBarsWithOneHole()
+	{
+
+		Consumer<Point> wttConsumer = (p)->
+		{
+			
+			int x = p.x;
+			int y = p.y;
+			int xOfHole = randomInt(x, 0);
+			
+			if(y>0&&x!=xOfHole)
+			{
+			
+				try
+				{
+					lg.setOneLatticeOnTile(p, indexLatticeBitLeft);
+				}
+				catch(LTGCException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		lg.walkThruTiles(wttConsumer);
+		
+		latticeNr = (width-1)*(height-1);
+	}
+	
+	public void setHorizontalBarsWithOneHole()
+	{
+		
+		Consumer<Point> wttConsumer = (p)->
+		{
+			
+			int x = p.x;
+			int y = p.y;
+			int yOfHole = randomInt(y, 0);
+			
+			if(x>0&&y!=yOfHole)
+			{	
+				try
+				{
+					lg.setOneLatticeOnTile(p, indexLatticeBitBottom);
+				}
+				catch(LTGCException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+
+		lg.walkThruTiles(wttConsumer);
+		
+		latticeNr = (width-1)*(height-1);
 	}
 }
