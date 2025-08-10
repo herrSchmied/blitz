@@ -1,28 +1,30 @@
 package jborg.lightning;
 
+
 import javafx.application.Platform;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-
+import javafx.scene.paint.Color;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 
+
 import CollectionTools.CollectionManipulation;
-import javafx.scene.paint.Color;
-import javafx.util.Pair;
+
+
 import jborg.lightning.exceptions.ActOnCanvasException;
 
-import someMath.*;
+
 import someMath.exceptions.*;
+
 import someMath.pathFinder.LatticeGrid;
 import someMath.pathFinder.Snake;
 import someMath.pathFinder.SnakeAndLatticeGrid;
 
-import static consoleTools.TerminalXDisplay.*;
 
 public class ActOnCanvas
 {
@@ -72,8 +74,6 @@ public class ActOnCanvas
         Snake winner = CollectionManipulation.catchRandomElementOfSet(snakes);
         if(!(winner==null))animateSnake(winner);
         else System.out.println("No winner Snake!");
-
-
 	}
 	
 	public Set<Snake> filterSuccesses()

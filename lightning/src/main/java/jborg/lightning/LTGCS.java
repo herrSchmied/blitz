@@ -63,6 +63,12 @@ public class LTGCS extends Canvas
 	private final int tileSize;
 	
 	/**
+	 * The Tiles are quadratic. This side length
+	 * of Tiles in Pixels.
+	 */
+	private static final int defaultTileSize=10;
+
+	/**
 	 * Lattice Stroke width in Pixels.
 	 */
 	private final double strokeWidthLattice;
@@ -112,7 +118,7 @@ public class LTGCS extends Canvas
 	/**
 	 * Standard Tile Width.
 	 */
-	public static final int standartTileWidth = 36;
+	public static final int standartTileSize = 36;
 	
 	/**
 	 * Initial Snake.
@@ -130,7 +136,7 @@ public class LTGCS extends Canvas
 	 */
 	public LTGCS(int width, int height, Point finalPoint, Snake snake) throws LTGCException
 	{
-		this(width, height, standartTileWidth, finalPoint, snake, standartStrokeWidth);
+		this(width, height, standartTileSize, finalPoint, snake, standartStrokeWidth);
 	}
 	
 	
@@ -177,6 +183,13 @@ public class LTGCS extends Canvas
 		snlGrid = new SnakeAndLatticeGrid(initialSnake, lg, finalPoint);
 	}
 	
+	public static LTGCS getCorneredVersion(int xTileWidth, int yTileHeight) throws LTGCException, SnakeException
+	{
+
+		return new LTGCS(xTileWidth, yTileHeight, new Point(xTileWidth-1, yTileHeight-1),
+				new Snake(new Point(0,0), Snake.readyStatus));
+	}
+
 	/**
 	 * Sets a Plain and clear Canvas and Lattic-Grid.
 	 */

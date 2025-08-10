@@ -191,14 +191,18 @@ public class LatticeSetup
 	public void setVerticalBarsWithOneHole()
 	{
 
+		int []heightOfHole = new int[height];
+		heightOfHole[0] = 0;
+		
+		for(int n=1;n<height;n++)heightOfHole[n]=randomInt(height, 0);
+
 		Consumer<Point> wttConsumer = (p)->
 		{
 			
 			int x = p.x;
 			int y = p.y;
-			int xOfHole = randomInt(x, 0);
 			
-			if(y>0&&x!=xOfHole)
+			if((x>0)&&(heightOfHole[x]!=y))
 			{
 			
 				try
@@ -219,15 +223,19 @@ public class LatticeSetup
 	
 	public void setHorizontalBarsWithOneHole()
 	{
-		
+
+		int widthOfHole[] = new int[width];
+		widthOfHole[0] = 0;
+
+		for(int n=1;n<width;n++)widthOfHole[n] = randomInt(width, 0);
+
 		Consumer<Point> wttConsumer = (p)->
 		{
-			
+
 			int x = p.x;
 			int y = p.y;
-			int yOfHole = randomInt(y, 0);
-			
-			if(x>0&&y!=yOfHole)
+
+			if((y>0)&&(widthOfHole[y]!=x))
 			{	
 				try
 				{

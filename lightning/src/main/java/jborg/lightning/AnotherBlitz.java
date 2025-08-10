@@ -5,6 +5,7 @@ import java.awt.Point;
 
 
 import javafx.application.Application;
+
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.HBox;
@@ -25,14 +26,15 @@ public class AnotherBlitz extends Application
         
         HBox hBox = new HBox();
         hBox.getChildren().add(canvas);
-        
-         
+
         Scene scene = new Scene(hBox);
 
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        Point start = new Point(0, 0); Point end = new Point(width-1, height-1);
+        Point start = new Point(0, 0);
+        Point end = new Point(width-1, height-1);
+
 		/* 
 		 * aoc = new ActOnCanvas(canvas, start, end);
 		 */        

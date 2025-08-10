@@ -76,7 +76,6 @@ public class BlitzThing extends Application
 		super();
 	}
 
-
 	/**
 	 * Responsible for setting up The primary-Stage.
 	 */
