@@ -22,7 +22,7 @@ public class VisulizeLatticeGrid extends Application
 	public void Horizontal() throws LTGCException, SnakeException
 	{
 		
-		LTGCS ltgcs = LTGCS.getCorneredVersion(5, 5);
+		LTGCS ltgcs = LTGCS.getCorneredVersion(3, 4);
 
 		LatticeGrid lg = ltgcs.getLatticeGrid();
 
@@ -48,7 +48,7 @@ public class VisulizeLatticeGrid extends Application
 	public void Vertical() throws LTGCException, SnakeException
 	{
 		
-		LTGCS ltgcs = LTGCS.getCorneredVersion(5, 5);
+		LTGCS ltgcs = LTGCS.getCorneredVersion(5, 4);
 
 		LatticeGrid lg = ltgcs.getLatticeGrid();
 
