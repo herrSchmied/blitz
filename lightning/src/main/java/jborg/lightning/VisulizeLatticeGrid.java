@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import jborg.lightning.LTGCS;
 import jborg.lightning.LatticeSetup;
+import jborg.lightning.exceptions.LSException;
 import someMath.exceptions.LTGCException;
 import someMath.exceptions.SnakeException;
 import someMath.pathFinder.LatticeGrid;
@@ -18,7 +19,31 @@ public class VisulizeLatticeGrid extends Application
 {
 
 
+	public void shapedLikeL() throws LTGCException, SnakeException, LSException
+	{
+		
+		LTGCS ltgcs = LTGCS.getCorneredVersion(5, 5);
 
+		LatticeGrid lg = ltgcs.getLatticeGrid();
+
+		LatticeSetup ls = new LatticeSetup(lg);;
+
+		
+		Group root = new Group();
+		
+		ls.theLShapesWithOneHole();
+		ltgcs.drawEverythingExeceptAnySnake();
+		ltgcs.drawLattices();
+		
+        root.getChildren().add(ltgcs);
+       
+        Stage stage = new Stage();
+        Scene scene = new Scene(root, ltgcs.getAbsolutWidthInPixels(), ltgcs.getAbsolutHeightInPixels(), Color.GREY);
+        stage.setScene(scene);
+
+
+       	stage.show();
+	}
 	public void Horizontal() throws LTGCException, SnakeException
 	{
 		
@@ -87,6 +112,7 @@ public class VisulizeLatticeGrid extends Application
        	
        	Horizontal();
        	Vertical();
+       	shapedLikeL();
 	}
 	
 	public static void main(String[] args)

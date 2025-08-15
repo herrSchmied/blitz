@@ -254,19 +254,43 @@ public class LatticeSetup
 		latticeNr = (width-1)*(height-1);
 	}
 	
-	public void theLShapesWithOneHole() throws LSException
+	public void theLShapesWithOneHole() throws LSException, LTGCException
 	{
 		
 		if(lg.getWidth()!=lg.getHeight())throw new LSException("LG width not equal to Height");
-		int l = lg.getWidth();
+		int length = lg.getWidth();
 		
-		for(int k=0;k<l;k++)
+		for(int lane=0;lane<length;lane++)
 		{
-			int m = k*2+1;
-			for(int n=0;n<m;n++)
+			int laneLength = lane*2+1;
+			for(int part=0;part<laneLength;part++)
 			{
+				int x;
+				int y;
+				if(part<lane)
+				{
+					x = lane-1;
+					y = part;
+					Point p = new Point(x, y);
+					lg.setOneLatticeOnTile(p, indexLatticeBitRight);
+				}
 				
-			}
+				
+				  if(part>lane)
+				  { 
+					  x = part-lane-1; 
+					  y = lane; 
+					  Point p = new Point(x, y);
+					  lg.setOneLatticeOnTile(p, indexLatticeBitBottom);
+				  }
+				  
+					/*
+					 * if(part==lane) { x = lane; y = lane; Point p = new Point(x,y);
+					 * lg.setOneLatticeOnTile(p, indexLatticeBitRight); lg.setOneLatticeOnTile(p,
+					 * indexLatticeBitBottom);
+					 * 
+					 * }
+					 */			}
 		}
 	}
 }
