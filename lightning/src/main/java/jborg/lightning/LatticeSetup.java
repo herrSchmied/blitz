@@ -12,6 +12,8 @@ import java.util.function.Consumer;
 
 import CollectionTools.CollectionManipulation;
 import javafx.util.Pair;
+import jborg.lightning.exceptions.LSException;
+
 import static someMath.SmallTools.*;
 import someMath.exceptions.CollectionException;
 import someMath.exceptions.LTGCException;
@@ -186,8 +188,7 @@ public class LatticeSetup
 		
 		latticeNr = (width/2)*(height-1);
 	}
-	
-	
+
 	public void setVerticalBarsWithOneHole()
 	{
 
@@ -251,5 +252,21 @@ public class LatticeSetup
 		lg.walkThruTiles(wttConsumer);
 		
 		latticeNr = (width-1)*(height-1);
+	}
+	
+	public void theLShapesWithOneHole() throws LSException
+	{
+		
+		if(lg.getWidth()!=lg.getHeight())throw new LSException("LG width not equal to Height");
+		int l = lg.getWidth();
+		
+		for(int k=0;k<l;k++)
+		{
+			int m = k*2+1;
+			for(int n=0;n<m;n++)
+			{
+				
+			}
+		}
 	}
 }
