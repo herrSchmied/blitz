@@ -189,67 +189,38 @@ public class LatticeSetup
 		latticeNr = (width/2)*(height-1);
 	}
 
-	public void setVerticalBarsWithOneHole()
+	public void setVerticalBarsWithOneHole() throws LTGCException
 	{
 
-		int []heightOfHole = new int[width];
-		heightOfHole[0] = 0;
-		
-		for(int n=1;n<width;n++)heightOfHole[n]=randomInt(width, 0);
-
-		Consumer<Point> wttConsumer = (p)->
+		for(int x=0;x<width;x++)
 		{
+			int partWithNoLattice = randomInt(height-1, 0);
 			
-			int x = p.x;
-			int y = p.y;
-			
-			if((x>0)&&(heightOfHole[x]!=y))
+			for(int y=0;y<height;y++)
 			{
-			
-				try
-				{
-					lg.setOneLatticeOnTile(p, indexLatticeBitLeft);
-				}
-				catch(LTGCException e)
-				{
-					e.printStackTrace();
-				}
+				Point p = new Point(x, y);
+				
+				if(y!=partWithNoLattice)lg.setOneLatticeOnTile(p, indexLatticeBitRight);
 			}
-		};
-		
-		lg.walkThruTiles(wttConsumer);
+		}
 		
 		latticeNr = (width-1)*(height-1);
 	}
 	
-	public void setHorizontalBarsWithOneHole()
+	public void setHorizontalBarsWithOneHole() throws LTGCException
 	{
 
-		int widthOfHole[] = new int[height];
-		widthOfHole[0] = 0;
-
-		for(int n=1;n<height;n++)widthOfHole[n] = randomInt(height, 0);
-
-		Consumer<Point> wttConsumer = (p)->
+		for(int y=0;y<height;y++)
 		{
-
-			int x = p.x;
-			int y = p.y;
-
-			if((y>0)&&(widthOfHole[y]!=x))
-			{	
-				try
-				{
-					lg.setOneLatticeOnTile(p, indexLatticeBitBottom);
-				}
-				catch(LTGCException e)
-				{
-					e.printStackTrace();
-				}
+			int partWithNoLattice = randomInt(width-1, 0);
+			
+			for(int x=0;x<width;x++)
+			{
+				Point p = new Point(x, y);
+				
+				if(x!=partWithNoLattice)lg.setOneLatticeOnTile(p, indexLatticeBitBottom);
 			}
-		};
-
-		lg.walkThruTiles(wttConsumer);
+		}
 		
 		latticeNr = (width-1)*(height-1);
 	}
@@ -257,17 +228,20 @@ public class LatticeSetup
 	public void theLShapesWithOneHole() throws LSException, LTGCException
 	{
 		
-		if(lg.getWidth()!=lg.getHeight())throw new LSException("LG width not equal to Height");
-		int length = lg.getWidth();
+		if(width!=height)throw new LSException("LG width not equal to Height");
+		int length = width;
 		
 		for(int lane=0;lane<length;lane++)
 		{
+
 			int laneLength = lane*2+1;
+			int partWithNoLatice = randomInt(laneLength,0);
+			
 			for(int part=0;part<laneLength;part++)
 			{
 				int x;
 				int y;
-				if(part<lane)
+				if((part<lane)&&(part!=partWithNoLatice))
 				{
 					x = lane-1;
 					y = part;
@@ -276,21 +250,15 @@ public class LatticeSetup
 				}
 				
 				
-				  if(part>lane)
-				  { 
-					  x = part-lane-1; 
-					  y = lane; 
-					  Point p = new Point(x, y);
-					  lg.setOneLatticeOnTile(p, indexLatticeBitBottom);
-				  }
-				  
-					/*
-					 * if(part==lane) { x = lane; y = lane; Point p = new Point(x,y);
-					 * lg.setOneLatticeOnTile(p, indexLatticeBitRight); lg.setOneLatticeOnTile(p,
-					 * indexLatticeBitBottom);
-					 * 
-					 * }
-					 */			}
+				if((part>lane)&&(part!=partWithNoLatice))
+				{ 
+
+					x = part-lane-1; 
+					y = lane;
+					Point p = new Point(x, y);
+					lg.setOneLatticeOnTile(p, indexLatticeBitBottom);
+				}
+			}
 		}
 	}
 }
